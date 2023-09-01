@@ -1,0 +1,7 @@
+{
+  "name": "karteVonMorgen",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
