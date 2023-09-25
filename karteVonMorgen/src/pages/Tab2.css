@@ -1,0 +1,32 @@
+.leaflet-container {
+    height: 100vh;
+}
+
+.searchContainer {
+    position: absolute;
+    left: 2%;
+    right: 2%;
+    margin: 10px;
+    z-index:100;
+    color:transparent;
+    background-color: transparent;
+}
+
+.map-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0; 
+  }
+
+  ion-searchbar.custom {
+    --border-radius: 25px;
+  }
+
+  ion-searchbar.ios.custom {
+    --cancel-button-color: #19422d;
+  }
+
+  ion-searchbar.md.custom {
+    --cancel-button-color: #fff;
+  }
