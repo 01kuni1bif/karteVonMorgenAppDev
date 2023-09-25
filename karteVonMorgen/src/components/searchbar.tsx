@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { IonButton, IonCol, IonContent, IonGrid, IonHeader, IonModal, IonPage, IonRow, IonSearchbar, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react';
 
 
 function SearchBar({

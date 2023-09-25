@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import SearchBar from '../components/searchbar';
+
 import useEventsVerbose from '../hooks/useEventsVerbose';
+import SearchBar from '../components/searchbar';
 
 const Tab3: React.FC = () => {
   const [filterText, setFilterText] = useState('');
