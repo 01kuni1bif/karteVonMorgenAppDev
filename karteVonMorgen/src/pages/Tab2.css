@@ -30,3 +30,14 @@
   ion-searchbar.md.custom {
     --cancel-button-color: #fff;
   }
+
+  .custom-button {
+    color: #fff; /* Standardtextfarbe */
+    background-color: #0074e4; /* Standardhintergrundfarbe */
+    transition: background-color 0.3s;
+  }
+  
+  .custom-button.selected {
+    background-color: #fff; /* Hintergrundfarbe beim Klicken */
+    color: #0074e4; /* Textfarbe wird zur vorherigen Hintergrundfarbe */
+  }

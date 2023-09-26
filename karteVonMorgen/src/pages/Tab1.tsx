@@ -22,9 +22,12 @@ const Tab1: React.FC = () => {
   const [filterText, setFilterText] = useState('');
   const [filteredTags, setFilteredTags] = useState<string[]>([]);
 
+  /* console.log(data);
+  console.log(data1); */
+
   useEffect(() => {
-    if (tags1 && tags1.length > 0) {
-      const searchQuery = filterText.toLowerCase();
+    if (tags1 && tags1.length > 0 && filterText.startsWith('#') && filterText.length > 1) {
+      const searchQuery = filterText.substring(1).toLowerCase(); // Entferne das '#' und mache den Rest klein
       const filteredEvents = tags1.filter((item: string) =>
         item.toLowerCase().includes(searchQuery)
       );
@@ -33,6 +36,7 @@ const Tab1: React.FC = () => {
       setFilteredTags([]);
     }
   }, [tags1, filterText]);
+
 
 
 
@@ -69,11 +73,13 @@ const Tab1: React.FC = () => {
             value={filterText}
             onChange={(e) => setFilterText(e.target.value)}
           />
-          <ul>
-            {filteredTags.map((tag, index) => (
-              <li key={index}>{tag}</li>
-            ))}
-          </ul>
+          {filteredTags.length > 0 && (
+            <ul>
+              {filteredTags.map((tag, index) => (
+                <li key={index}>{tag}</li>
+              ))}
+            </ul>
+          )}
         </div>
 
       </IonContent>
