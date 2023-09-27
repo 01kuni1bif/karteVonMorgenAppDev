@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 
 import useEventsVerbose from '../hooks/useEventsVerbose';
 import SearchBar from '../components/searchbar';
-
+import SearchBarExample from '../components/searchbar';
+/* import SearchBar from '../components/searchbar';
+ */
 const Tab3: React.FC = () => {
-  const [filterText, setFilterText] = useState('');
+  /* const [filterText, setFilterText] = useState('');
   const data = useEventsVerbose();
 
   let filteredEvents: any[] = [];
@@ -39,11 +41,11 @@ const Tab3: React.FC = () => {
       );
     });
   }
-
+ */
   return (
     <div style={{ overflowY: 'auto', height: '100vh' }}>
-      <SearchBar filterText={filterText} onFilterTextChange={setFilterText} />
-      {filteredEvents.map((event) => (
+        <SearchBarExample /> 
+      {/* {filteredEvents.map((event) => (
         <div key={event.id}>
           <h3>{event.title}</h3>
           <p>{event.description}</p>
@@ -59,7 +61,7 @@ const Tab3: React.FC = () => {
           <p>Tags: {event.tags.join(', ')}</p>
           <p>Organizer: {event.organizer}</p>
         </div>
-      ))}
+      ))} */}
     </div>
   );
 };

@@ -325,6 +325,7 @@ const Tab2: React.FC = () => {
 
 
 
+
           {extractedData.map((itemArray, outerIndex) => (
             itemArray && itemArray.length > 0 && (
               <MarkerClusterGroup key={outerIndex}>
