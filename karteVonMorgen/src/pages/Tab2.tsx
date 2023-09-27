@@ -12,7 +12,7 @@ import 'leaflet.awesome-markers/dist/images/markers-soft.png'; // Bildsatz für 
 import "./Tab2.css";
 
 
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import useSearchbar from '../hooks/useSearchbar';
 import useEvents from '../hooks/useEvents';
@@ -21,6 +21,63 @@ import useEventsCluster from '../hooks/useEventsCluster';
 import useCategories from '../hooks/useCategories';
 
 import { Icon } from 'leaflet';
+import L from 'leaflet';
+
+
+// Define BoundsDisplay component to show map bounds
+function BoundsDisplay({ onUpdateBoundingBox }) {
+  const map = useMap();
+  const boundsControlRef = useRef<L.Control | null>(null);
+
+  useEffect(() => {
+    const updateBounds = () => {
+      const bounds = map.getBounds();
+      const southWest = bounds.getSouthWest();
+      const northEast = bounds.getNorthEast();
+      const newBoundingBox = {
+        southwest: { lat: southWest.lat, lng: southWest.lng },
+        northeast: { lat: northEast.lat, lng: northEast.lng }
+      };
+
+      onUpdateBoundingBox(newBoundingBox);
+
+      const boundsText = `Bounds: (${southWest.lat.toFixed(4)}, ${southWest.lng.toFixed(4)}) - (${northEast.lat.toFixed(4)}, ${northEast.lng.toFixed(4)})`;
+
+      if (!boundsControlRef.current) {
+        const boundsControl = L.control({ position: "bottomleft" });
+
+        boundsControl.onAdd = () => {
+          const div = L.DomUtil.create("div", "leaflet-control-bounds");
+          div.innerHTML = boundsText;
+          boundsControlRef.current = div;
+          return div;
+        };
+
+        boundsControl.addTo(map);
+      } else {
+        // Update the content of the existing bounds control
+        boundsControlRef.current.innerHTML = boundsText;
+      }
+    };
+
+    // Listen for map events to update bounds when the map view changes
+    map.on("moveend", updateBounds);
+
+    // Initial bounds update
+    updateBounds();
+
+    // Clean up when the component unmounts
+    return () => {
+      map.off("moveend", updateBounds);
+      if (boundsControlRef.current) {
+        boundsControlRef.current.remove();
+        boundsControlRef.current = null;
+      }
+    };
+  }, [map, onUpdateBoundingBox]);
+
+  return null;
+}
 
 
 const Tab2: React.FC = () => {
@@ -32,18 +89,24 @@ const Tab2: React.FC = () => {
   const searchBar = useRef<HTMLIonSearchbarElement>(null);
   const [modalContent, setModalContent] = useState('');
 
+  const [boundingBox, setBoundingBox] = useState(null);
+
   const initiatives = useCategories('2cd00bebec0c48ba9db761da48678134', '100');
 
   const companies = useCategories('77b3c33a92554bcf8e8c2c86cedd6f6f', '100');
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const updateBoundingBox = (newBoundingBox: React.SetStateAction<null>) => {
+    setBoundingBox(newBoundingBox);
+  };
+
 
   // Funktion zum Öffnen des Modals mit dem Popup-Inhalt
-const openModalWithContent = (content) => {
-  setModalContent(content);
-  openModal(); // Öffnen Sie das Modal
-};
+  const openModalWithContent = (content) => {
+    setModalContent(content);
+    openModal(); // Öffnen Sie das Modal
+  };
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -147,7 +210,7 @@ const openModalWithContent = (content) => {
   const handleMarkerClick = () => {
     openModal();
   };
-  
+
 
 
 
@@ -165,7 +228,7 @@ const openModalWithContent = (content) => {
       <IonContent>
 
         <div className='searchContainer'>
-          <IonSearchbar ref={searchBar} itemID="searchBar" class="custom" debounce={1000} color="danger" placeholder='Wonach suchst du? (# für Tags)' onFocus={OpenSearchModal} />
+          <IonSearchbar ref={searchBar} itemID="searchBar" class="custom" debounce={1000} color="danger" placeholder='Wonach suchst du? (# für Tags)' onFocus={OpenSearchModal}  />
           <IonGrid>
             <IonRow>
               <IonCol size="4">
@@ -208,7 +271,7 @@ const openModalWithContent = (content) => {
           <IonModal isOpen={isModalOpen} onDidDismiss={closeModal}>
             {/* Hier können Sie den Inhalt Ihres Modals platzieren */}
             <IonContent>
-            <div>{modalContent}</div>
+              <div>{modalContent}</div>
               {/* Hier den Inhalt des Modals einfügen */}
             </IonContent>
           </IonModal>
@@ -223,6 +286,8 @@ const openModalWithContent = (content) => {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
+
+          <BoundsDisplay onUpdateBoundingBox={updateBoundingBox} />
 
           <MarkerClusterGroup
             chunkedLoading
