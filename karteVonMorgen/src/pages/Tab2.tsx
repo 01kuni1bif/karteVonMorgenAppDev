@@ -83,10 +83,15 @@ function BoundsDisplay({ onUpdateBoundingBox }) {
 const Tab2: React.FC = () => {
 
   const extractedData = [];
+
   const [userLocation, setUserLocation] = useState({ latitude: 0, longitude: 0 });
+
   const [selectedButton, setSelectedButton] = useState(null);
+
   const searchFilterModal = useRef<HTMLIonModalElement>(null);
+
   const searchBar = useRef<HTMLIonSearchbarElement>(null);
+
   const [modalContent, setModalContent] = useState('');
 
   const [boundingBox, setBoundingBox] = useState(null);
@@ -99,6 +104,7 @@ const Tab2: React.FC = () => {
 
   const updateBoundingBox = (newBoundingBox: React.SetStateAction<null>) => {
     setBoundingBox(newBoundingBox);
+    console.log(boundingBox);
   };
 
 
@@ -211,13 +217,9 @@ const Tab2: React.FC = () => {
     openModal();
   };
 
-
-
-
-
-
-
   const position = [50.1109, 8.6821];
+
+
   return (
     <IonPage color='primary'>
       <IonHeader>
@@ -228,7 +230,7 @@ const Tab2: React.FC = () => {
       <IonContent>
 
         <div className='searchContainer'>
-          <IonSearchbar ref={searchBar} itemID="searchBar" class="custom" debounce={1000} color="danger" placeholder='Wonach suchst du? (# für Tags)' onFocus={OpenSearchModal}  />
+          <IonSearchbar ref={searchBar} itemID="searchBar" class="custom" debounce={1000} color="danger" placeholder='Wonach suchst du? (# für Tags)' onFocus={OpenSearchModal} />
           <IonGrid>
             <IonRow>
               <IonCol size="4">
