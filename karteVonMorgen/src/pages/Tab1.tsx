@@ -7,84 +7,84 @@ import useEntries from '../hooks/useEntries';
 import React, { useState, useEffect } from 'react';
 import useCategories from '../hooks/useCategories';
 import useTags from '../hooks/useTags';
-import SearchBar from '../components/searchbar';
+// import SearchBar from '../components/searchbar';
 
 
 const Tab1: React.FC = () => {
 
-  /*  const [filterText, setFilterText] = useState('');
- 
-   const data = useCategories('2cd00bebec0c48ba9db761da48678134', '100');
- 
-   const data1 = useCategories('77b3c33a92554bcf8e8c2c86cedd6f6f', '100'); */
+    /*  const [filterText, setFilterText] = useState('');
+   
+     const data = useCategories('2cd00bebec0c48ba9db761da48678134', '100');
+   
+     const data1 = useCategories('77b3c33a92554bcf8e8c2c86cedd6f6f', '100'); */
 
-  const tags1 = useTags();
-  const [filterText, setFilterText] = useState('');
-  const [filteredTags, setFilteredTags] = useState<string[]>([]);
+    const tags1 = useTags();
+    const [filterText, setFilterText] = useState('');
+    const [filteredTags, setFilteredTags] = useState<string[]>([]);
 
-  /* console.log(data);
-  console.log(data1); */
+    /* console.log(data);
+    console.log(data1); */
 
-  useEffect(() => {
-    if (tags1 && tags1.length > 0 && filterText.startsWith('#') && filterText.length > 1) {
-      const searchQuery = filterText.substring(1).toLowerCase(); // Entferne das '#' und mache den Rest klein
-      const filteredEvents = tags1.filter((item: string) =>
-        item.toLowerCase().includes(searchQuery)
-      );
-      setFilteredTags(filteredEvents);
-    } else {
-      setFilteredTags([]);
-    }
-  }, [tags1, filterText]);
-
-
+    useEffect(() => {
+        if (tags1 && tags1.length > 0 && filterText.startsWith('#') && filterText.length > 1) {
+            const searchQuery = filterText.substring(1).toLowerCase(); // Entferne das '#' und mache den Rest klein
+            const filteredEvents = tags1.filter((item: string) =>
+                item.toLowerCase().includes(searchQuery)
+            );
+            setFilteredTags(filteredEvents);
+        } else {
+            setFilteredTags([]);
+        }
+    }, [tags1, filterText]);
 
 
 
 
 
 
-  /*  const [searchText, setSearchText] = useState('');
-   const [filteredData, setFilteredData] = useState(null);
- 
-   useEffect(() => {
-     const response = useSearchbar();
-     // Hier kannst du deinen Code für die Datenfilterung einfügen
-     // Zum Beispiel: Filtere die Daten basierend auf searchText
-     const filteredEntries = response
-       .map((entryId) => useEntries(entryId))
-       
-       );
- 
-     setFilteredData(filteredEntries);
-   }, [searchText]);  */
+
+
+    /*  const [searchText, setSearchText] = useState('');
+     const [filteredData, setFilteredData] = useState(null);
+   
+     useEffect(() => {
+       const response = useSearchbar();
+       // Hier kannst du deinen Code für die Datenfilterung einfügen
+       // Zum Beispiel: Filtere die Daten basierend auf searchText
+       const filteredEntries = response
+         .map((entryId) => useEntries(entryId))
+         
+         );
+   
+       setFilteredData(filteredEntries);
+     }, [searchText]);  */
 
 
 
 
-  return (
-    <IonPage>
-      <IonContent>
+    return (
+        <IonPage>
+            <IonContent>
 
-        <div>
-          <input
-            type="text"
-            placeholder="Suche nach Tags..."
-            value={filterText}
-            onChange={(e) => setFilterText(e.target.value)}
-          />
-          {filteredTags.length > 0 && (
-            <ul>
-              {filteredTags.map((tag, index) => (
-                <li key={index}>{tag}</li>
-              ))}
-            </ul>
-          )}
-        </div>
+                <div>
+                    <input
+                        type="text"
+                        placeholder="Suche nach Tags..."
+                        value={filterText}
+                        onChange={(e) => setFilterText(e.target.value)}
+                    />
+                    {filteredTags.length > 0 && (
+                        <ul>
+                            {filteredTags.map((tag, index) => (
+                                <li key={index}>{tag}</li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
 
-      </IonContent>
-    </IonPage>
-  );
+            </IonContent>
+        </IonPage>
+    );
 };
 
 export default Tab1;

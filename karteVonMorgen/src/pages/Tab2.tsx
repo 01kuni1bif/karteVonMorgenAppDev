@@ -4,220 +4,122 @@ import "leaflet/dist/leaflet.css"
 import Geolocation from '@react-native-community/geolocation';
 import 'leaflet.awesome-markers/dist/leaflet.awesome-markers.css'; // Stile für die Marker
 import 'leaflet.awesome-markers/dist/images/markers-soft.png'; // Bildsatz für die Marker (siehe Hinweis unten)
-
-
-// import MarkerClusterGroup from 'react-leaflet-cluster';
-
-
 import "./Tab2.css";
-
-
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import MarkerClusterGroup from 'react-leaflet-cluster';
-import useSearchbar from '../hooks/useSearchbar';
-import useEvents from '../hooks/useEvents';
-import states from '../consts/states';
-import useEventsCluster from '../hooks/useEventsCluster';
 import useCategories from '../hooks/useCategories';
-
+import useEvents from '../hooks/useEvents';
+import useEventsCluster from '../hooks/useEventsCluster';
+import states from '../consts/states';
 import { Icon } from 'leaflet';
-import L from 'leaflet';
-
-
-// Define BoundsDisplay component to show map bounds
-function BoundsDisplay({ onUpdateBoundingBox }) {
-  const map = useMap();
-  const boundsControlRef = useRef<L.Control | null>(null);
-
-  useEffect(() => {
-    const updateBounds = () => {
-      const bounds = map.getBounds();
-      const southWest = bounds.getSouthWest();
-      const northEast = bounds.getNorthEast();
-      const newBoundingBox = {
-        southwest: { lat: southWest.lat, lng: southWest.lng },
-        northeast: { lat: northEast.lat, lng: northEast.lng }
-      };
-
-      onUpdateBoundingBox(newBoundingBox);
-
-      const boundsText = `Bounds: (${southWest.lat.toFixed(4)}, ${southWest.lng.toFixed(4)}) - (${northEast.lat.toFixed(4)}, ${northEast.lng.toFixed(4)})`;
-
-      if (!boundsControlRef.current) {
-        const boundsControl = L.control({ position: "bottomleft" });
-
-        boundsControl.onAdd = () => {
-          const div = L.DomUtil.create("div", "leaflet-control-bounds");
-          div.innerHTML = boundsText;
-          boundsControlRef.current = div;
-          return div;
-        };
-
-        boundsControl.addTo(map);
-      } else {
-        // Update the content of the existing bounds control
-        boundsControlRef.current.innerHTML = boundsText;
-      }
-    };
-
-    // Listen for map events to update bounds when the map view changes
-    map.on("moveend", updateBounds);
-
-    // Initial bounds update
-    updateBounds();
-
-    // Clean up when the component unmounts
-    return () => {
-      map.off("moveend", updateBounds);
-      if (boundsControlRef.current) {
-        boundsControlRef.current.remove();
-        boundsControlRef.current = null;
-      }
-    };
-  }, [map, onUpdateBoundingBox]);
-
-  return null;
-}
-
+import MapBoundsDisplay from '../components/MapBoundsDisplay'; // Adjust the import path as needed
 
 const Tab2: React.FC = () => {
+    const extractedData = [];
+    const [userLocation, setUserLocation] = useState({ latitude: 0, longitude: 0 });
+    const searchFilterModal = useRef<HTMLIonModalElement>(null);
+    const searchBar = useRef<HTMLIonSearchbarElement>(null);
+    const [modalContent, setModalContent] = useState('');
+    const [boundingBox, setBoundingBox] = useState(null);
+    const initiatives = useCategories('2cd00bebec0c48ba9db761da48678134', '100');
+    const events = useEvents();
+    const companies = useCategories('77b3c33a92554bcf8e8c2c86cedd6f6f', '100');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    // Add a state variable to store the selected category
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    const updateBoundingBox = (newBoundingBox: React.SetStateAction<null>) => {
+        setBoundingBox(newBoundingBox);
+    };
 
-  const extractedData = [];
+    useEffect(() => {
+        // This effect will run whenever boundingBox changes
+        console.log(boundingBox);
+    }, [boundingBox]);
 
-  const [userLocation, setUserLocation] = useState({ latitude: 0, longitude: 0 });
+    // Funktion zum Öffnen des Modals mit dem Popup-Inhalt
+    const openModalWithContent = (content) => {
+        setModalContent(content);
+        openModal(); // Öffnen Sie das Modal
+    };
+    const openModal = () => {
+        setIsModalOpen(true);
 
-  const [selectedButton, setSelectedButton] = useState(null);
+    };
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+    const getUserLocation = () => {
+        Geolocation.getCurrentPosition(
+            (position) => {
+                const { latitude, longitude } = position.coords;
+                setUserLocation({ latitude, longitude });
+            },
+            (error) => {
+                console.error('Fehler bei der Abfrage der Benutzerposition:', error);
+            },
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+        );
+    };
 
-  const searchFilterModal = useRef<HTMLIonModalElement>(null);
+    useEffect(() => {
+        getUserLocation();
+    }, []);
 
-  const searchBar = useRef<HTMLIonSearchbarElement>(null);
+    for (const item of states) {
+        extractedData.push(useEventsCluster(item.coordinates, 500));
+    }
 
-  const [modalContent, setModalContent] = useState('');
+    console.log(extractedData);
 
-  const [boundingBox, setBoundingBox] = useState(null);
-
-  const initiatives = useCategories('2cd00bebec0c48ba9db761da48678134', '100');
-
-  const companies = useCategories('77b3c33a92554bcf8e8c2c86cedd6f6f', '100');
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const updateBoundingBox = (newBoundingBox: React.SetStateAction<null>) => {
-    setBoundingBox(newBoundingBox);
-    console.log(boundingBox);
-  };
-
-
-  // Funktion zum Öffnen des Modals mit dem Popup-Inhalt
-  const openModalWithContent = (content) => {
-    setModalContent(content);
-    openModal(); // Öffnen Sie das Modal
-  };
-
-  const openModal = () => {
-    setIsModalOpen(true);
-
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  /* const mapRef = useRef(null);
-
-  useEffect(() => {
-    const map = mapRef.current; // Karteninstanz über das ref abrufen
-
-    // Event-Handler für Änderungen der Kartenansicht (Zoomen oder Verschieben)
-    map.on('moveend', () => {
-      const bounds = map.getBounds(); // Abruf der Bounding Box der aktuellen Kartenansicht
-      console.log('Bounding Box:', bounds.toBBoxString());
+    useIonViewDidEnter(() => {
+        window.dispatchEvent(new Event('resize'));
     });
 
-    // Setze die Ausgangsansicht der Karte
-    map.setView([51.505, -0.09], 13); // Hier wird ein Startpunkt und Zoom-Level gesetzt
-  }, []); */
+    const markers = [
+        {
+            geocode: [48.86, 2.3522],
+            popUp: "Hello, I am pop up 1"
+        },
+        {
+            geocode: [48.96, 2.3522],
+            popUp: "Hello, I am pop up 2"
+        },
+        {
+            geocode: [48.90, 2.3522],
+            popUp: "Hello, I am pop up 3"
+        }
+    ];
 
-  const getUserLocation = () => {
-    Geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        setUserLocation({ latitude, longitude });
-      },
-      (error) => {
-        console.error('Fehler bei der Abfrage der Benutzerposition:', error);
-      },
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
-  };
-
-  useEffect(() => {
-    getUserLocation();
-  }, []);
-
-
-  for (const item of states) {
-    extractedData.push(useEventsCluster(item.coordinates, 500));
-
-  }
-  console.log(extractedData);
-
-  const data = useEvents();
-
-  useIonViewDidEnter(() => {
-    window.dispatchEvent(new Event('resize'));
-  });
-
-  const markers = [
-    {
-      geocode: [48.86, 2.3522],
-      popUp: "Hello, I am pop up 1"
-    },
-    {
-      geocode: [48.96, 2.3522],
-      popUp: "Hello, I am pop up 2"
-    },
-    {
-      geocode: [48.90, 2.3522],
-      popUp: "Hello, I am pop up 3"
+    function OpenSearchModal() {
+        searchFilterModal.current?.present();
+        searchBar.current?.focus();
     }
-  ];
 
-
-
-  //const router = useIonRouter();
-
-  function OpenSearchModal() {
-    searchFilterModal.current?.present();
-    searchBar.current?.focus();
-  }
-
-
-
-
-  const handleButtonClick = (buttonId: string | React.SetStateAction<null>) => {
-    setSelectedButton(buttonId);
-  };
-
-  const customIcon = new Icon({
-    iconUrl: "https://cdn-icons-png.flaticon.com/128/7508/7508880.png",
-    iconSize: [20, 20] // size of the icon
-  });
-  const customIcon1 = new Icon({
-    iconUrl: "https://cdn-icons-png.flaticon.com/128/3687/3687080.png",
-    iconSize: [25, 25] // size of the icon
-  });
-
-  const customIcon2 = new Icon({
-    iconUrl: "https://cdn-icons-png.flaticon.com/128/5312/5312928.png",
-    iconSize: [25, 25] // size of the icon
-  });
-
-  const handleMarkerClick = () => {
-    openModal();
-  };
-
-  const position = [50.1109, 8.6821];
+    const customIcon = new Icon({
+        iconUrl: "https://cdn-icons-png.flaticon.com/128/7508/7508880.png",
+        iconSize: [20, 20] // size of the icon
+    });
+    const customIcon1 = new Icon({
+        iconUrl: "https://cdn-icons-png.flaticon.com/128/3687/3687080.png",
+        iconSize: [25, 25] // size of the icon
+    });
+    const customIcon2 = new Icon({
+        iconUrl: "https://cdn-icons-png.flaticon.com/128/5312/5312928.png",
+        iconSize: [25, 25] // size of the icon
+    });
+    const handleMarkerClick = () => {
+        openModal();
+    };
+    const position = [50.1109, 8.6821];
+    // Function to filter markers based on the selected category
+    const filterMarkersByCategory = (category: string | null) => {
+        // If the selected category is already the same as the clicked category, deselect it
+        if (selectedCategory === category) {
+            setSelectedCategory(null);
+        } else {
+            setSelectedCategory(category);
+        }
+    };
 
 
   return (
@@ -322,7 +224,6 @@ const Tab2: React.FC = () => {
 
             </Marker>
           ))}
-
 
 
 
