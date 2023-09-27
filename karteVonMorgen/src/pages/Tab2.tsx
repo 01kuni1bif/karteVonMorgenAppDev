@@ -7,10 +7,10 @@ import 'leaflet.awesome-markers/dist/images/markers-soft.png'; // Bildsatz für 
 import "./Tab2.css";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import MarkerClusterGroup from 'react-leaflet-cluster';
-import useEvents from '../hooks/useEvents';
-import states from '../consts/states';
-import useEventsCluster from '../hooks/useEventsCluster';
 import useCategories from '../hooks/useCategories';
+import useEvents from '../hooks/useEvents';
+import useEventsCluster from '../hooks/useEventsCluster';
+import states from '../consts/states';
 import { Icon } from 'leaflet';
 import MapBoundsDisplay from '../components/MapBoundsDisplay'; // Adjust the import path as needed
 
@@ -22,6 +22,7 @@ const Tab2: React.FC = () => {
     const [modalContent, setModalContent] = useState('');
     const [boundingBox, setBoundingBox] = useState(null);
     const initiatives = useCategories('2cd00bebec0c48ba9db761da48678134', '100');
+    const events = useEvents();
     const companies = useCategories('77b3c33a92554bcf8e8c2c86cedd6f6f', '100');
     const [isModalOpen, setIsModalOpen] = useState(false);
     // Add a state variable to store the selected category
@@ -70,8 +71,6 @@ const Tab2: React.FC = () => {
 
     console.log(extractedData);
 
-    const data = useEvents();
-
     useIonViewDidEnter(() => {
         window.dispatchEvent(new Event('resize'));
     });
@@ -114,8 +113,14 @@ const Tab2: React.FC = () => {
     const position = [50.1109, 8.6821];
     // Function to filter markers based on the selected category
     const filterMarkersByCategory = (category: string | null) => {
-        setSelectedCategory(category);
+        // If the selected category is already the same as the clicked category, deselect it
+        if (selectedCategory === category) {
+            setSelectedCategory(null);
+        } else {
+            setSelectedCategory(category);
+        }
     };
+
 
     return (
         <IonPage color="primary">
