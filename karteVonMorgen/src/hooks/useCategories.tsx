@@ -3,12 +3,6 @@ import React, { useEffect, useState } from 'react';
 
 function useCategories(category:string, limit:any ) {
   const [data, setData] = useState<any>(null);
-
-  
-  
-
- 
-  
   useEffect(() => {
 
  // Beginnen Sie mit der Basis-URL
@@ -16,7 +10,6 @@ function useCategories(category:string, limit:any ) {
 
  // Fügen Sie die bbox zur URL hinzu, wenn sie vorhanden ist
  
-
  // Fügen Sie das Limit zur URL hinzu, wenn es vorhanden ist
  if (category) {
   baseUrl += category;
@@ -24,7 +17,6 @@ function useCategories(category:string, limit:any ) {
  if(limit){
   baseUrl += '&'+limit;
  }
-
     axios
       .get(
         baseUrl

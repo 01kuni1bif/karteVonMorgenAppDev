@@ -3,9 +3,6 @@ import React, { useEffect, useState } from 'react';
 
 function useEvents() {
   const [data, setData] = useState<any>(null);
-
-
-
   useEffect(() => {
     axios
       .get(
