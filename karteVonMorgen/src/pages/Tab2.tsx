@@ -4,14 +4,14 @@ import "leaflet/dist/leaflet.css"
 import Geolocation from '@react-native-community/geolocation';
 import 'leaflet.awesome-markers/dist/leaflet.awesome-markers.css'; // Stile für die Marker
 import 'leaflet.awesome-markers/dist/images/markers-soft.png'; // Bildsatz für die Marker (siehe Hinweis unten)
-import "./Tab2.css";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { Icon } from 'leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
+import "./Tab2.css";
+import useEventsCluster from '../hooks/useEventsCluster';
 import useCategories from '../hooks/useCategories';
 import useEvents from '../hooks/useEvents';
-import useEventsCluster from '../hooks/useEventsCluster';
 import states from '../consts/states';
-import { Icon } from 'leaflet';
 import MapBoundsDisplay from '../components/MapBoundsDisplay'; // Adjust the import path as needed
 
 const Tab2: React.FC = () => {
@@ -60,8 +60,6 @@ const Tab2: React.FC = () => {
         extractedData.push(useEventsCluster(item.coordinates, 500));
     }
 
-    console.log(extractedData);
-
     useIonViewDidEnter(() => {
         window.dispatchEvent(new Event('resize'));
     });
@@ -88,15 +86,19 @@ const Tab2: React.FC = () => {
 
     const customIcon = new Icon({
         iconUrl: "https://cdn-icons-png.flaticon.com/128/7508/7508880.png",
-        iconSize: [20, 20] // size of the icon
+        iconSize: [25, 25] // size of the icon
     });
     const customIcon1 = new Icon({
         iconUrl: "https://cdn-icons-png.flaticon.com/128/3687/3687080.png",
-        iconSize: [25, 25] // size of the icon
+        iconSize: [20, 20] // size of the icon
     });
     const customIcon2 = new Icon({
         iconUrl: "https://cdn-icons-png.flaticon.com/128/5312/5312928.png",
         iconSize: [25, 25] // size of the icon
+    });
+    const customIcon3 = new Icon({
+        iconUrl: "https://upload.wikimedia.org/wikipedia/commons/f/fb/Map_pin_icon_green.svg",
+        iconSize: [15, 20] // size of the icon
     });
     const handleMarkerClick = () => {
         openModal();
@@ -167,13 +169,13 @@ const Tab2: React.FC = () => {
                         </IonContent>
                     </IonModal>
                 </div>
-                <MapContainer className="map-container" center={position} zoom={5} scrollWheelZoom={false}>
+                <MapContainer className="map-container" center={position} zoom={5} scrollWheelZoom={true}>
                     <TileLayer
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
                     <MapBoundsDisplay /> {/* Include the MapBoundsDisplay component here */}
-                    <MarkerClusterGroup chunkedLoading>
+                    {/* <MarkerClusterGroup chunkedLoading>
                         {markers.map((marker, index) => (
                             // Only render markers that match the selected category
                             (selectedCategory === null || marker.category === selectedCategory) && (
@@ -186,20 +188,33 @@ const Tab2: React.FC = () => {
                                 </Marker>
                             )
                         ))}
-                    </MarkerClusterGroup>
-                    {companies && companies.map((company: { lng: any; lat: any; title: any }, outerIndex: React.Key | null | undefined) => (
-                        <Marker key={outerIndex} position={[company.lat, company.lng]} icon={customIcon}> {/* Beachte die Verwendung von [] um die Koordinaten zu einem Array zu machen */}
-                            <Popup>
-                                {company.title}
-                            </Popup>
-                        </Marker>
-                    ))}
+                    </MarkerClusterGroup> */}
                     {initiatives && initiatives.map((initiative: { lng: any; lat: any; title: any }, outerIndex: React.Key | null | undefined) => (
-                        <Marker key={outerIndex} position={[initiative.lat, initiative.lng]} icon={customIcon2}> {/* Beachte die Verwendung von [] um die Koordinaten zu einem Array zu machen */}
-                            <Popup>
-                                {initiative.title}
-                            </Popup>
-                        </Marker>
+                        (selectedCategory === null || selectedCategory === 'initiative') && (
+                            <Marker key={outerIndex} position={[initiative.lat, initiative.lng]} icon={customIcon2}>
+                                <Popup>
+                                    {initiative.title}
+                                </Popup>
+                            </Marker>
+                        )
+                    ))}
+                    {companies && companies.map((company: { lng: any; lat: any; title: any }, outerIndex: React.Key | null | undefined) => (
+                        (selectedCategory === null || selectedCategory === 'company') && (
+                            <Marker key={outerIndex} position={[company.lat, company.lng]} icon={customIcon}>
+                                <Popup>
+                                    {company.title}
+                                </Popup>
+                            </Marker>
+                        )
+                    ))}
+                    {events && events.map((event: { lng: any; lat: any; title: any }, outerIndex: React.Key | null | undefined) => (
+                        (selectedCategory === null || selectedCategory === 'event') && (
+                            <Marker key={outerIndex} position={[event.lat, event.lng]} icon={customIcon3}>
+                                <Popup>
+                                    {event.title}
+                                </Popup>
+                            </Marker>
+                        )
                     ))}
                     {extractedData.map((itemArray, outerIndex) => (
                         itemArray && itemArray.length > 0 && (
@@ -214,11 +229,6 @@ const Tab2: React.FC = () => {
                             </MarkerClusterGroup>
                         )
                     ))}
-                    <Marker position={position} icon={customIcon1}>
-                        <Popup>
-                            A pretty CSS3 popup. <br /> Easily customizable.
-                        </Popup>
-                    </Marker>
                 </MapContainer>
             </IonContent>
         </IonPage>
