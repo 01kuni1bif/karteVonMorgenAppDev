@@ -20,21 +20,12 @@ const Tab2: React.FC = () => {
     const searchFilterModal = useRef<HTMLIonModalElement>(null);
     const searchBar = useRef<HTMLIonSearchbarElement>(null);
     const [modalContent, setModalContent] = useState('');
-    const [boundingBox, setBoundingBox] = useState(null);
     const initiatives = useCategories('2cd00bebec0c48ba9db761da48678134', '100');
     const events = useEvents();
     const companies = useCategories('77b3c33a92554bcf8e8c2c86cedd6f6f', '100');
     const [isModalOpen, setIsModalOpen] = useState(false);
     // Add a state variable to store the selected category
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-    const updateBoundingBox = (newBoundingBox: React.SetStateAction<null>) => {
-        setBoundingBox(newBoundingBox);
-    };
-
-    useEffect(() => {
-        // This effect will run whenever boundingBox changes
-        console.log(boundingBox);
-    }, [boundingBox]);
 
     // Funktion zum Öffnen des Modals mit dem Popup-Inhalt
     const openModalWithContent = (content) => {
