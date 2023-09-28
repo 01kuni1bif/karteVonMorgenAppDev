@@ -12,7 +12,7 @@ function MapBoundsDisplay() {
             const southWest = bounds.getSouthWest();
             const northEast = bounds.getNorthEast();
             const boundsText = `Bounds: (${southWest.lat.toFixed(4)}, ${southWest.lng.toFixed(4)}) - (${northEast.lat.toFixed(4)}, ${northEast.lng.toFixed(4)})`;
-
+            // die bounds werden beim neuladen von den markern benötigt 
             if (!boundsControlRef.current) {
                 const boundsControl = L.control({ position: "bottomleft" });
 

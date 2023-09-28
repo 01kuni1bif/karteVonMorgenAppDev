@@ -32,6 +32,7 @@ const Tab1: React.FC = () => {
                 item.toLowerCase().includes(searchQuery)
             );
             setFilteredTags(filteredEvents);
+            console.log(filteredTags);
         } else {
             setFilteredTags([]);
         }

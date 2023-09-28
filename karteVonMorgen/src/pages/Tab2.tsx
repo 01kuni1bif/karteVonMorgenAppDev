@@ -13,6 +13,7 @@ import useEventsCluster from '../hooks/useEventsCluster';
 import states from '../consts/states';
 import { Icon } from 'leaflet';
 import MapBoundsDisplay from '../components/MapBoundsDisplay'; // Adjust the import path as needed
+import SearchBar from '../components/searchbar';
 
 const Tab2: React.FC = () => {
     const extractedData = [];
@@ -40,15 +41,16 @@ const Tab2: React.FC = () => {
         setIsModalOpen(false);
     };
     const getUserLocation = () => {
-        Geolocation.getCurrentPosition(
+        Geolocation.watchPosition(
             (position) => {
                 const { latitude, longitude } = position.coords;
                 setUserLocation({ latitude, longitude });
+                console.log(userLocation);
             },
             (error) => {
                 console.error('Fehler bei der Abfrage der Benutzerposition:', error);
             },
-            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+            { enableHighAccuracy: true, timeout: 30000, maximumAge: 1000 }
         );
     };
 
@@ -120,7 +122,7 @@ const Tab2: React.FC = () => {
             </IonHeader>
             <IonContent>
                 <div className="searchContainer">
-                    <IonSearchbar ref={searchBar} itemID="searchBar" class="custom" debounce={1000} color="danger" placeholder='Wonach suchst du? (# für Tags)' onFocus={OpenSearchModal} />
+                    <SearchBar/>
                     <IonGrid>
                         <IonRow>
                             <IonCol size="4">

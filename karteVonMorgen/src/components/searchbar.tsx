@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { IonSearchbar } from '@ionic/react';
-
+import "./searchbar.css";
+import axios from 'axios';
 function SearchBar() {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState<{ lat: any; lng: any; title: any; }[]>([]);
@@ -43,14 +44,14 @@ function SearchBar() {
 
     return (
         <div>
-            <IonSearchbar
+            <IonSearchbar placeholder='Wonach suchst du? (# für Tags)'
                 value={searchTerm}
                 onIonChange={handleInputChange}
             ></IonSearchbar>
 
             {/* Hier können Sie Ihre Suchergebnisse anzeigen */}
             {searchResults.map((result, index) => (
-                <div key={index}>{result.title}</div>
+                <div  key={index}>{result.title}</div>
             ))}
         </div>
     );
