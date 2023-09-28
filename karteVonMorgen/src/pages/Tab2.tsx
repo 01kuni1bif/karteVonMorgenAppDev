@@ -111,139 +111,118 @@ const Tab2: React.FC = () => {
             setSelectedCategory(category);
         }
     };
-
-
-  return (
-    <IonPage color='primary'>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Karte von Morgen</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent>
-
-        <div className='searchContainer'>
-          <IonSearchbar ref={searchBar} itemID="searchBar" class="custom" debounce={1000} color="danger" placeholder='Wonach suchst du? (# für Tags)' onFocus={OpenSearchModal} />
-          <IonGrid>
-            <IonRow>
-              <IonCol size="4">
-                <IonButton
-                  expand="block"
-                  shape="round"
-                  className={`custom-button ${selectedButton === 'initiative' ? 'selected' : ''}`}
-                  onClick={() => handleButtonClick('initiative')}
-                >
-                  initiative
-                </IonButton>
-              </IonCol>
-              <IonCol size="4">
-                <IonButton
-                  expand="block"
-                  shape="round"
-                  className={`custom-button ${selectedButton === 'event' ? 'selected' : ''}`}
-                  onClick={() => handleButtonClick('event')}
-                >
-                  event
-                </IonButton>
-              </IonCol>
-              <IonCol size="4">
-                <IonButton
-                  expand="block"
-                  shape="round"
-                  className={`custom-button ${selectedButton === 'company' ? 'selected' : ''}`}
-                  onClick={() => handleButtonClick('company')}
-                >
-                  company
-                </IonButton>
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-          <IonModal ref={searchFilterModal} backdropBreakpoint={1} backdropDismiss={false} showBackdrop={false} initialBreakpoint={0.75} breakpoints={[0, 0.25, 0.5, 0.75, 1]}>
-            <IonContent className="ion-padding">
-
-            </IonContent>
-          </IonModal>
-          <IonModal isOpen={isModalOpen} onDidDismiss={closeModal}>
-            {/* Hier können Sie den Inhalt Ihres Modals platzieren */}
+    return (
+        <IonPage color="primary">
+            <IonHeader>
+                <IonToolbar>
+                    <IonTitle>Karte von Morgen</IonTitle>
+                </IonToolbar>
+            </IonHeader>
             <IonContent>
-              <div>{modalContent}</div>
-              {/* Hier den Inhalt des Modals einfügen */}
+                <div className="searchContainer">
+                    <IonSearchbar ref={searchBar} itemID="searchBar" class="custom" debounce={1000} color="danger" placeholder='Wonach suchst du? (# für Tags)' onFocus={OpenSearchModal} />
+                    <IonGrid>
+                        <IonRow>
+                            <IonCol size="4">
+                                <IonButton
+                                    expand="block"
+                                    shape="round"
+                                    className={`custom-button ${selectedCategory === 'initiative' ? 'selected' : ''}`}
+                                    onClick={() => filterMarkersByCategory('initiative')}
+                                >
+                                    initiative
+                                </IonButton>
+                            </IonCol>
+                            <IonCol size="4">
+                                <IonButton
+                                    expand="block"
+                                    shape="round"
+                                    className={`custom-button ${selectedCategory === 'event' ? 'selected' : ''}`}
+                                    onClick={() => filterMarkersByCategory('event')}
+                                >
+                                    event
+                                </IonButton>
+                            </IonCol>
+                            <IonCol size="4">
+                                <IonButton
+                                    expand="block"
+                                    shape="round"
+                                    className={`custom-button ${selectedCategory === 'company' ? 'selected' : ''}`}
+                                    onClick={() => filterMarkersByCategory('company')}
+                                >
+                                    company
+                                </IonButton>
+                            </IonCol>
+                        </IonRow>
+                    </IonGrid>
+                    <IonModal ref={searchFilterModal} backdropBreakpoint={1} backdropDismiss={false} showBackdrop={false} initialBreakpoint={0.75} breakpoints={[0, 0.25, 0.5, 0.75, 1]}>
+                        <IonContent className="ion-padding">
+                        </IonContent>
+                    </IonModal>
+                    <IonModal isOpen={isModalOpen} onDidDismiss={closeModal}>
+                        {/* Hier können Sie den Inhalt Ihres Modals platzieren */}
+                        <IonContent>
+                            <div>{modalContent}</div>
+                            {/* Hier den Inhalt des Modals einfügen */}
+                        </IonContent>
+                    </IonModal>
+                </div>
+                <MapContainer className="map-container" center={position} zoom={5} scrollWheelZoom={false}>
+                    <TileLayer
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    <MapBoundsDisplay /> {/* Include the MapBoundsDisplay component here */}
+                    <MarkerClusterGroup chunkedLoading>
+                        {markers.map((marker, index) => (
+                            // Only render markers that match the selected category
+                            (selectedCategory === null || marker.category === selectedCategory) && (
+                                <Marker key={`marker-${index}`} position={marker.geocode} eventHandlers={{
+                                    click: () => openModalWithContent(marker.popUp)
+                                }}>
+                                    <Popup>
+                                        {marker.popUp}
+                                    </Popup>
+                                </Marker>
+                            )
+                        ))}
+                    </MarkerClusterGroup>
+                    {companies && companies.map((company: { lng: any; lat: any; title: any }, outerIndex: React.Key | null | undefined) => (
+                        <Marker key={outerIndex} position={[company.lat, company.lng]} icon={customIcon}> {/* Beachte die Verwendung von [] um die Koordinaten zu einem Array zu machen */}
+                            <Popup>
+                                {company.title}
+                            </Popup>
+                        </Marker>
+                    ))}
+                    {initiatives && initiatives.map((initiative: { lng: any; lat: any; title: any }, outerIndex: React.Key | null | undefined) => (
+                        <Marker key={outerIndex} position={[initiative.lat, initiative.lng]} icon={customIcon2}> {/* Beachte die Verwendung von [] um die Koordinaten zu einem Array zu machen */}
+                            <Popup>
+                                {initiative.title}
+                            </Popup>
+                        </Marker>
+                    ))}
+                    {extractedData.map((itemArray, outerIndex) => (
+                        itemArray && itemArray.length > 0 && (
+                            <MarkerClusterGroup key={outerIndex}>
+                                {itemArray.map((item: { lat: any; lng: any; title: string; }, innerIndex: any) => (
+                                    <Marker key={`${outerIndex}-${innerIndex}`} position={[item.lat, item.lng]}>
+                                        <Popup>
+                                            {item.title}
+                                        </Popup>
+                                    </Marker>
+                                ))}
+                            </MarkerClusterGroup>
+                        )
+                    ))}
+                    <Marker position={position} icon={customIcon1}>
+                        <Popup>
+                            A pretty CSS3 popup. <br /> Easily customizable.
+                        </Popup>
+                    </Marker>
+                </MapContainer>
             </IonContent>
-          </IonModal>
-
-
-        </div>
-
-
-        <MapContainer className='map-container' center={position} zoom={5} scrollWheelZoom={false}
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-
-          <BoundsDisplay onUpdateBoundingBox={updateBoundingBox} />
-
-          <MarkerClusterGroup
-            chunkedLoading
-          >
-            {markers.map(marker => (
-              <Marker position={marker.geocode} eventHandlers={{
-                click: () => openModalWithContent(marker.popUp)
-              }}>
-                <Popup>
-                  {marker.popUp}
-                </Popup>
-              </Marker>
-            ))}
-          </MarkerClusterGroup>
-
-          {companies && companies.map((company: { lng: any; lat: any; title: any }, outerIndex: React.Key | null | undefined) => (
-            <Marker key={outerIndex} position={[company.lat, company.lng]} icon={customIcon}> {/* Beachte die Verwendung von [] um die Koordinaten zu einem Array zu machen */}
-              <Popup>
-                {company.title}
-              </Popup>
-
-            </Marker>
-          ))}
-
-          {initiatives && initiatives.map((initiative: { lng: any; lat: any; title: any }, outerIndex: React.Key | null | undefined) => (
-            <Marker key={outerIndex} position={[initiative.lat, initiative.lng]} icon={customIcon2}> {/* Beachte die Verwendung von [] um die Koordinaten zu einem Array zu machen */}
-              <Popup>
-                {initiative.title}
-              </Popup>
-
-            </Marker>
-          ))}
-
-
-
-          {extractedData.map((itemArray, outerIndex) => (
-            itemArray && itemArray.length > 0 && (
-              <MarkerClusterGroup key={outerIndex}>
-                {itemArray.map((item: { lat: any; lng: any; title: string; }, innerIndex: any) => (
-                  <Marker key={`${outerIndex}-${innerIndex}`} position={[item.lat, item.lng]}>
-                    <Popup>
-                      {item.title}
-                    </Popup>
-                  </Marker>
-                ))}
-              </MarkerClusterGroup>
-            )
-          ))}
-
-
-
-          <Marker position={position} icon={customIcon1}>
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
-          </Marker>
-        </MapContainer>
-
-      </IonContent>
-    </IonPage>
-  );
+        </IonPage>
+    );
 };
 
 export default Tab2;
