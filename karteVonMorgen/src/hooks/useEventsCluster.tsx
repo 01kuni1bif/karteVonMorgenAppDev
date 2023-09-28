@@ -40,8 +40,6 @@ function useEventsCluster(bbox, limit) {
             const result = await fetchClusterEventData(bbox, limit);
             if (result !== null) {
                 setData(result);
-                console.log('Data wird geloggt');
-                console.log(result);
             }
         }
 

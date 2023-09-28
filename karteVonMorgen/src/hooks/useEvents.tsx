@@ -35,8 +35,6 @@ function useEvents() {
             const result = await fetchEventData();
             if (result !== null) {
                 setData(result);
-                // Hier geben wir die gefilterten Daten in der Konsole aus
-                console.log(result);
             }
         }
 
