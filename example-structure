@@ -1,0 +1,26 @@
+public/
+|-- index.html               // Die HTML-Datei, die von der App verwendet wird
+|-- manifest.json            // Manifest-Datei für Progressive Web App (PWA) (optional)
+|-- assets/                  // Statische Assets, die direkt von der HTML-Datei aus erreichbar sind
+|   |-- images/
+|   |   |-- map-marker.png   // Beispielbild für Marker
+|   |-- ...
+src/
+|-- components/
+|   |-- SearchBar.tsx        // Komponente für die Suchleiste
+|   |-- MapContainer.tsx     // Hauptkomponente für die Karte
+|   |-- MapMarker.tsx        // Komponente für benutzerdefinierte Marker
+|-- consts/
+|   |-- mapConfig.ts         // Konfigurationsdatei für die Kartenbibliothek (z. B. Google Maps)
+|-- hooks/
+|   |-- useUserLocation.ts   // Hook zur Ermittlung der Benutzerposition
+|-- pages/
+|   |-- Home.tsx             // Startseite der App
+|   |-- MapPage.tsx          // Seite zur Anzeige der Karte
+|-- services/
+|   |-- mapService.ts        // Service zur Verwaltung der Karte und Marker
+|-- theme/
+|   |-- variables.scss       // Stilvariablen für die App
+|-- App.tsx                  // Hauptkomponente der App
+|-- index.tsx                // Einstiegspunkt der App
+|-- ...
