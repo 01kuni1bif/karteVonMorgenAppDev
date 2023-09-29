@@ -1,5 +1,5 @@
 import React from 'react';
-import { Marker as LeafletMarker } from 'react-leaflet';
+import { Marker } from 'react-leaflet';
 import L from 'leaflet';
 
 const customIcon = new L.Icon({
@@ -11,9 +11,9 @@ const customIcon = new L.Icon({
 
 const MapMarker: React.FC<{ position: [number, number] }> = ({ position }) => {
     return (
-        <LeafletMarker position={position} icon={customIcon}>
+        <Marker position={position} icon={customIcon}>
             {/* Hier können Inhalte für den Marker platziert werden */}
-        </LeafletMarker>
+        </Marker>
     );
 };
 

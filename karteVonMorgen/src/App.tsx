@@ -1,13 +1,10 @@
 import React from 'react';
-import MapContainer from './components/MapContainer';
-import SearchBar from './components/SearchBar';
-import { useIonViewDidEnter } from '@ionic/react';
+import MapComponent from './components/MapComponent';
 
 const App: React.FC = () => {
     return (
         <div>
-            <SearchBar />
-            <MapContainer />
+            <MapComponent />
         </div>
     );
 };
