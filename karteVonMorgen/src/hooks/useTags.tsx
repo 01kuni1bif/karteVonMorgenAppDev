@@ -1,17 +1,19 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { API_BASE_URL } from '../consts/apiConfig/apiConfig';
+import { ENDPOINTS } from '../consts/apiConfig/apiConfig';
 
 function useTags() {
     const [data, setData] = useState<any>(null);
 
-
+    const url = `${API_BASE_URL}${ENDPOINTS.TAGS.path}`;
 
 
 
     useEffect(() => {
         axios
             .get(
-                'https://dev.ofdb.io/v0/tags'
+                url
             )
             .then((response) => {
                 if (response.data) {

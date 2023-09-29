@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig/apiConfig';
 
 function useSearchbar(org_tag: string | null = null,
   categories: string | null = null,
@@ -7,24 +8,28 @@ function useSearchbar(org_tag: string | null = null,
   ids: string | null = null,
   tags: string | null = null,
   status: string | null = null,
-  limit: BigInteger | null = null) {
+  limit: number | null = null) {
   const [data, setData] = useState<any>(null);
 
-  let baseUrl = 'https://dev.ofdb.io/v0/search';
+  let baseUrl =`${API_BASE_URL}${ENDPOINTS.SEARCH.path}`;
+
+  console.log(text);
+  console.log(limit);
 
 
   const queryParams = {
     bbox: '42.27,-7.97,52.58,38.25', // Bounding Box (immer vorhanden)
-    org_tag: '', // Organisatorisches Tag (optional)
-    categories: '', // Kategorien (optional)
-    text: '', // Textsuche (optional)
-    ids: '', // IDs (optional)
-    tags: '', // Tags (optional)
-    status: '', // Status (optional)
-    limit: 20, // Limit (optional, Standardwert: 20)
+    org_tag: `${org_tag}`, // Organisatorisches Tag (optional)
+    categories: `${status}`, // Kategorien (optional)
+    text: `${text}`, // Textsuche (optional)
+    ids: `${ids}`, // IDs (optional)
+    tags: `${tags}`, // Tags (optional)
+    status: `${status}`, // Status (optional)
+    limit: limit, // Limit (optional, Standardwert: 20)
   };
   
   // Füge die optionalen Parameter hinzu, wenn sie vorhanden sind
+  baseUrl += `?bbox=${encodeURIComponent(queryParams.bbox)}`
   if (org_tag) baseUrl += `&org_tag=${encodeURIComponent(queryParams.org_tag)}`;
   if (categories) baseUrl += `&categories=${encodeURIComponent(queryParams.categories)}`;
   if (text) baseUrl += `&text=${encodeURIComponent(queryParams.text)}`;
@@ -47,19 +52,10 @@ function useSearchbar(org_tag: string | null = null,
       .then((response) => {
         if (response.data && response.data.visible && Array.isArray(response.data.visible)) {
           // Erstelle ein neues Array, um die extrahierten Daten zu speichern
-          const extractedData = [];
+          
 
-          // Durchlaufe das visible-Array und extrahiere die gewünschten Felder
-          for (const item of response.data.visible) {
-            extractedData.push({
-              lat: item.lat,
-              lng: item.lng,
-              title: item.title,
-            });
-          }
-
-          setData(extractedData);
-          console.log(extractedData);
+          setData(response.data.visible);
+          
           // Hier geben wir die gefilterten Daten in der Konsole aus
         } else {
           console.error('Ungültige Daten in der API-Antwort');

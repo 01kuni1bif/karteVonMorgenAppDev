@@ -1,17 +1,44 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig/apiConfig';
 
-function useEventsVerbose() {
+function useEventsVerbose(bbox: string | null,tag: string | null = null,
+  
+  text: string | null = null,
+  created_by: string | null ) {
+
   const [data, setData] = useState<any>(null);
 
+  let url = `${API_BASE_URL}${ENDPOINTS.EVENTS.path}`;
+
+  if(bbox == null){
+    bbox = '42.27,-7.97,52.58,38.25'
+  }
+
   
+
+  const queryParams = {
+    bbox: `${bbox}`, // Bounding Box (immer vorhanden)
+    tag: `${tag}`, // Organisatorisches Tag (optional)
+    text: `${text}`, // Textsuche (optional)
+    created_by: `${created_by}`, // IDs (optional)
+    
+  };
+
+
+  if(bbox) url += `?bbox=${encodeURIComponent(queryParams.bbox)}`;
+  if (tag) url += `&org_tag=${encodeURIComponent(queryParams.tag)}`;
+  if (text) url += `&categories=${encodeURIComponent(queryParams.text)}`;
+  if (created_by) url += `&text=${encodeURIComponent(queryParams.created_by)}`;
+ 
+
   
 
 
   useEffect(() => {
     axios
       .get(
-        'https://dev.ofdb.io/v0/events?bbox=42.27%2C-7.97%2C52.58%2C38.25&limit=3500'
+        url
       )
       .then((response) => {
         if (response.data ) {
@@ -41,7 +68,7 @@ function useEventsVerbose() {
           }
 
           setData(extractedData);
-          console.log(extractedData);
+         
           // Hier geben wir die gefilterten Daten in der Konsole aus
         } else {
           console.error('Ungültige Daten in der API-Antwort');

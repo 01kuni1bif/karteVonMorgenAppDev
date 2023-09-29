@@ -12,7 +12,7 @@ async function fetchEventData() {
         const response = await axios.get(url);
 
         if (response.data) {
-            return response.data.map(item => ({
+            return response.data.map((item: { lat: any; lng: any; title: any; }) => ({
                 lat: item.lat,
                 lng: item.lng,
                 title: item.title,

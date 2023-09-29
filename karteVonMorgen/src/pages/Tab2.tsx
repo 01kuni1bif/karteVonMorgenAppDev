@@ -9,6 +9,7 @@ import useCategories from '../hooks/useCategories';
 import useTags from '../hooks/useTags';
 import { API_BASE_URL } from '../consts/apiConfig/apiConfig';
 import { ENDPOINTS } from '../consts/apiConfig/apiConfig';
+import useEventsVerbose from '../hooks/useEventsVerbose';
    
 
 // import SearchBar from '../components/searchbar';
@@ -22,13 +23,38 @@ ENDPOINTS.SEARCH.flexibleParams.text = string;
 
 console.log(ENDPOINTS.SEARCH.flexibleParams.text);
  */
+const ids = "cc33e558cf4749bf9c2f52a4731c1e10,cc33e558cf4749bf9c2f52a4731c1e10"
+const initative = useCategories("2cd00bebec0c48ba9db761da48678134");
+const company = useCategories("77b3c33a92554bcf8e8c2c86cedd6f6f");
+const entries = useEntries(ids);
+
+const search = useSearchbar(null,null,"h",null,null,null,5);
+
+const verbose = useEventsVerbose(null,null,null,null);
 
 
 
 
+/* if(search ==! null){
+  console.log(search);
+} */
+
+/* if(entries ==! null){
+  console.log(entries);
+}
+
+  if(initative ==! null){
+    console.log(initative);
+  }
+  if(company ==! null){
+    console.log(company);
+  } */
+  
 
 
- useEffect(() => {
+
+
+ /* useEffect(() => {
   const endpointName = 'SEARCH'; // Der Name des Endpunkts, den du verwenden möchtest
   const queryParams = {
     ...ENDPOINTS[endpointName].defaultQueryParams, // Füge Standardparameter hinzu
@@ -53,7 +79,7 @@ console.log(ENDPOINTS.SEARCH.flexibleParams.text);
       console.error('Fehler bei der Anfrage:', error);
     });
 }, []); // Leeres Abhängigkeitsarray, um sicherzustellen, dass dieser Effekt nur einmal ausgeführt wird
-
+ */
 
 
 

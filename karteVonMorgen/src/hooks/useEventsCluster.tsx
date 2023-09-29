@@ -1,23 +1,23 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig/apiConfig';
 
-async function fetchClusterEventData(bbox, limit) {
+async function fetchClusterEventData(bbox: any[], limit: number) {
     try {
-        let apiUrl = 'https://dev.ofdb.io/v0/events?';
-
+        let baseUrl =`${API_BASE_URL}${ENDPOINTS.EVENTS.path}`;
         if (bbox) {
             const bboxString = bbox.join('%2C');
-            apiUrl += `bbox=${bboxString}`;
+            baseUrl += `bbox=${bboxString}`;
         }
 
         if (limit !== null) {
-            apiUrl += `${bbox ? '&' : ''}limit=${limit}`;
+            baseUrl += `${bbox ? '&' : ''}limit=${limit}`;
         }
 
-        const response = await axios.get(apiUrl);
+        const response = await axios.get(baseUrl);
 
         if (response.data) {
-            return response.data.map((item) => ({
+            return response.data.map((item: { lat: any; lng: any; title: any; }) => ({
                 lat: item.lat,
                 lng: item.lng,
                 title: item.title,
@@ -32,7 +32,7 @@ async function fetchClusterEventData(bbox, limit) {
     }
 }
 
-function useEventsCluster(bbox, limit) {
+function useEventsCluster(bbox: any [], limit: number) {
     const [data, setData] = useState(null);
 
     useEffect(() => {
