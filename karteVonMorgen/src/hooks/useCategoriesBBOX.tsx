@@ -2,7 +2,9 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 function useCategoriesBBOX(category: string | null, limit: any | null, bbox: string [] | null) {
+
     const [data, setData] = useState<any>(null);
+    
     useEffect(() => {
         //TODO: hier könnte noch ein Fehler sein ist noch nicht getestet
         // Beginnen Sie mit der Basis-URL

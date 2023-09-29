@@ -3,11 +3,17 @@ import { IonSearchbar } from '@ionic/react';
 import "./searchbar.css";
 import axios from 'axios';
 function SearchBar() {
+
+
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState<{ lat: any; lng: any; title: any; }[]>([]);
+
+
     const handleInputChange = (event) => {
+
         const newValue = event.detail.value; // Verwenden Sie event.detail.value, um den Wert zu erhalten
         console.log("ich bin drin");
+
         setSearchTerm(newValue);
 
         // Hier können Sie Ihren API-Aufruf durchführen, um Suchergebnisse zu erhalten
@@ -25,6 +31,7 @@ function SearchBar() {
                         extractedData.push({
                             lat: item.lat,
                             lng: item.lng,
+                            id: item.id,
                             title: item.title,
                         });
                     }
@@ -41,7 +48,7 @@ function SearchBar() {
                 setSearchResults([]); // Setzen Sie searchResults auf ein leeres Array, wenn ein Fehler auftritt
             });
     };
-
+    //TODO: dem gesamten Komponent eine höhren z index geben
     return (
         <div>
             <IonSearchbar placeholder='Wonach suchst du? (# für Tags)'
