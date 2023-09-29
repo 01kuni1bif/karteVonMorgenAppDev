@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
-function useEventsVerbose() {
+function useTags() {
     const [data, setData] = useState<any>(null);
 
 
@@ -35,4 +35,4 @@ function useEventsVerbose() {
     return data;
 }
 
-export default useEventsVerbose;
+export default useTags;
