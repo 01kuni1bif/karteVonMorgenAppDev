@@ -1,3 +1,4 @@
+// MapComponent.tsx
 import "../styles/map-styles.css"
 import 'leaflet/dist/leaflet.css';
 import React, { useEffect, useState } from 'react';
@@ -6,6 +7,8 @@ import { useMapBounds } from '../hooks/useMapBounds';
 import { useSearch } from '../hooks/useSearch';
 import MapMarker from '../components/MapMarker';
 import { LatLngBoundsLiteral } from "leaflet";
+import ModalComponent from "./ModalComponent";
+import { useEntries } from "../hooks/useEntries";
 
 const bounds: LatLngBoundsLiteral = [[-90, -180], [90, 180]];
 
@@ -14,6 +17,13 @@ const MyMap = () => {
   const { southWest, northEast } = useMapBounds();
   const [bbox, setBbox] = useState<string | null>(null);
   const data = useSearch(bbox);
+
+  const [selectedEntryId, setSelectedEntryId] = useState(null);
+  const selectedEntryData = useEntries(selectedEntryId);
+
+  const handleMarkerClick = (id: string) => {
+    setSelectedEntryId(id);
+  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -39,7 +49,7 @@ const MyMap = () => {
   return (
     <React.Fragment>
       {data && data.map((item, index) => (
-        <MapMarker key={index} position={[item.lat, item.lng]} title={item.title} />
+        <MapMarker key={index} position={[item.lat, item.lng]} onClick={() => handleMarkerClick(item.id)} data={selectedEntryData} />
       ))}
     </React.Fragment>
   );
