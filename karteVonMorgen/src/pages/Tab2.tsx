@@ -1,7 +1,7 @@
 import { IonCheckbox, IonContent, IonLabel, IonPage, IonSearchbar } from '@ionic/react';
 
 import axios from 'axios';
-import useSearchbar from '../hooks/useSearchbar';
+import useSearch from '../hooks/useSearch';
 import useEvents from '../hooks/useEvents';
 import useEntries from '../hooks/useEntries';
 import React, { useState, useEffect } from 'react';
@@ -9,7 +9,7 @@ import useCategories from '../hooks/useCategories';
 import useTags from '../hooks/useTags';
 import { API_BASE_URL } from '../consts/apiConfig/apiConfig';
 import { ENDPOINTS } from '../consts/apiConfig/apiConfig';
-import useEventsVerbose from '../hooks/useEventsVerbose';
+import useEvents from '../hooks/useEvents';
    
 
 // import SearchBar from '../components/searchbar';
@@ -28,9 +28,9 @@ const initative = useCategories("2cd00bebec0c48ba9db761da48678134");
 const company = useCategories("77b3c33a92554bcf8e8c2c86cedd6f6f");
 const entries = useEntries(ids);
 
-const search = useSearchbar(null,null,"h",null,null,null,5);
+const search = useSearch(null,null,"h",null,null,null,5);
 
-const verbose = useEventsVerbose(null,null,null,null);
+const verbose = useEvents(null,null,null,null);
 
 
 

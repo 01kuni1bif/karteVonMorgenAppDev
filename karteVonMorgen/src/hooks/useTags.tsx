@@ -3,38 +3,33 @@ import React, { useEffect, useState } from 'react';
 import { API_BASE_URL } from '../consts/apiConfig/apiConfig';
 import { ENDPOINTS } from '../consts/apiConfig/apiConfig';
 
-function useTags() {
-    const [data, setData] = useState<any>(null);
+export function useTags() {
+  const [data, setData] = useState<any>(null);
+  const url = `${API_BASE_URL}${ENDPOINTS.TAGS.path}`;
 
-    const url = `${API_BASE_URL}${ENDPOINTS.TAGS.path}`;
+  useEffect(() => {
+    axios
+      .get(
+        url
+      )
+      .then((response) => {
+        if (response.data) {
+          // Erstelle ein neues Array, um die extrahierten Daten zu speichern
 
+          // Durchlaufe das visible-Array und extrahiere die gewünschten Felder
 
+          setData(response.data);
+          console.log(response.data);
 
-    useEffect(() => {
-        axios
-            .get(
-                url
-            )
-            .then((response) => {
-                if (response.data) {
-                    // Erstelle ein neues Array, um die extrahierten Daten zu speichern
-                    
+        } else {
+          // Hier geben wir die gefilterten Daten in der Konsole aus
+          console.error('Ungültige Daten in der API-Antwort');
+        }
+      })
+      .catch((error) => {
+        console.error('Fehler bei der API-Anforderung:', error);
+      });
+  }, []); // Leeres Array, um sicherzustellen, dass dieser Effekt nur einmal ausgeführt wird
 
-                    // Durchlaufe das visible-Array und extrahiere die gewünschten Felder
-                   
-                    setData(response.data);
-                    console.log(response.data);
-                    // Hier geben wir die gefilterten Daten in der Konsole aus
-                } else {
-                    console.error('Ungültige Daten in der API-Antwort');
-                }
-            })
-            .catch((error) => {
-                console.error('Fehler bei der API-Anforderung:', error);
-            });
-    }, []); // Leeres Array, um sicherzustellen, dass dieser Effekt nur einmal ausgeführt wird
-
-    return data;
+  return data;
 }
-
-export default useTags;

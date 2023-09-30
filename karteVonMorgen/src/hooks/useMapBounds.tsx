@@ -1,16 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useMapEvents } from 'react-leaflet';
 
 export const useMapBounds = () => {
-    const [northEast, setNorthEast] = useState({ lat: null, lng: null });
-    const [southWest, setSouthWest] = useState({ lat: null, lng: null });
-    const map = useMapEvents({
-        moveend: () => {
-            const bounds = map.getBounds();
-            setNorthEast(bounds.getNorthEast());
-            setSouthWest(bounds.getSouthWest());
-        },
-    });
+  const [southWest, setSouthWest] = useState<{ lat: number | null, lng: number | null }>({ lat: null, lng: null });
+  const [northEast, setNorthEast] = useState<{ lat: number | null, lng: number | null }>({ lat: null, lng: null });
+  const map = useMapEvents({
+    moveend: () => {
+      const bounds = map.getBounds();
+      setSouthWest(bounds.getSouthWest());
+      setNorthEast(bounds.getNorthEast());
+    },
+  });
 
-    return { northEast, southWest };
+  return { southWest, northEast };
 };
