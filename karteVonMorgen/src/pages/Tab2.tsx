@@ -23,15 +23,15 @@ ENDPOINTS.SEARCH.flexibleParams.text = string;
 
 console.log(ENDPOINTS.SEARCH.flexibleParams.text);
  */
-const ids = "cc33e558cf4749bf9c2f52a4731c1e10,cc33e558cf4749bf9c2f52a4731c1e10"
-const initative = useCategories("2cd00bebec0c48ba9db761da48678134");
-const company = useCategories("77b3c33a92554bcf8e8c2c86cedd6f6f");
-const entries = useEntries(ids);
+/* const ids = "cc33e558cf4749bf9c2f52a4731c1e10,cc33e558cf4749bf9c2f52a4731c1e10"
+const initative = useCategories("2cd00bebec0c48ba9db761da48678134",null,null,null,null); */
+const company = useCategories("77b3c33a92554bcf8e8c2c86cedd6f6f","47.2832,7.5047,49.7874,9.6351",null,null,null,); 
+/* const entries = useEntries(ids);
 
 const search = useSearchbar(null,null,"h",null,null,null,5);
 
 const verbose = useEventsVerbose(null,null,null,null);
-
+ */
 
 
 
@@ -45,10 +45,11 @@ const verbose = useEventsVerbose(null,null,null,null);
 
   if(initative ==! null){
     console.log(initative);
-  }
+  }*/
   if(company ==! null){
-    console.log(company);
-  } */
+    console.log("company");
+    console.log("asfa"+company);
+  }  
   
 
 
