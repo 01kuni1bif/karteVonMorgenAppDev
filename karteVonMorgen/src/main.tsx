@@ -1,3 +1,4 @@
+// main.tsx
 import React from 'react';
 import App from './App';
 import { IonReactRouter } from '@ionic/react-router';
@@ -7,16 +8,20 @@ import { createRoot } from 'react-dom/client';
 
 const rootElement = document.getElementById('root');
 
-// Use createRoot from "react-dom/client" to render your app
-const root = createRoot(rootElement);
+if (rootElement) {
+  const root = createRoot(rootElement);
 
-root.render(
+  root.render(
     <React.StrictMode>
-        <IonReactRouter>
-            <IonRouterOutlet>
-                <Route path="/" component={App} exact />
-                {/* Weitere Routen können hier hinzugefügt werden */}
-            </IonRouterOutlet>
-        </IonReactRouter>
+      <IonReactRouter>
+        <IonRouterOutlet>
+          <Route path="/" component={App} exact />
+          {/* Weitere Routen können hier hinzugefügt werden */}
+        </IonRouterOutlet>
+      </IonReactRouter>
     </React.StrictMode>
-);
+  );
+} else {
+  console.error("Could not find root element");
+}
+

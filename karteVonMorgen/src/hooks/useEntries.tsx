@@ -1,40 +1,37 @@
+// useEntries.tsx
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { API_BASE_URL } from '../consts/apiConfig/apiConfig';
 import { ENDPOINTS } from '../consts/apiConfig/apiConfig';
 
-async function fetchData(entryIds: any) {
-  try {
-    if (!entryIds) {
-      return null; // If category is not provided, return early or handle accordingly.
+function fetchData(id: string) {
+  return new Promise((resolve, reject) => {
+    if (!id) {
+      reject('ID not provided'); // If ID is not provided, reject the promise
     }
-    const formattedEntryIds = entryIds.replace(/,/g, '%2C');
+    const formattedEntryIds = id.replace(/,/g, '%2C');
     const url = `${API_BASE_URL}${ENDPOINTS.ENTRIES.path}/${formattedEntryIds}`;
-    const response = await axios.get(url);
-    // Handle die Antwort hier
-    console.log(response.data);
-    // Handle die Antwort hier
-    console.log(response.data);
-
-  } catch (error) {
-    // Handle Fehler hier
-    console.error('Fehler bei der Anfrage:', error);
-  }
+    axios.get(url)
+      .then(response => {
+        resolve(response.data); // Resolve the promise with the data
+      })
+      .catch(error => {
+        console.error('Fehler bei der Anfrage:', error);
+        reject(error); // Reject the promise with the error
+      });
+  });
 }
 
-export function useEntries(entryIds: string) {
+export function useEntries(id: string) {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    async function fetchDataAndSetData() {
-      const result = await fetchData(entryIds);
-      if (result !== undefined && result !== null) {
-        setData(result);
-      }
+    if (id && id !== "") {
+      fetchData(id)
+        .then((data: any) => setData(data)) // Set state with response.data
+        .catch(error => console.error('Error fetching data:', error)); // Log any errors
     }
+  }, [id]);
 
-    fetchDataAndSetData();
-  }, [entryIds]);
-
-  return data;
+  return data; // This will now be response.data or null if data is not loaded yet
 }

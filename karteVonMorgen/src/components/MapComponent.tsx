@@ -6,8 +6,7 @@ import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import { useMapBounds } from '../hooks/useMapBounds';
 import { useSearch } from '../hooks/useSearch';
 import MapMarker from '../components/MapMarker';
-import { LatLngBoundsLiteral } from "leaflet";
-import ModalComponent from "./ModalComponent";
+import { LatLngBoundsLiteral, LatLngExpression } from "leaflet";
 import { useEntries } from "../hooks/useEntries";
 
 const bounds: LatLngBoundsLiteral = [[-90, -180], [90, 180]];
@@ -18,7 +17,7 @@ const MyMap = () => {
   const [bbox, setBbox] = useState<string | null>(null);
   const data = useSearch(bbox);
 
-  const [selectedEntryId, setSelectedEntryId] = useState(null);
+  const [selectedEntryId, setSelectedEntryId] = useState("");
   const selectedEntryData = useEntries(selectedEntryId);
 
   const handleMarkerClick = (id: string) => {
@@ -48,7 +47,7 @@ const MyMap = () => {
 
   return (
     <React.Fragment>
-      {data && data.map((item, index) => (
+      {data && data.map((item: { lat: number; lng: number; id: string; }, index: React.Key | null | undefined) => (
         <MapMarker key={index} position={[item.lat, item.lng]} onClick={() => handleMarkerClick(item.id)} data={selectedEntryData} />
       ))}
     </React.Fragment>
@@ -56,7 +55,7 @@ const MyMap = () => {
 };
 
 const MapComponent: React.FC = () => {
-  const center = [51.1657, 10.4515]; // Center of Germany
+  const center: LatLngExpression = [51.1657, 10.4515]; // Center of Germany
 
   return (
     <div>
