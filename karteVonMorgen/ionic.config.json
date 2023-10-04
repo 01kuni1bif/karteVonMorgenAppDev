@@ -1,0 +1,7 @@
+{
+  "name": "blankIonicApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}

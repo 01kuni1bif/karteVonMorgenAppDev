@@ -1,0 +1,10 @@
+/* map-styles.css */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* sizing of map container */
+.leaflet-container {
+    height: 100vh;
+}
