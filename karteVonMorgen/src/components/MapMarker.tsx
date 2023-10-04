@@ -1,6 +1,6 @@
 // MapMarker.tsx
 import React, { useState } from 'react';
-import { Marker } from 'react-leaflet';
+import { Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import ModalComponent from './ModalComponent'; // import ModalComponent
 
@@ -24,7 +24,19 @@ const MapMarker: React.FC<MapMarkerProps> = ({ position, data, onClick }) => {
 
   return (
     <React.Fragment>
-      <Marker position={position} icon={customIcon} eventHandlers={{ click: handleClick }} />
+      <Marker position={position} icon={customIcon} eventHandlers={{ click: handleClick }} >
+      {data && ( // Überprüfen, ob data vorhanden ist
+        <Popup>
+          {/* Hier den Inhalt des Pop-ups anzeigen */}
+          {Object.entries(data).map(([key, value]) => (
+            <div key={key}>
+              <h2>{key}</h2>
+              <p>{typeof value === 'object' ? JSON.stringify(value) : String(value)}</p>
+            </div>
+          ))}
+        </Popup>
+      )}
+      </Marker>
     </React.Fragment>
   );
 };

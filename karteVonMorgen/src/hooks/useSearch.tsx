@@ -1,60 +1,62 @@
+// useSearch.tsx
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig/apiConfig';
 
+function fetchData(bbox: string, org_tag: string | null, categories: string | null, text: string | null, ids: string | null, tags: string | null, status: string | null, limit: number | null) {
+  return new Promise((resolve, reject) => {
+    const queryParams = {
+      bbox: bbox,
+      org_tag: org_tag,
+      categories: categories,
+      text: text,
+      ids: ids,
+      tags: tags,
+      status: status,
+      limit: limit,
+    };
+
+    const query = Object.entries(queryParams)
+      .filter(([key, value]) => value !== null)
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .join('&');
+
+    const url = `${API_BASE_URL}${ENDPOINTS.SEARCH.path}?${query}`;
+
+    axios.get(url)
+      .then(response => {
+        if (response.data && response.data.visible && Array.isArray(response.data.visible)) {
+          resolve(response.data.visible); // Resolve the promise with the data
+        } else {
+          reject('Invalid data in API response');
+        }
+      })
+      .catch(error => {
+        console.error('Error in API request:', error);
+        reject(error); // Reject the promise with the error
+      });
+  });
+}
+
 export function useSearch(
-  bbox: string | null = null, // Bounding Box (always present)
+  bbox: string | null = null,
   org_tag: string | null = null,
   categories: string | null = null,
   text: string | null = null,
   ids: string | null = null,
   tags: string | null = null,
   status: string | null = null,
-  limit: number | null = null) {
-
+  limit: number | null = null
+) {
   const [data, setData] = useState<any>(null);
-  let baseUrl = `${API_BASE_URL}${ENDPOINTS.SEARCH.path}`;
-
-  if (!bbox) {
-    bbox = '42.27,-7.97,52.58,38.25';
-  }
-
-  const queryParams = {
-    bbox: bbox,
-    org_tag: `${org_tag}`, // Organizational Tag (optional)
-    categories: `${status}`, // Categories (optional)
-    text: `${text}`, // Text search (optional)
-    ids: `${ids}`, // IDs (optional)
-    tags: `${tags}`, // Tags (optional)
-    status: `${status}`, // Status (optional)
-    limit: limit, // Limit (optional, default value: 20)
-  };
-
-  // Add the optional parameters if they are present
-  baseUrl += `?bbox=${encodeURIComponent(queryParams.bbox)}`
-  if (org_tag) baseUrl += `&org_tag=${encodeURIComponent(queryParams.org_tag)}`;
-  if (categories) baseUrl += `&categories=${encodeURIComponent(queryParams.categories)}`;
-  if (text) baseUrl += `&text=${encodeURIComponent(queryParams.text)}`;
-  if (ids) baseUrl += `&ids=${encodeURIComponent(queryParams.ids)}`;
-  if (tags) baseUrl += `&tags=${encodeURIComponent(queryParams.tags)}`;
-  if (status) baseUrl += `&status=${encodeURIComponent(queryParams.status)}`;
-  if (limit) baseUrl += `&limit=${queryParams.limit}`;
 
   useEffect(() => {
-    axios
-      .get(baseUrl)
-      .then((response) => {
-        if (response.data && response.data.visible && Array.isArray(response.data.visible)) {
-          setData(response.data.visible);
-        } else {
-          console.error('Invalid data in API response');
-        }
-      })
-      .catch((error) => {
-        console.error('Error in API request:', error);
-      });
-  }, [bbox]); // Include bbox in the dependency array
+    if (bbox) {
+      fetchData(bbox, org_tag, categories, text, ids, tags, status, limit)
+        .then((result: any) => setData(result)) // Set state with response data
+        .catch(error => console.error('Error fetching data:', error)); // Log any errors
+    }
+  }, [bbox, org_tag, categories, text, ids, tags, status, limit]);
 
-
-  return data;
+  return data; // This will now be response.data or null if data is not loaded yet
 }
