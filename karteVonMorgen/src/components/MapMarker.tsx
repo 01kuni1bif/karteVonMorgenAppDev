@@ -1,8 +1,7 @@
-// MapMarker.tsx
 import React, { useState } from 'react';
 import { Marker } from 'react-leaflet';
 import L from 'leaflet';
-import ModalComponent from './ModalComponent'; // import ModalComponent
+import { IonModal, IonContent, IonList, IonItem, IonLabel } from '@ionic/react';
 
 const customIcon = new L.Icon({
   iconUrl: '/assets/images/icons8-marker-48.png',
@@ -13,18 +12,39 @@ const customIcon = new L.Icon({
 interface MapMarkerProps {
   position: [number, number];
   data: any;
-  onClick: (data: any) => void; // Add this line
 }
 
-const MapMarker: React.FC<MapMarkerProps> = ({ position, data, onClick }) => {
-  const handleClick = () => {
-    console.log('Marker clicked');
-    onClick(data); // Pass the data to the onClick function
+const MapMarker: React.FC<MapMarkerProps> = ({ position, data }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState<any>(null);
+
+  const openModalWithContent = (content: any) => {
+    setModalContent(content);
+    setIsModalOpen(true); // Modal öffnen
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false); // Modal schließen
   };
 
   return (
     <React.Fragment>
-      <Marker position={position} icon={customIcon} eventHandlers={{ click: handleClick }} />
+      <Marker position={position} icon={customIcon} eventHandlers={{ click: () => openModalWithContent(data) }} />
+
+      <IonModal isOpen={isModalOpen} onDidDismiss={closeModal}>
+        <IonContent className="ion-padding">
+          <IonList>
+            {modalContent && Object.entries(modalContent).map(([key, value]) => (
+              <IonItem key={key}>
+                <IonLabel>
+                  <h2>{key}</h2>
+                  <p>{typeof value === 'object' ? JSON.stringify(value) : String(value)}</p>
+                </IonLabel>
+              </IonItem>
+            ))}
+          </IonList>
+        </IonContent>
+      </IonModal>
     </React.Fragment>
   );
 };
