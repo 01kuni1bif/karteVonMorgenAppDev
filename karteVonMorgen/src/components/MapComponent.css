@@ -1,7 +1,32 @@
 /* MapComponent.css */
 .map-container {
-    position: absolute;
+    position: fixed;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     z-index: 0;
+}
+
+#map {
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#map strong {
+    font-size: 20px;
+    line-height: 26px;
+}
+
+#map p {
+    font-size: 16px;
+    line-height: 22px;
+    color: #8c8c8c;
+    margin: 0;
+}
+
+#map a {
+    text-decoration: none;
 }

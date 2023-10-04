@@ -1,9 +1,8 @@
 // MapComponent.tsx
-import "../styles/map-styles.css"
 import "./MapComponent.css"
 import 'leaflet/dist/leaflet.css';
 import React, { useEffect, useState } from 'react';
-import { IonButton, IonContent, IonHeader, IonModal, IonPage, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react'; // Import IonPage
+import { IonButton, IonContent, IonModal, useIonViewDidEnter } from '@ionic/react'; // Import IonPage
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import { useMapBounds } from '../hooks/useMapBounds';
 import { useSearch } from '../hooks/useSearch';
@@ -78,33 +77,23 @@ const MapComponent: React.FC = () => {
   const center: LatLngExpression = [51.1657, 10.4515]; // Center of Germany
 
   return (
-    <IonPage>
-      <div>
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle>Karte von Morgen</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent fullscreen>
-        <IonButton onClick={(e) => setIsModalOpen(true)}>Click to Open Modal</IonButton>
-          <MapContainer center={center} zoom={6} maxBounds={bounds} className="map-container">
-            <TileLayer
-              attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <MyMap />
-           
-          </MapContainer>
-                 <IonModal isOpen={isModalOpen} onDidDismiss={closeModal}>
-
-          <IonContent>
-            <div>{modalContent}</div>
-
-          </IonContent>
-        </IonModal> 
+    <div id="map">
+      <IonButton onClick={(e) => setIsModalOpen(true)}>Click to Open Modal</IonButton>
+      <IonContent fullscreen>
+        <MapContainer center={center} zoom={6} maxBounds={bounds} className="map-container">
+          <TileLayer
+            attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <MyMap />
+        </MapContainer>
+      </IonContent>
+      <IonModal isOpen={isModalOpen} onDidDismiss={closeModal}>
+        <IonContent>
+          <div>{modalContent}</div>
         </IonContent>
-      </div >
-    </IonPage>
+      </IonModal>
+    </div >
   );
 };
 
