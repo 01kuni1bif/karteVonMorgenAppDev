@@ -13,12 +13,7 @@ if (rootElement) {
 
   root.render(
     <React.StrictMode>
-      <IonReactRouter>
-        <IonRouterOutlet>
-          <Route path="/" component={App} exact />
-          {/* Weitere Routen können hier hinzugefügt werden */}
-        </IonRouterOutlet>
-      </IonReactRouter>
+      <App />
     </React.StrictMode>
   );
 } else {

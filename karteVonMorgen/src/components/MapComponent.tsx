@@ -1,7 +1,9 @@
 // MapComponent.tsx
 import "../styles/map-styles.css"
+import "./MapComponent.css"
 import 'leaflet/dist/leaflet.css';
 import React, { useEffect, useState } from 'react';
+import { IonButton, IonContent, IonHeader, IonModal, IonPage, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react'; // Import IonPage
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import { useMapBounds } from '../hooks/useMapBounds';
 import { useSearch } from '../hooks/useSearch';
@@ -12,6 +14,10 @@ import { useEntries } from "../hooks/useEntries";
 const bounds: LatLngBoundsLiteral = [[-90, -180], [90, 180]];
 
 const MyMap = () => {
+
+  useIonViewDidEnter(() => {
+    window.dispatchEvent(new Event('resize'));
+  });
   const map = useMap();
   const { southWest, northEast } = useMapBounds();
   const [bbox, setBbox] = useState<string | null>(null);
@@ -55,18 +61,50 @@ const MyMap = () => {
 };
 
 const MapComponent: React.FC = () => {
+
+
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState('');
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   const center: LatLngExpression = [51.1657, 10.4515]; // Center of Germany
 
   return (
-    <div>
-      <MapContainer center={center} zoom={6} maxBounds={bounds}>
-        <TileLayer
-          attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <MyMap />
-      </MapContainer>
-    </div>
+    <IonPage>
+      <div>
+        <IonHeader>
+          <IonToolbar>
+            <IonTitle>Karte von Morgen</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent fullscreen>
+        <IonButton onClick={(e) => setIsModalOpen(true)}>Click to Open Modal</IonButton>
+          <MapContainer center={center} zoom={6} maxBounds={bounds} className="map-container">
+            <TileLayer
+              attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <MyMap />
+           
+          </MapContainer>
+                 <IonModal isOpen={isModalOpen} onDidDismiss={closeModal}>
+
+          <IonContent>
+            <div>{modalContent}</div>
+
+          </IonContent>
+        </IonModal> 
+        </IonContent>
+      </div >
+    </IonPage>
   );
 };
 
