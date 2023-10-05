@@ -10,7 +10,7 @@ const Home: React.FC = () => {
           <IonTitle>Karte von Morgen</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent >
         <MapComponent />
       </IonContent>
     </IonPage>

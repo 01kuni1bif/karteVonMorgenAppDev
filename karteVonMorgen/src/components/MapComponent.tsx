@@ -78,7 +78,6 @@ const MapComponent: React.FC = () => {
 
   return (
     <div id="map">
-      <IonButton onClick={(e) => setIsModalOpen(true)}>Click to Open Modal</IonButton>
       <IonContent fullscreen>
         <MapContainer center={center} zoom={6} maxBounds={bounds} className="map-container">
           <TileLayer
