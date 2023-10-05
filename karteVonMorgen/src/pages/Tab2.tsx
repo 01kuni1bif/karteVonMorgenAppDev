@@ -177,7 +177,7 @@ const Tab2: React.FC = () => {
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
                     <MapBoundsDisplay /> {/* Include the MapBoundsDisplay component here */}
-                    {/* <MarkerClusterGroup chunkedLoading>
+                     <MarkerClusterGroup chunkedLoading>
                         {markers.map((marker, index) => (
                             // Only render markers that match the selected category
                             (selectedCategory === null || marker.category === selectedCategory) && (
@@ -190,7 +190,7 @@ const Tab2: React.FC = () => {
                                 </Marker>
                             )
                         ))}
-                    </MarkerClusterGroup> */}
+                    </MarkerClusterGroup> 
                     {initiatives && initiatives.map((initiative: { lng: any; lat: any; title: any }, outerIndex: React.Key | null | undefined) => (
                         (selectedCategory === null || selectedCategory === 'initiative') && (
                             <Marker key={outerIndex} position={[initiative.lat, initiative.lng]} icon={customIcon2}>
