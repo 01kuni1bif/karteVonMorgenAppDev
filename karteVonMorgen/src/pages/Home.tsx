@@ -1,7 +1,7 @@
 import { IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import MapComponent from '../components/MapComponent';
 import './Home.css';
-import SearchComponent from '../components/SearchComponent';
+import ButtonsComponent from '../components/ButtonsComponent';
 
 const Home: React.FC = () => {
   return (
@@ -14,7 +14,7 @@ const Home: React.FC = () => {
 
       <IonContent>
         {/* SearchComponent */}
-        <SearchComponent/>
+        <ButtonsComponent/>
         <MapComponent />
       </IonContent>
     </IonPage>

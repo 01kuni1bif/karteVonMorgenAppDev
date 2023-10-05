@@ -1,12 +1,13 @@
 import { IonButton, IonCol, IonContent, IonGrid, IonRow } from '@ionic/react';
+import "./ButtonsComponent.css"
 import React from 'react';
 
-const SearchComponent: React.FC = () => {
+const ButtonsComponent: React.FC = () => {
 
 
     return (
 
-        <div className='search-container'>
+        <div className='buttons-container'>
             <IonGrid>
                 <IonRow>
                     <IonCol size="4">
@@ -37,4 +38,4 @@ const SearchComponent: React.FC = () => {
     );
 };
 
-export default SearchComponent;
+export default ButtonsComponent;
