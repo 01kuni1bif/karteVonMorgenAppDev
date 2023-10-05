@@ -15,10 +15,13 @@ interface ModalProps {
 }
 
 const ModalComponent: React.FC<ModalProps> = ({ showModal, setShowModal, content }) => {
+  const handleCloseModal = () => {
+    setShowModal(false); // Schließt das Modal, wenn der Benutzer es schließt
+  };
 
   return (
-    <IonContent className="ion-padding">
-      <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)} initialBreakpoint={0.75} breakpoints={[0, 0.75]}>
+    
+      <IonModal isOpen={showModal} onDidDismiss={handleCloseModal} initialBreakpoint={0.75} breakpoints={[0, 0.75]}>
         <IonContent className="ion-padding">
           <IonList>
             {content && Object.entries(content).map(([key, value]) => (
@@ -32,7 +35,7 @@ const ModalComponent: React.FC<ModalProps> = ({ showModal, setShowModal, content
           </IonList>
         </IonContent>
       </IonModal>
-    </IonContent>
+    
 
   );
 };

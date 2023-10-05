@@ -10,6 +10,7 @@ import { useSearch } from '../hooks/useSearch';
 import MapMarker from '../components/MapMarker';
 import { LatLngBoundsLiteral, LatLngExpression } from "leaflet";
 import { useEntries } from "../hooks/useEntries";
+import ModalComponent from "./ModalComponent";
 
 const bounds: LatLngBoundsLiteral = [[-90, -180], [90, 180]];
 
@@ -64,44 +65,34 @@ const MapComponent: React.FC = () => {
 
 
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState('');
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  
 
   const center: LatLngExpression = [51.1657, 10.4515]; // Center of Germany
 
   return (
     <IonPage>
       <div>
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle>Karte von Morgen</IonTitle>
-          </IonToolbar>
-        </IonHeader>
+        
         <IonContent fullscreen>
-        <IonButton onClick={(e) => setIsModalOpen(true)}>Click to Open Modal</IonButton>
+          
           <MapContainer center={center} zoom={6} maxBounds={bounds} className="map-container">
             <TileLayer
               attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
+
             <MyMap />
-           
+
           </MapContainer>
-                 <IonModal isOpen={isModalOpen} onDidDismiss={closeModal}>
 
-          <IonContent>
-            <div>{modalContent}</div>
+         
+          {/* <IonModal isOpen={isModalOpen} onDidDismiss={closeModal}>
 
-          </IonContent>
-        </IonModal> 
+            <IonContent>
+              <div>{modalContent}</div>
+
+            </IonContent>
+          </IonModal> */}
         </IonContent>
       </div >
     </IonPage>

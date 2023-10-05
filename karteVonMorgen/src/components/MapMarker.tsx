@@ -17,8 +17,14 @@ interface MapMarkerProps {
 }
 
 const MapMarker: React.FC<MapMarkerProps> = ({ position, data, onClick }) => {
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState('');
+
+  
   const handleClick = () => {
     console.log('Marker clicked');
+    setIsModalOpen(true);
     onClick(data); // Pass the data to the onClick function
   };
 
@@ -26,15 +32,7 @@ const MapMarker: React.FC<MapMarkerProps> = ({ position, data, onClick }) => {
     <React.Fragment>
       <Marker position={position} icon={customIcon} eventHandlers={{ click: handleClick }} >
       {data && ( // Überprüfen, ob data vorhanden ist
-        <Popup>
-          {/* Hier den Inhalt des Pop-ups anzeigen */}
-          {Object.entries(data).map(([key, value]) => (
-            <div key={key}>
-              <h2>{key}</h2>
-              <p>{typeof value === 'object' ? JSON.stringify(value) : String(value)}</p>
-            </div>
-          ))}
-        </Popup>
+        <ModalComponent showModal={isModalOpen} setShowModal={setIsModalOpen} content={data}/>
       )}
       </Marker>
     </React.Fragment>
