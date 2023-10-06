@@ -1,3 +1,4 @@
+// useTags.tsx
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { API_BASE_URL } from '../consts/apiConfig/apiConfig';

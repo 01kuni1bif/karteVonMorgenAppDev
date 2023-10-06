@@ -1,6 +1,6 @@
 // Home.tsx
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import SearchComponent from '../components/SearchComponent';
+import Categories from '../components/Categories';
 import MapComponent from '../components/MapComponent';
 import './Home.css';
 
@@ -13,7 +13,7 @@ const Home: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <SearchComponent />
+        <Categories />
         <MapComponent />
       </IonContent>
     </IonPage>

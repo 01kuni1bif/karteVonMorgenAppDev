@@ -1,32 +1,27 @@
-// SearchComponent.tsx
+// Categories.tsx
 import { IonButton, IonCol, IonGrid, IonRow } from '@ionic/react';
 import React from 'react';
+import "./Categories.css"
 
-const SearchComponent: React.FC = () => {
+const Categories: React.FC = () => {
 
   return (
-    <div className='search-container'>
+    <div className='categories'>
       <IonGrid>
         <IonRow>
           <IonCol size="4">
-            <IonButton
-              expand="block"
-            >
-              initiative
+            <IonButton expand="block">
+              initiatives
             </IonButton>
           </IonCol>
           <IonCol size="4">
-            <IonButton
-              expand="block"
-            >
-              event
+            <IonButton expand="block">
+              events
             </IonButton>
           </IonCol>
           <IonCol size="4">
-            <IonButton
-              expand="block"
-            >
-              company
+            <IonButton expand="block">
+              companies
             </IonButton>
           </IonCol>
         </IonRow>
@@ -35,4 +30,4 @@ const SearchComponent: React.FC = () => {
   );
 };
 
-export default SearchComponent;
+export default Categories;

@@ -1,3 +1,4 @@
+// useEventsCluster.tsx
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig/apiConfig';

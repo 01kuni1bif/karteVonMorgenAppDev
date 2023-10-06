@@ -18,7 +18,7 @@ function fetchData(bbox: string, org_tag: string | null, categories: string | nu
 
     const query = Object.entries(queryParams)
       .filter(([key, value]) => value !== null)
-      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .map(([key, value]) => `${key}=${encodeURIComponent(value as string | number)}`)
       .join('&');
 
     const url = `${API_BASE_URL}${ENDPOINTS.SEARCH.path}?${query}`;
