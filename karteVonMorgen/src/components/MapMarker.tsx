@@ -1,8 +1,7 @@
 // MapMarker.tsx
-import React, { useState } from 'react';
+import React from 'react';
 import { Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
-import ModalComponent from './ModalComponent'; // import ModalComponent
 
 const customIcon = new L.Icon({
   iconUrl: '/assets/images/icons8-marker-48.png',
@@ -25,17 +24,17 @@ const MapMarker: React.FC<MapMarkerProps> = ({ position, data, onClick }) => {
   return (
     <React.Fragment>
       <Marker position={position} icon={customIcon} eventHandlers={{ click: handleClick }} >
-      {data && ( // Überprüfen, ob data vorhanden ist
-        <Popup>
-          {/* Hier den Inhalt des Pop-ups anzeigen */}
-          {Object.entries(data).map(([key, value]) => (
-            <div key={key}>
-              <h2>{key}</h2>
-              <p>{typeof value === 'object' ? JSON.stringify(value) : String(value)}</p>
-            </div>
-          ))}
-        </Popup>
-      )}
+        {data && ( // Überprüfen, ob data vorhanden ist
+          <Popup>
+            {/* Hier den Inhalt des Pop-ups anzeigen */}
+            {Object.entries(data).map(([key, value]) => (
+              <div key={key}>
+                <h2>{key}</h2>
+                <p>{typeof value === 'object' ? JSON.stringify(value) : String(value)}</p>
+              </div>
+            ))}
+          </Popup>
+        )}
       </Marker>
     </React.Fragment>
   );

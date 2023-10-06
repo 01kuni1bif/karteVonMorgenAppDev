@@ -1,19 +1,18 @@
 // MapComponent.tsx
-import "./MapComponent.css"
-import 'leaflet/dist/leaflet.css';
 import React, { useEffect, useState } from 'react';
-import { IonButton, IonContent, IonModal, useIonViewDidEnter } from '@ionic/react'; // Import IonPage
+import { IonContent, IonModal, useIonViewDidEnter } from '@ionic/react'; // Import IonPage
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
+import { LatLngBoundsLiteral, LatLngExpression } from "leaflet";
 import { useMapBounds } from '../hooks/useMapBounds';
 import { useSearch } from '../hooks/useSearch';
-import MapMarker from '../components/MapMarker';
-import { LatLngBoundsLiteral, LatLngExpression } from "leaflet";
 import { useEntries } from "../hooks/useEntries";
+import MapMarker from '../components/MapMarker';
+import 'leaflet/dist/leaflet.css';
+import "./MapComponent.css"
 
 const bounds: LatLngBoundsLiteral = [[-90, -180], [90, 180]];
 
 const MyMap = () => {
-
   useIonViewDidEnter(() => {
     window.dispatchEvent(new Event('resize'));
   });
@@ -21,7 +20,6 @@ const MyMap = () => {
   const { southWest, northEast } = useMapBounds();
   const [bbox, setBbox] = useState<string | null>(null);
   const data = useSearch(bbox);
-
   const [selectedEntryId, setSelectedEntryId] = useState("");
   const selectedEntryData = useEntries(selectedEntryId);
 
@@ -60,20 +58,14 @@ const MyMap = () => {
 };
 
 const MapComponent: React.FC = () => {
-
-
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState('');
-
   const openModal = () => {
     setIsModalOpen(true);
   };
-
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
   const center: LatLngExpression = [51.1657, 10.4515]; // Center of Germany
 
   return (
