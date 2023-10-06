@@ -3,9 +3,9 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig/apiConfig';
 
-function fetchData(bbox: string, tag: string | null, text: string | null, created_by: string | null) {
+async function fetchData(bbox: string, tag: string | null, text: string | null, created_by: string | null) {
   if (!bbox) {
-    return Promise.reject('Bounding Box not provided');
+    throw new Error('Bounding Box not provided');
   }
 
   let url = `${API_BASE_URL}${ENDPOINTS.EVENTS.path}`;
@@ -22,36 +22,31 @@ function fetchData(bbox: string, tag: string | null, text: string | null, create
   if (text) url += `&categories=${encodeURIComponent(queryParams.text as string)}`;
   if (created_by) url += `&text=${encodeURIComponent(queryParams.created_by as string)}`;
 
-  return axios.get(url)
-    .then(response => {
-      if (response.data && Array.isArray(response.data)) {
-        // Create a new array to store the extracted data
-        const extractedData = response.data.map(item => ({
-          lat: item.lat || 0,
-          lng: item.lng || 0,
-          title: item.title || '',
-          id: item.id || '',
-          description: item.description || '',
-          street: item.street || '',
-          zip: item.zip || '',
-          city: item.city || '',
-          country: item.country || '',
-          email: item.email || '',
-          telephone: item.telephone || '',
-          homepage: item.homepage || '',
-          tags: item.tags || [],
-          organizer: item.organizer || '',
-        }));
+  const response = await axios.get(url);
 
-        return extractedData;
-      } else {
-        throw new Error('Invalid data in API response');
-      }
-    })
-    .catch(error => {
-      console.error('Error in API request:', error);
-      throw error;
-    });
+  if (response.data && Array.isArray(response.data)) {
+    // Create a new array to store the extracted data
+    const extractedData = response.data.map(item => ({
+      lat: item.lat || 0,
+      lng: item.lng || 0,
+      title: item.title || '',
+      id: item.id || '',
+      description: item.description || '',
+      street: item.street || '',
+      zip: item.zip || '',
+      city: item.city || '',
+      country: item.country || '',
+      email: item.email || '',
+      telephone: item.telephone || '',
+      homepage: item.homepage || '',
+      tags: item.tags || [],
+      organizer: item.organizer || '',
+    }));
+
+    return extractedData;
+  } else {
+    throw new Error('Invalid data in API response');
+  }
 }
 
 export function useEvents(
@@ -60,15 +55,15 @@ export function useEvents(
   text: string | null = null,
   created_by: string | null = null
 ) {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<{ lat: any; lng: any; title: any; id: any; description: any; street: any; zip: any; city: any; country: any; email: any; telephone: any; homepage: any; tags: any; organizer: any; }[]>([]);
 
   useEffect(() => {
     if (bbox && bbox !== "") {
       fetchData(bbox, tag, text, created_by)
-        .then((data: any) => setData(data)) // Set state with response.data
-        .catch(error => console.error('Error fetching data:', error)); // Log any errors
+        .then(setData)
+        .catch(error => console.error('Error fetching data:', error));
     }
   }, [bbox, tag, text, created_by]);
 
-  return data; // This will now be response.data or null if data is not loaded yet
+  return data;
 }

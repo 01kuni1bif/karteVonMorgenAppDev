@@ -3,21 +3,16 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig/apiConfig';
 
-function fetchData() {
+async function fetchData() {
   const url = `${API_BASE_URL}${ENDPOINTS.TAGS.path}`;
 
-  return axios.get(url)
-    .then(response => {
-      if (response.data) {
-        return response.data;
-      } else {
-        throw new Error('Invalid data in API response');
-      }
-    })
-    .catch(error => {
-      console.error('Error in API request:', error);
-      throw error;
-    });
+  const response = await axios.get(url);
+
+  if (response.data) {
+    return response.data;
+  } else {
+    throw new Error('Invalid data in API response');
+  }
 }
 
 export function useTags() {
@@ -25,9 +20,9 @@ export function useTags() {
 
   useEffect(() => {
     fetchData()
-      .then((data: any) => setData(data)) // Set state with response.data
-      .catch(error => console.error('Error fetching data:', error)); // Log any errors
+      .then(setData)
+      .catch(error => console.error('Error fetching data:', error));
   }, []);
 
-  return data; // This will now be response.data or null if data is not loaded yet
+  return data;
 }

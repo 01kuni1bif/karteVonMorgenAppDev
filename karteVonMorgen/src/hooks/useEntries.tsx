@@ -4,19 +4,15 @@ import { useEffect, useState } from 'react';
 import { API_BASE_URL } from '../consts/apiConfig/apiConfig';
 import { ENDPOINTS } from '../consts/apiConfig/apiConfig';
 
-function fetchData(id: string) {
+async function fetchData(id: string) {
   if (!id) {
-    return Promise.reject('ID not provided');
+    throw new Error('ID not provided');
   }
   const formattedEntryIds = id.replace(/,/g, '%2C');
   const url = `${API_BASE_URL}${ENDPOINTS.ENTRIES.path}/${formattedEntryIds}`;
 
-  return axios.get(url)
-    .then(response => response.data)
-    .catch(error => {
-      console.error('Fehler bei der Anfrage:', error);
-      throw error;
-    });
+  const response = await axios.get(url);
+  return response.data;
 }
 
 export function useEntries(id: string) {
@@ -25,10 +21,10 @@ export function useEntries(id: string) {
   useEffect(() => {
     if (id && id !== "") {
       fetchData(id)
-        .then((data: any) => setData(data)) // Set state with response.data
-        .catch(error => console.error('Error fetching data:', error)); // Log any errors
+        .then(setData)
+        .catch(error => console.error('Error fetching data:', error));
     }
   }, [id]);
 
-  return data; // This will now be response.data or null if data is not loaded yet
+  return data;
 }

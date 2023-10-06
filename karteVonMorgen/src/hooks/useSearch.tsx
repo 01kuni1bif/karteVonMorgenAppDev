@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig/apiConfig';
 
-function fetchData(bbox: string, org_tag: string | null, categories: string | null, text: string | null, ids: string | null, tags: string | null, status: string | null, limit: number | null) {
+async function fetchData(bbox: string, org_tag: string | null, categories: string | null, text: string | null, ids: string | null, tags: string | null, status: string | null, limit: number | null) {
   const queryParams = {
     bbox: bbox,
     org_tag: org_tag,
@@ -22,18 +22,13 @@ function fetchData(bbox: string, org_tag: string | null, categories: string | nu
 
   const url = `${API_BASE_URL}${ENDPOINTS.SEARCH.path}?${query}`;
 
-  return axios.get(url)
-    .then(response => {
-      if (response.data && response.data.visible && Array.isArray(response.data.visible)) {
-        return response.data.visible;
-      } else {
-        throw new Error('Invalid data in API response');
-      }
-    })
-    .catch(error => {
-      console.error('Error in API request:', error);
-      throw error;
-    });
+  const response = await axios.get(url);
+
+  if (response.data && response.data.visible && Array.isArray(response.data.visible)) {
+    return response.data.visible;
+  } else {
+    throw new Error('Invalid data in API response');
+  }
 }
 
 export function useSearch(
@@ -51,10 +46,10 @@ export function useSearch(
   useEffect(() => {
     if (bbox) {
       fetchData(bbox, org_tag, categories, text, ids, tags, status, limit)
-        .then((result: any) => setData(result)) // Set state with response data
-        .catch(error => console.error('Error fetching data:', error)); // Log any errors
+        .then(setData)
+        .catch(error => console.error('Error fetching data:', error));
     }
   }, [bbox, org_tag, categories, text, ids, tags, status, limit]);
 
-  return data; // This will now be response.data or null if data is not loaded yet
+  return data;
 }
