@@ -1,36 +1,35 @@
 // useTags.tsx
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { API_BASE_URL } from '../consts/apiConfig/apiConfig';
-import { ENDPOINTS } from '../consts/apiConfig/apiConfig';
+import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig/apiConfig';
 
-export function useTags() {
-  const [data, setData] = useState<any>(null);
-  const url = `${API_BASE_URL}${ENDPOINTS.TAGS.path}`;
+function fetchData() {
+  return new Promise((resolve, reject) => {
+    const url = `${API_BASE_URL}${ENDPOINTS.TAGS.path}`;
 
-  useEffect(() => {
-    axios
-      .get(
-        url
-      )
-      .then((response) => {
+    axios.get(url)
+      .then(response => {
         if (response.data) {
-          // Erstelle ein neues Array, um die extrahierten Daten zu speichern
-
-          // Durchlaufe das visible-Array und extrahiere die gewünschten Felder
-
-          setData(response.data);
-          console.log(response.data);
-
+          resolve(response.data); // Resolve the promise with the data
         } else {
-          // Hier geben wir die gefilterten Daten in der Konsole aus
-          console.error('Ungültige Daten in der API-Antwort');
+          reject('Invalid data in API response');
         }
       })
-      .catch((error) => {
-        console.error('Fehler bei der API-Anforderung:', error);
+      .catch(error => {
+        console.error('Error in API request:', error);
+        reject(error); // Reject the promise with the error
       });
-  }, []); // Leeres Array, um sicherzustellen, dass dieser Effekt nur einmal ausgeführt wird
+  });
+}
 
-  return data;
+export function useTags() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetchData()
+      .then((data: any) => setData(data)) // Set state with response.data
+      .catch(error => console.error('Error fetching data:', error)); // Log any errors
+  }, []);
+
+  return data; // This will now be response.data or null if data is not loaded yet
 }

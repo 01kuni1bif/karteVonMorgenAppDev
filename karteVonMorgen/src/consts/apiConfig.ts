@@ -20,8 +20,6 @@ export const ENDPOINTS = {
   },
   TAGS: {
     path: '/tags',
-
-
   },
   EVENTS: {
     path: '/events',

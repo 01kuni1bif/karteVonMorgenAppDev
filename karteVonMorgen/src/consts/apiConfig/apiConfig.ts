@@ -1,4 +1,4 @@
-// apiConfig.js
+// apiConfig.ts
 export const API_BASE_URL = 'https://dev.ofdb.io/v0';
 export const DEFAULT_API_LIMIT = 20;
 
@@ -12,7 +12,7 @@ export const ENDPOINTS = {
     flexibleParams: {
       text: '', // Default value for 'text' parameter
       company: '77b3c33a92554bcf8e8c2c86cedd6f6f',
-      initative: '2cd00bebec0c48ba9db761da48678134', // Default value for 'categories' parameter
+      initiative: '2cd00bebec0c48ba9db761da48678134', // Default value for 'categories' parameter
       ids: '',
       tags: '',
       status: '',
@@ -20,8 +20,6 @@ export const ENDPOINTS = {
   },
   TAGS: {
     path: '/tags',
-
-
   },
   EVENTS: {
     path: '/events',

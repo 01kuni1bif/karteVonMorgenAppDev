@@ -1,59 +1,51 @@
 // useCategories.tsx
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { API_BASE_URL } from '../consts/apiConfig/apiConfig';
-import { ENDPOINTS } from '../consts/apiConfig/apiConfig';
+import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig/apiConfig';
 
-async function fetchData(category: any) {
-  try {
+function fetchData(category: string) {
+  return new Promise((resolve, reject) => {
     if (!category) {
-      return null; // If category is not provided, return early or handle accordingly.
+      reject('Category not provided'); // If category is not provided, reject the promise
     }
 
     let queryParams = {};
     if (category === "2cd00bebec0c48ba9db761da48678134") {
       queryParams = {
-        ...ENDPOINTS.SEARCH.defaultQueryParams, // Füge Standardparameter hinzu
-        categories: ENDPOINTS.SEARCH.flexibleParams.initative, // Füge benutzerdefinierte Parameter hinzu
+        ...ENDPOINTS.SEARCH.defaultQueryParams, // Add default parameters
+        categories: ENDPOINTS.SEARCH.flexibleParams.initiative, // Add custom parameters
       };
 
     } else if (category === "77b3c33a92554bcf8e8c2c86cedd6f6f") {
       queryParams = {
-        ...ENDPOINTS.SEARCH.defaultQueryParams, // Füge Standardparameter hinzu
-        categories: ENDPOINTS.SEARCH.flexibleParams.company, // Füge benutzerdefinierte Parameter hinzu
+        ...ENDPOINTS.SEARCH.defaultQueryParams, // Add default parameters
+        categories: ENDPOINTS.SEARCH.flexibleParams.company, // Add custom parameters
       };
     }
 
     const url = `${API_BASE_URL}${ENDPOINTS.SEARCH.path}`;
 
-
-    const response = await axios.get(url, {
-      params: queryParams,
-    });
-
-    // Handle die Antwort hier
-    console.log(response.data);
-  } catch (error) {
-    // Handle Fehler hier
-    console.error('Fehler bei der Anfrage:', error);
-  }
+    axios.get(url, { params: queryParams })
+      .then(response => {
+        resolve(response.data); // Resolve the promise with the data
+      })
+      .catch(error => {
+        console.error('Fehler bei der Anfrage:', error);
+        reject(error); // Reject the promise with the error
+      });
+  });
 }
 
-function useCategories(category: unknown) {
+export function useCategories(category: string) {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    async function fetchDataAndSetData() {
-      const result = await fetchData(category);
-      if (result !== undefined && result !== null) {
-        setData(result);
-      }
+    if (category && category !== "") {
+      fetchData(category)
+        .then((data: any) => setData(data)) // Set state with response.data
+        .catch(error => console.error('Error fetching data:', error)); // Log any errors
     }
-
-    fetchDataAndSetData();
   }, [category]);
 
-  return data;
+  return data; // This will now be response.data or null if data is not loaded yet
 }
-
-export default useCategories;

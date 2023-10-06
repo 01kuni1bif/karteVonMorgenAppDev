@@ -3,8 +3,8 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig/apiConfig';
 
-async function fetchClusterEventData(bbox: any[], limit: number) {
-  try {
+function fetchClusterEventData(bbox: any[], limit: number) {
+  return new Promise((resolve, reject) => {
     let baseUrl = `${API_BASE_URL}${ENDPOINTS.EVENTS.path}`;
 
     if (bbox) {
@@ -16,39 +16,34 @@ async function fetchClusterEventData(bbox: any[], limit: number) {
       baseUrl += `${bbox ? '&' : ''}limit=${limit}`;
     }
 
-    const response = await axios.get(baseUrl);
-
-    if (response.data) {
-      return response.data.map((item: { lat: any; lng: any; title: any; }) => ({
-        lat: item.lat,
-        lng: item.lng,
-        title: item.title,
-      }));
-
-    } else {
-      console.error('Ungültige Daten in der API-Antwort');
-      return null;
-    }
-
-  } catch (error) {
-    console.error('Fehler bei der API-Anforderung:', error);
-    return null;
-  }
+    axios.get(baseUrl)
+      .then(response => {
+        if (response.data && Array.isArray(response.data)) {
+          const data = response.data.map((item: { lat: any; lng: any; title: any; }) => ({
+            lat: item.lat,
+            lng: item.lng,
+            title: item.title,
+          }));
+          resolve(data); // Resolve the promise with the data
+        } else {
+          reject('Invalid data in API response');
+        }
+      })
+      .catch(error => {
+        console.error('Error in API request:', error);
+        reject(error); // Reject the promise with the error
+      });
+  });
 }
 
 export function useEventsCluster(bbox: any[], limit: number) {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    async function fetchDataAndSetData() {
-      const result = await fetchClusterEventData(bbox, limit);
-      if (result !== null) {
-        setData(result);
-      }
-    }
-
-    fetchDataAndSetData();
+    fetchClusterEventData(bbox, limit)
+      .then((data: any) => setData(data)) // Set state with response.data
+      .catch(error => console.error('Error fetching data:', error)); // Log any errors
   }, [bbox, limit]);
 
-  return data;
+  return data; // This will now be response.data or null if data is not loaded yet
 }
