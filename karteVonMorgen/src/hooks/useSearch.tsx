@@ -4,38 +4,36 @@ import { useEffect, useState } from 'react';
 import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig/apiConfig';
 
 function fetchData(bbox: string, org_tag: string | null, categories: string | null, text: string | null, ids: string | null, tags: string | null, status: string | null, limit: number | null) {
-  return new Promise((resolve, reject) => {
-    const queryParams = {
-      bbox: bbox,
-      org_tag: org_tag,
-      categories: categories,
-      text: text,
-      ids: ids,
-      tags: tags,
-      status: status,
-      limit: limit,
-    };
+  const queryParams = {
+    bbox: bbox,
+    org_tag: org_tag,
+    categories: categories,
+    text: text,
+    ids: ids,
+    tags: tags,
+    status: status,
+    limit: limit,
+  };
 
-    const query = Object.entries(queryParams)
-      .filter(([key, value]) => value !== null)
-      .map(([key, value]) => `${key}=${encodeURIComponent(value as string | number)}`)
-      .join('&');
+  const query = Object.entries(queryParams)
+    .filter(([key, value]) => value !== null)
+    .map(([key, value]) => `${key}=${encodeURIComponent(value as string | number)}`)
+    .join('&');
 
-    const url = `${API_BASE_URL}${ENDPOINTS.SEARCH.path}?${query}`;
+  const url = `${API_BASE_URL}${ENDPOINTS.SEARCH.path}?${query}`;
 
-    axios.get(url)
-      .then(response => {
-        if (response.data && response.data.visible && Array.isArray(response.data.visible)) {
-          resolve(response.data.visible); // Resolve the promise with the data
-        } else {
-          reject('Invalid data in API response');
-        }
-      })
-      .catch(error => {
-        console.error('Error in API request:', error);
-        reject(error); // Reject the promise with the error
-      });
-  });
+  return axios.get(url)
+    .then(response => {
+      if (response.data && response.data.visible && Array.isArray(response.data.visible)) {
+        return response.data.visible;
+      } else {
+        throw new Error('Invalid data in API response');
+      }
+    })
+    .catch(error => {
+      console.error('Error in API request:', error);
+      throw error;
+    });
 }
 
 export function useSearch(

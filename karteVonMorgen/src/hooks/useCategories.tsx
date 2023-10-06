@@ -4,37 +4,33 @@ import { useEffect, useState } from 'react';
 import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig/apiConfig';
 
 function fetchData(category: string) {
-  return new Promise((resolve, reject) => {
-    if (!category) {
-      reject('Category not provided'); // If category is not provided, reject the promise
-    }
+  if (!category) {
+    return Promise.reject('Category not provided');
+  }
 
-    let queryParams = {};
-    if (category === "2cd00bebec0c48ba9db761da48678134") {
-      queryParams = {
-        ...ENDPOINTS.SEARCH.defaultQueryParams, // Add default parameters
-        categories: ENDPOINTS.SEARCH.flexibleParams.initiative, // Add custom parameters
-      };
+  let queryParams = {};
+  if (category === "2cd00bebec0c48ba9db761da48678134") {
+    queryParams = {
+      ...ENDPOINTS.SEARCH.defaultQueryParams,
+      categories: ENDPOINTS.SEARCH.flexibleParams.initiative,
+    };
+  } else if (category === "77b3c33a92554bcf8e8c2c86cedd6f6f") {
+    queryParams = {
+      ...ENDPOINTS.SEARCH.defaultQueryParams,
+      categories: ENDPOINTS.SEARCH.flexibleParams.company,
+    };
+  }
 
-    } else if (category === "77b3c33a92554bcf8e8c2c86cedd6f6f") {
-      queryParams = {
-        ...ENDPOINTS.SEARCH.defaultQueryParams, // Add default parameters
-        categories: ENDPOINTS.SEARCH.flexibleParams.company, // Add custom parameters
-      };
-    }
+  const url = `${API_BASE_URL}${ENDPOINTS.SEARCH.path}`;
 
-    const url = `${API_BASE_URL}${ENDPOINTS.SEARCH.path}`;
-
-    axios.get(url, { params: queryParams })
-      .then(response => {
-        resolve(response.data); // Resolve the promise with the data
-      })
-      .catch(error => {
-        console.error('Fehler bei der Anfrage:', error);
-        reject(error); // Reject the promise with the error
-      });
-  });
+  return axios.get(url, { params: queryParams })
+    .then(response => response.data)
+    .catch(error => {
+      console.error('Fehler bei der Anfrage:', error);
+      throw error;
+    });
 }
+
 
 export function useCategories(category: string) {
   const [data, setData] = useState(null);

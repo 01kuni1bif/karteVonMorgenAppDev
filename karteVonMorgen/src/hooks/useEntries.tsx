@@ -5,21 +5,18 @@ import { API_BASE_URL } from '../consts/apiConfig/apiConfig';
 import { ENDPOINTS } from '../consts/apiConfig/apiConfig';
 
 function fetchData(id: string) {
-  return new Promise((resolve, reject) => {
-    if (!id) {
-      reject('ID not provided'); // If ID is not provided, reject the promise
-    }
-    const formattedEntryIds = id.replace(/,/g, '%2C');
-    const url = `${API_BASE_URL}${ENDPOINTS.ENTRIES.path}/${formattedEntryIds}`;
-    axios.get(url)
-      .then(response => {
-        resolve(response.data); // Resolve the promise with the data
-      })
-      .catch(error => {
-        console.error('Fehler bei der Anfrage:', error);
-        reject(error); // Reject the promise with the error
-      });
-  });
+  if (!id) {
+    return Promise.reject('ID not provided');
+  }
+  const formattedEntryIds = id.replace(/,/g, '%2C');
+  const url = `${API_BASE_URL}${ENDPOINTS.ENTRIES.path}/${formattedEntryIds}`;
+
+  return axios.get(url)
+    .then(response => response.data)
+    .catch(error => {
+      console.error('Fehler bei der Anfrage:', error);
+      throw error;
+    });
 }
 
 export function useEntries(id: string) {

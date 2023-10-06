@@ -4,22 +4,20 @@ import { useEffect, useState } from 'react';
 import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig/apiConfig';
 
 function fetchData() {
-  return new Promise((resolve, reject) => {
-    const url = `${API_BASE_URL}${ENDPOINTS.TAGS.path}`;
+  const url = `${API_BASE_URL}${ENDPOINTS.TAGS.path}`;
 
-    axios.get(url)
-      .then(response => {
-        if (response.data) {
-          resolve(response.data); // Resolve the promise with the data
-        } else {
-          reject('Invalid data in API response');
-        }
-      })
-      .catch(error => {
-        console.error('Error in API request:', error);
-        reject(error); // Reject the promise with the error
-      });
-  });
+  return axios.get(url)
+    .then(response => {
+      if (response.data) {
+        return response.data;
+      } else {
+        throw new Error('Invalid data in API response');
+      }
+    })
+    .catch(error => {
+      console.error('Error in API request:', error);
+      throw error;
+    });
 }
 
 export function useTags() {
