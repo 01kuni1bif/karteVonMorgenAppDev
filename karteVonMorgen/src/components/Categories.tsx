@@ -7,20 +7,15 @@ const Categories: React.FC = () => {
 
   return (
     <div className='categories'>
-      <IonGrid>
-        <IonRow>
-          <IonCol size="4">
-            <IonButton expand="block">
+      <IonGrid className="ion-align-items-center">
+        <IonRow className="ion-justify-content-center">
+          <IonCol size="12" sizeMd="6">
+            <IonButton expand="block" className="custom-button">
               initiatives
             </IonButton>
           </IonCol>
-          <IonCol size="4">
-            <IonButton expand="block">
-              events
-            </IonButton>
-          </IonCol>
-          <IonCol size="4">
-            <IonButton expand="block">
+          <IonCol size="12" sizeMd="6">
+            <IonButton expand="block" className="custom-button">
               companies
             </IonButton>
           </IonCol>

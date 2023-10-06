@@ -1,22 +1,23 @@
 // Home.tsx
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import TestComponent from '../components/TestComponent';
 import Categories from '../components/Categories';
 import MapComponent from '../components/MapComponent';
 import './Home.css';
 
 const Home: React.FC = () => {
-
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar >
           <IonTitle>Karte von Morgen</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
-        <Categories />
+      <div className="home-content">
+        <TestComponent />
         <MapComponent />
-      </IonContent>
+        <Categories />
+      </div>
     </IonPage>
   );
 };

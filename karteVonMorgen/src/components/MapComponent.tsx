@@ -70,21 +70,20 @@ const MapComponent: React.FC = () => {
 
   return (
     <div id="map">
-      <IonContent fullscreen>
-        <MapContainer center={center} zoom={6} maxBounds={bounds} className="map-container" zoomControl={false}>
-          <TileLayer
-            attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <MyMap />
-        </MapContainer>
-      </IonContent>
+      <MapContainer center={center} zoom={6} maxBounds={bounds} className="map-container" zoomControl={false}>
+        <TileLayer
+          attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <MyMap />
+      </MapContainer>
       <IonModal isOpen={isModalOpen} onDidDismiss={closeModal}>
         <IonContent>
           <div>{modalContent}</div>
         </IonContent>
       </IonModal>
-    </div >
+    </div>
+
   );
 };
 

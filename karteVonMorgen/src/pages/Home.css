@@ -1,9 +1,6 @@
-.search-container {
-    position: absolute;
-    left: 2%;
-    right: 2%;
-    margin: 5px;
-    z-index:100;
-    color: transparent;
-    background-color: transparent;
+/* Home.css */
+.home-content {
+    height: 100vh;
+    position: relative;
+    overflow: hidden; /* Change this line */
 }

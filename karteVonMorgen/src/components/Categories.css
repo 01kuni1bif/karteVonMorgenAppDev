@@ -1,10 +1,29 @@
 /* Categories.css */
 .categories {
     position: absolute;
-    left: 5%;
-    right: 5%;
-    margin: 10px;
-    z-index: 100;
-    color: transparent;
-    background-color: transparent;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    margin: 10px auto;
+    z-index: 1000;
+}
+
+.custom-button {
+    width: 100%;
+    max-width: 200px;
+    font-size: medium;
+}
+
+@media (max-width: 600px) {
+    .custom-button {
+        font-size: medium;
+    }
+}
+
+@media (max-width: 400px) {
+    .custom-button {
+        font-size: smaller;
+    }
 }
