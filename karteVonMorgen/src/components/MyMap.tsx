@@ -6,7 +6,7 @@ import MapMarker from './MapMarker';
 import { useIonViewDidEnter } from '@ionic/react';
 import { useEntries } from '../hooks/useEntries';
 
-const MyMap: React.FC<{ setBbox: (bbox: string | null) => void, data: any, eventData: any }> = ({ setBbox, data, eventData }) => {
+const MyMap: React.FC<{ setBbox: (bbox: string | null) => void, data: any, eventData: any, selectedCategories: string[] }> = ({ setBbox, data, eventData, selectedCategories }) => {
   useIonViewDidEnter(() => {
     window.dispatchEvent(new Event('resize'));
   });
@@ -43,6 +43,9 @@ const MyMap: React.FC<{ setBbox: (bbox: string | null) => void, data: any, event
   return (
     <React.Fragment>
       {data && data.map((item: { lat: number; lng: number; id: string; categories: string[] }, index: React.Key | null | undefined) => {
+        if (selectedCategories.length > 0 && !selectedCategories.some(category => item.categories.includes(category))) {
+          return null; // Skip this item if its category is not selected
+        }
         let iconUrl = '/assets/images/icons8-marker-48-yellow.png'; // Default marker
         if (item.categories.includes('2cd00bebec0c48ba9db761da48678134')) { // Check if the categories array includes the category ID for initiatives
           iconUrl = '/assets/images/icons8-marker-48-lightgreen.png';
@@ -53,7 +56,7 @@ const MyMap: React.FC<{ setBbox: (bbox: string | null) => void, data: any, event
           <MapMarker key={index} position={[item.lat, item.lng]} onClick={() => handleMarkerClick(item.id)} data={selectedEntryData} iconUrl={iconUrl} />
         );
       })}
-      {eventData && eventData.map((item: { lat: number; lng: number; id: string }, index: React.Key | null | undefined) => {
+      {(selectedCategories.length === 0 || selectedCategories.includes('events')) && eventData && eventData.map((item: { lat: number; lng: number; id: string }, index: React.Key | null | undefined) => {
         let iconUrl = '/assets/images/icons8-marker-48.png'; // Yellow marker for events
         return (
           <MapMarker key={index} position={[item.lat, item.lng]} onClick={() => handleMarkerClick(item.id)} data={selectedEntryData} iconUrl={iconUrl} />

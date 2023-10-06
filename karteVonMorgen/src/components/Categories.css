@@ -6,7 +6,8 @@
     right: 0;
     display: flex;
     justify-content: center;
-    align-content: center;
+    align-items: flex-start;
+    /* Align items along the vertical axis at the start */
     margin: 10px auto;
     z-index: 1000;
 }

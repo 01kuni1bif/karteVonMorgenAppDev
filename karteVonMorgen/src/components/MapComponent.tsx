@@ -35,7 +35,7 @@ const MapComponent: React.FC = () => {
           attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <MyMap setBbox={setBbox} data={data} eventData={eventData} />
+        <MyMap setBbox={setBbox} data={data} eventData={eventData} selectedCategories={categories} />
       </MapContainer>
       <IonModal isOpen={isModalOpen} onDidDismiss={closeModal}>
         <IonContent>
