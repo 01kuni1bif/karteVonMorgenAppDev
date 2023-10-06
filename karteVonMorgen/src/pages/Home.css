@@ -2,5 +2,5 @@
 .home-content {
     height: 100vh;
     position: relative;
-    overflow: hidden; /* Change this line */
+    overflow: auto; /* Change this line */
 }

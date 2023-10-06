@@ -3,11 +3,11 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig/apiConfig';
 
-async function fetchData(bbox: string, org_tag: string | null, categories: string | null, text: string | null, ids: string | null, tags: string | null, status: string | null, limit: number | null) {
+async function fetchData(bbox: string, org_tag: string | null, categories: string[] | null, text: string | null, ids: string | null, tags: string | null, status: string | null, limit: number | null) {
   const queryParams = {
     bbox: bbox,
     org_tag: org_tag,
-    categories: categories,
+    categories: categories ? categories.join(',') : null, // Join the categories array into a comma-separated string
     text: text,
     ids: ids,
     tags: tags,
@@ -34,7 +34,7 @@ async function fetchData(bbox: string, org_tag: string | null, categories: strin
 export function useSearch(
   bbox: string | null = null,
   org_tag: string | null = null,
-  categories: string | null = null,
+  categories: string[] | null = null,
   text: string | null = null,
   ids: string | null = null,
   tags: string | null = null,
@@ -46,10 +46,15 @@ export function useSearch(
   useEffect(() => {
     if (bbox) {
       fetchData(bbox, org_tag, categories, text, ids, tags, status, limit)
-        .then(setData)
-        .catch(error => console.error('Error fetching data:', error));
+        .then(data => {
+          setData(data);
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
     }
   }, [bbox, org_tag, categories, text, ids, tags, status, limit]);
 
-  return data;
+  return data; // Return isLoading along with data
 }
+
