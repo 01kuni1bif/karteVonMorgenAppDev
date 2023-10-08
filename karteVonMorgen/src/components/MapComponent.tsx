@@ -1,6 +1,6 @@
 // MapComponent.tsx
 import React, { useState } from 'react';
-import { IonContent, IonModal, IonSpinner } from '@ionic/react'; // Import IonPage
+import { IonContent, IonModal } from '@ionic/react'; // Import IonPage
 import { MapContainer, TileLayer } from 'react-leaflet';
 import { LatLngBoundsLiteral, LatLngExpression } from "leaflet";
 import { useSearch } from '../hooks/useSearch';
@@ -30,12 +30,21 @@ const MapComponent: React.FC = () => {
   return (
     <div id="map">
       <Categories onCategoryChange={setCategories} />
-      <MapContainer center={center} zoom={6} maxBounds={bounds} className="map-container" zoomControl={false}>
+      <MapContainer
+        center={center}
+        zoom={6}
+        minZoom={3}
+        maxBounds={bounds}
+        className="map-container"
+        zoomControl={false}>
         <TileLayer
           attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <MyMap setBbox={setBbox} data={data} eventData={eventData} selectedCategories={categories} />
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <MyMap
+          setBbox={setBbox}
+          data={data}
+          eventData={eventData}
+          selectedCategories={categories} />
       </MapContainer>
       <IonModal isOpen={isModalOpen} onDidDismiss={closeModal}>
         <IonContent>

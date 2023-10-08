@@ -6,7 +6,13 @@ import MapMarker from './MapMarker';
 import { useIonViewDidEnter } from '@ionic/react';
 import { useEntries } from '../hooks/useEntries';
 
-const MyMap: React.FC<{ setBbox: (bbox: string | null) => void, data: any, eventData: any, selectedCategories: string[] }> = ({ setBbox, data, eventData, selectedCategories }) => {
+const MyMap: React.FC<{
+  setBbox: (bbox: string | null) => void,
+  data: any,
+  eventData: any,
+  selectedCategories: string[],
+}> = ({ setBbox, data, eventData, selectedCategories }) => {
+
   useIonViewDidEnter(() => {
     window.dispatchEvent(new Event('resize'));
   });

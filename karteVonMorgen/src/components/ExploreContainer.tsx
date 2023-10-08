@@ -1,3 +1,4 @@
+// ExploreContainer.tsx
 import './ExploreContainer.css';
 
 interface ContainerProps { }
