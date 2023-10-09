@@ -1,8 +1,10 @@
 // Home.tsx
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonSearchbar, IonTitle, IonToolbar } from '@ionic/react';
 import Categories from '../components/Categories';
 import MapComponent from '../components/MapComponent';
+
 import './Home.css';
+import SearchBar from '../components/search';
 
 const Home: React.FC = () => {
 
@@ -14,6 +16,8 @@ const Home: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
+      
+        {/* <SearchBar/> */}
         <Categories />
         <MapComponent />
       </IonContent>
