@@ -29,6 +29,7 @@ function SearchBar() {
     const [filteredSuggestions, setFilteredSuggestions] = useState<{ name: string }[]>([]);
 
     useEffect(() => {
+        
         // Filtere die Vorschläge basierend auf der Eingabe
         const filtered = testSuggestions.filter((suggestion) =>
             suggestion.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -36,6 +37,8 @@ function SearchBar() {
 
         setFilteredSuggestions(filtered);
     }, [searchQuery]);
+
+
 
     // Funktion zum Verarbeiten von Klicks auf Vorschläge
     const handleSuggestionClick = (suggestion: string) => {
@@ -48,13 +51,14 @@ function SearchBar() {
             <IonSearchbar placeholder='Wonach suchst du? (# für Tags)' onIonChange={(e) => { setSearchQuery(e.target.value) }} />
 
             {searchQuery.length > 0 && (
-                <IonList>
+                <IonList key={searchQuery}>
                     {filteredSuggestions.map((suggestion, index) => (
                         <IonItem key={index} onClick={() => handleSuggestionClick(suggestion.name)}>
                             {suggestion.name}
                         </IonItem>
                     ))}
                 </IonList>
+
             )}
         </div>
     );
