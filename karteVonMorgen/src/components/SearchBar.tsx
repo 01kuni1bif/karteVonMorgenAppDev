@@ -2,40 +2,16 @@
 import { useState, useEffect } from 'react';
 import { IonItem, IonList, IonSearchbar } from '@ionic/react';
 import './SearchBar.css';
+import { useSearch } from '../hooks/useSearch';
 
 function SearchBar() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState<{ lat: any; lng: any; title: any; }[]>([]);
-
-  // Test-Array mit Suchvorschlägen
-  let testSuggestions = [
-    { name: 'Apfel' },
-    { name: 'Banane' },
-    { name: 'Kirsche' },
-    { name: 'Dattel' },
-    { name: 'Erdbeere' },
-    { name: 'Feige' },
-    { name: 'Grapefruit' },
-    { name: 'Himbeere' },
-    { name: 'Zitrone' },
-    { name: 'Mango' },
-    { name: 'Orange' },
-    { name: 'Pfirsich' },
-    { name: 'Ananas' },
-    { name: 'Birne' },
-    { name: 'Pflaume' }
-  ];
-
+  const bbox = "42.27,-7.97,52.58,38.25"
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredSuggestions, setFilteredSuggestions] = useState<{ name: string }[]>([]);
+  const searchResults  = useSearch(bbox,null,null,searchQuery,null,null,null,5);
 
   useEffect(() => {
-    // Filtere die Vorschläge basierend auf der Eingabe
-    const filtered = testSuggestions.filter((suggestion) =>
-      suggestion.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-    setFilteredSuggestions(filtered);
+    console.log('searchQuery wurde geändert:', searchQuery);
+    console.log(searchResults)
   }, [searchQuery]);
 
   // Funktion zum Verarbeiten von Klicks auf Vorschläge
@@ -49,20 +25,19 @@ function SearchBar() {
       <IonSearchbar
         placeholder='Wonach suchst du? (# für Tags)'
         onIonChange={(e) => {
-          if (e.target.value) {
-            setSearchQuery(e.target.value);
-          }
+          const query = e.target.value;
+          setSearchQuery(query);
         }}
       />
-      {searchQuery.length > 0 && (
+     {/*  {searchQuery.length > 0 && searchResults && searchResults.length > 0 && (
         <IonList>
-          {filteredSuggestions.map((suggestion, index) => (
+          {searchResults !== null && searchResults.map((suggestion, index) => (
             <IonItem key={index} onClick={() => handleSuggestionClick(suggestion.name)}>
               {suggestion.name}
             </IonItem>
           ))}
         </IonList>
-      )}
+      )} */}
     </div>
   );
 }
