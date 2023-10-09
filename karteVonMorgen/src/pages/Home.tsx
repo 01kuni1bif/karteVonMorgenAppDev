@@ -1,7 +1,7 @@
 // Home.tsx
 import { IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import TestComponent from '../components/TestComponent';
-import MapContainer from '../components/MapComponent';
+import MapComponent from '../components/MapComponent';
 import './Home.css';
 
 const Home: React.FC = () => {
@@ -14,7 +14,7 @@ const Home: React.FC = () => {
       </IonHeader>
       <div className="home-content">
         {/* <TestComponent /> */}
-        <MapContainer />
+        <MapComponent />
       </div>
     </IonPage>
   );
