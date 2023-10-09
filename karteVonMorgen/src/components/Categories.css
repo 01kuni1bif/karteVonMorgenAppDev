@@ -1,22 +1,15 @@
 /* Categories.css */
 .categories {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    /* Align items along the vertical axis at the start */
-    margin: 10px auto;
-    z-index: 1000;
+    left: 2%;
+    right: 2%;
+    margin: 10px;
+    z-index:1000;
+    color:transparent;
+    background-color: transparent;
 }
 
-.custom-button {
-    width: 100%;
-    max-width: 200px;
-    font-size: medium;
-}
+
 
 @media (max-width: 600px) {
     .custom-button {
