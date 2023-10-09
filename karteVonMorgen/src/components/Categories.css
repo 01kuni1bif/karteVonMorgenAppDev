@@ -1,16 +1,4 @@
 /* Categories.css */
-.categories {
-    position: absolute;
-    left: 2%;
-    right: 2%;
-    margin: 10px;
-    z-index:1000;
-    color:transparent;
-    background-color: transparent;
-}
-
-
-
 @media (max-width: 600px) {
     .custom-button {
         font-size: medium;

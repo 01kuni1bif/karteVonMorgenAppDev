@@ -5,6 +5,7 @@ import { MapContainer, TileLayer } from 'react-leaflet';
 import { LatLngBoundsLiteral, LatLngExpression } from "leaflet";
 import { useSearch } from '../hooks/useSearch';
 import { useEvents } from '../hooks/useEvents';
+import SearchBar from './SearchBar';
 import Categories from './Categories';
 import MyMap from './MyMap';
 import 'leaflet/dist/leaflet.css';
@@ -29,7 +30,10 @@ const MapComponent: React.FC = () => {
 
   return (
     <div id="map">
-      <Categories onCategoryChange={setCategories} />
+      <div className='map-controls'>
+        <Categories onCategoryChange={setCategories} />
+        <SearchBar />
+      </div>
       <MapContainer
         center={center}
         zoom={6}
