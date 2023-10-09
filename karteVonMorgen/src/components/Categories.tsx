@@ -1,7 +1,8 @@
 // Categories.tsx
-import { IonButton, IonCol, IonGrid, IonRow } from '@ionic/react';
+import { IonButton, IonCol, IonGrid, IonRow, IonSearchbar } from '@ionic/react';
 import React, { useState } from 'react';
 import "./Categories.css"
+import SearchBar from './SearchBar';
 
 const Categories: React.FC<{ onCategoryChange: (categories: string[]) => void }> = ({ onCategoryChange }) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -18,6 +19,7 @@ const Categories: React.FC<{ onCategoryChange: (categories: string[]) => void }>
 
   return (
     <div className='categories'>
+      <SearchBar />
       <IonGrid>
         <IonRow>
           <IonCol size="4" >
