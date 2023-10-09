@@ -2,7 +2,7 @@
 import { IonButton, IonCol, IonGrid, IonRow, IonSearchbar } from '@ionic/react';
 import React, { useState } from 'react';
 import "./Categories.css"
-import SearchBar from './search';
+import SearchBar from './SearchBar';
 
 const Categories: React.FC<{ onCategoryChange: (categories: string[]) => void }> = ({ onCategoryChange }) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -19,7 +19,7 @@ const Categories: React.FC<{ onCategoryChange: (categories: string[]) => void }>
 
   return (
     <div className='categories'>
-      <SearchBar/>
+      <SearchBar />
       <IonGrid className="ion-align-items-center">
         <IonRow className="ion-justify-content-center">
           <IonCol size="12" sizeMd="4">
