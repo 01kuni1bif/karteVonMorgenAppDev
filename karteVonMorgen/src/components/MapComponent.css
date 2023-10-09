@@ -1,4 +1,14 @@
 /* MapComponent.css */
+.map-controls {
+    position: absolute;
+    left: 2%;
+    right: 2%;
+    margin: 10px;
+    z-index: 1000;
+    color: transparent;
+    background-color: transparent;
+}
+
 .map-container {
     height: 100vh;
     position: relative;
