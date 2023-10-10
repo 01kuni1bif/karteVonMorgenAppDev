@@ -1,7 +1,7 @@
 // useEventsCluster.tsx
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig/apiConfig';
+import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig';
 
 async function fetchClusterEventData(bbox: any[], limit: number) {
   let baseUrl = `${API_BASE_URL}${ENDPOINTS.EVENTS.path}`;

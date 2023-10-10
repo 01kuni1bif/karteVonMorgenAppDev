@@ -12,21 +12,25 @@ const MyMap: React.FC<{
   data: any,
   eventData: any,
   selectedCategories: string[],
-}> = ({ setBbox, data, eventData, selectedCategories }) => {
+  mapCenter: LatLngExpression, // Add this line
+  mapZoom: number, // Add this line
+}> = ({ setBbox, data, eventData, selectedCategories, mapCenter, mapZoom }) => {
 
   useIonViewDidEnter(() => {
     window.dispatchEvent(new Event('resize'));
   });
+
   const map = useMap();
   const { southWest, northEast } = useMapBounds();
   const [selectedEntryId, setSelectedEntryId] = useState("");
   const selectedEntryData = useEntries(selectedEntryId);
-
   const handleMarkerClick = (id: string) => {
     setSelectedEntryId(id);
-    console.log(selectedEntryId);
   };
 
+  useEffect(() => {
+    map.setView(mapCenter, mapZoom);
+  }, [mapCenter, mapZoom, map]);
 
   useEffect(() => {
     setTimeout(() => {

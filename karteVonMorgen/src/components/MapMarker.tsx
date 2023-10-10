@@ -1,24 +1,20 @@
 // MapMarker.tsx
 import React, { useState } from 'react';
-import { Marker, Popup } from 'react-leaflet';
-import L, { LatLngExpression } from 'leaflet';
-import { IonContent, IonItem, IonLabel, IonList, IonModal } from '@ionic/react';
+import { Marker } from 'react-leaflet';
+import L from 'leaflet';
+import { IonItem, IonLabel, IonList, IonModal } from '@ionic/react';
 
 interface MapMarkerProps {
   position: [number, number];
   data: any;
   onClick: (data: any) => void;
-  iconUrl: string; // Add this line
-
+  iconUrl: string;
 }
 
 const MapMarker: React.FC<MapMarkerProps> = ({ position, data, onClick, iconUrl }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState<any>(null);
   const openModalWithContent = () => {
-    /*  setModalContent(content); */
     onClick(data);
-    /*  console.log(content); */
     setIsModalOpen(true); // Modal öffnen
   };
   const closeModal = () => {
@@ -33,7 +29,6 @@ const MapMarker: React.FC<MapMarkerProps> = ({ position, data, onClick, iconUrl 
   return (
     <React.Fragment>
       <Marker position={position} icon={customIcon} eventHandlers={{ click: openModalWithContent }}>
-        {/* Modal is conditionally rendered when data is not null */}
         {data !== null && (
           <IonModal isOpen={isModalOpen} onDidDismiss={closeModal}>
             <div className="ion-padding">
