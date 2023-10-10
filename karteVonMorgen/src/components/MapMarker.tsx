@@ -1,7 +1,7 @@
 // MapMarker.tsx
 import React, { useState } from 'react';
 import { Marker, Popup } from 'react-leaflet';
-import L from 'leaflet';
+import L, { LatLngExpression } from 'leaflet';
 import { IonContent, IonItem, IonLabel, IonList, IonModal } from '@ionic/react';
 
 interface MapMarkerProps {
@@ -9,6 +9,7 @@ interface MapMarkerProps {
   data: any;
   onClick: (data: any) => void;
   iconUrl: string; // Add this line
+  
 }
 
 const MapMarker: React.FC<MapMarkerProps> = ({ position, data, onClick, iconUrl }) => {
