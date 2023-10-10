@@ -26,7 +26,7 @@ const MyMap: React.FC<{
     setSelectedEntryId(id);
     console.log(selectedEntryId);
   };
-  
+
 
   useEffect(() => {
     setTimeout(() => {
