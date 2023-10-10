@@ -34,8 +34,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ setMapCenter, setMapZoom }) => {
       {/* Suchleiste */}
       <IonSearchbar
         placeholder='Wonach suchst du? (# für Tags)'
-        onIonChange={(e) => {
+        onIonInput={(e) => {
           const query = e.target.value;
+          console.log(query);
           setSearchQuery(query);
         }}
       />
