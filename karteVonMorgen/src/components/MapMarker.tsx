@@ -13,20 +13,14 @@ interface MapMarkerProps {
 }
 
 const MapMarker: React.FC<MapMarkerProps> = ({ position, data, onClick, iconUrl }) => {
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState<any>(null);
-
   const openModalWithContent = () => {
     /*  setModalContent(content); */
-
     onClick(data);
-
-
     /*  console.log(content); */
     setIsModalOpen(true); // Modal öffnen
   };
-
   const closeModal = () => {
     setIsModalOpen(false); // Modal schließen
   };
@@ -35,11 +29,6 @@ const MapMarker: React.FC<MapMarkerProps> = ({ position, data, onClick, iconUrl 
     iconSize: [32, 32],
     iconAnchor: [16, 32],
   });
-
-  /* const handleClick = () => {
-    console.log('Marker clicked');
-    onClick(data); // Pass the data to the onClick function
-  }; */
 
   return (
     <React.Fragment>
@@ -62,7 +51,6 @@ const MapMarker: React.FC<MapMarkerProps> = ({ position, data, onClick, iconUrl 
                     </IonLabel>
                   </IonItem>
                 ))}
-
               </IonList>
             </div>
           </IonModal>
