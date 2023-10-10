@@ -3,12 +3,42 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig/apiConfig';
 
-async function fetchData(bbox: string, tag: string | null, text: string | null, created_by: string | null) {
-  if (!bbox) {
-    throw new Error('Bounding Box not provided');
-  }
+async function fetchData(bbox: string | null, tag: string | null, text: string | null, created_by: string | null, id: string | null) {
+  
+  if(id){
+    let url1 = `${API_BASE_URL}${ENDPOINTS.EVENTS.path}/${id}`
 
-  let url = `${API_BASE_URL}${ENDPOINTS.EVENTS.path}`;
+    const response1 = await axios.get(url1);
+
+    if (response1.data && Array.isArray(response1.data)) {
+      // Create a new array to store the extracted data
+      const extractedData = response1.data.map(item => ({
+        lat: item.lat || 0,
+        lng: item.lng || 0,
+        title: item.title || '',
+        id: item.id || '',
+        description: item.description || '',
+        street: item.street || '',
+        zip: item.zip || '',
+        city: item.city || '',
+        country: item.country || '',
+        email: item.email || '',
+        telephone: item.telephone || '',
+        homepage: item.homepage || '',
+        tags: item.tags || [],
+        organizer: item.organizer || '',
+      }));
+      return extractedData;
+    }else{
+      throw new Error('Invalid data in API response');
+    }
+
+  }else{
+    if (!bbox) {
+      bbox = '42.27,-7.97,52.58,38.25';
+      }
+
+    let url = `${API_BASE_URL}${ENDPOINTS.EVENTS.path}`;
 
   const queryParams = {
     bbox: bbox,
@@ -47,23 +77,34 @@ async function fetchData(bbox: string, tag: string | null, text: string | null, 
   } else {
     throw new Error('Invalid data in API response');
   }
+
+
+
+  }
+
+  
 }
 
 export function useEvents(
-  bbox: string | null = '42.27,-7.97,52.58,38.25',
+  bbox: string | null = null,
   tag: string | null = null,
   text: string | null = null,
-  created_by: string | null = null
+  created_by: string | null = null,
+  id: string | null = null
 ) {
   const [data, setData] = useState<{ lat: any; lng: any; title: any; id: any; description: any; street: any; zip: any; city: any; country: any; email: any; telephone: any; homepage: any; tags: any; organizer: any; }[]>([]);
 
   useEffect(() => {
     if (bbox && bbox !== "") {
-      fetchData(bbox, tag, text, created_by)
+      fetchData(bbox, tag, text, created_by,null)
         .then(setData)
         .catch(error => console.error('Error fetching data:', error));
+    }else if (id){
+      fetchData(null,null,null,null,id)
+      .then(setData)
+      .catch(error => console.error('Error fetching data:', error));
     }
-  }, [bbox, tag, text, created_by]);
+  }, [bbox, tag, text, created_by,id]);
 
   return data;
 }
