@@ -7,13 +7,13 @@ import './Home.css';
 const Home: React.FC = () => {
   return (
     <IonPage>
-      <IonHeader>
+      {/* <IonHeader>
         <IonToolbar >
           <IonTitle>Karte von Morgen</IonTitle>
         </IonToolbar>
-      </IonHeader>
+      </IonHeader> */}
       <div className="home-content">
-        <TestComponent />
+        {/* <TestComponent /> */}
         <MapComponent />
       </div>
     </IonPage>

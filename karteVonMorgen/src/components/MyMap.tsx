@@ -23,6 +23,7 @@ const MyMap: React.FC<{
 
   const handleMarkerClick = (id: string) => {
     setSelectedEntryId(id);
+    console.log(selectedEntryId);
   };
 
   useEffect(() => {

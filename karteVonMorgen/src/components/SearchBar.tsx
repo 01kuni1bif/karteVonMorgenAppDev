@@ -29,15 +29,15 @@ function SearchBar() {
           setSearchQuery(query);
         }}
       />
-     {/*  {searchQuery.length > 0 && searchResults && searchResults.length > 0 && (
+       {searchQuery.length > 0 && searchResults && searchResults.length > 0 && (
         <IonList>
           {searchResults !== null && searchResults.map((suggestion, index) => (
-            <IonItem key={index} onClick={() => handleSuggestionClick(suggestion.name)}>
-              {suggestion.name}
+            <IonItem key={index} onClick={() => handleSuggestionClick(suggestion.title)}>
+              {suggestion.title}
             </IonItem>
           ))}
         </IonList>
-      )} */}
+      )} 
     </div>
   );
 }
