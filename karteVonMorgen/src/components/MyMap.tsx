@@ -5,6 +5,7 @@ import { useMapBounds } from '../hooks/useMapBounds';
 import MapMarker from './MapMarker';
 import { useIonViewDidEnter } from '@ionic/react';
 import { useEntries } from '../hooks/useEntries';
+import { LatLngExpression } from 'leaflet';
 
 const MyMap: React.FC<{
   setBbox: (bbox: string | null) => void,
@@ -25,6 +26,7 @@ const MyMap: React.FC<{
     setSelectedEntryId(id);
     console.log(selectedEntryId);
   };
+  
 
   useEffect(() => {
     setTimeout(() => {

@@ -20,6 +20,9 @@ const MapComponent: React.FC = () => {
   const [bbox, setBbox] = useState<string | null>(null);
   const data = useSearch(bbox, null, categories);
   const eventData = useEvents(bbox);
+  const [mapCenter, setMapCenter] = useState<LatLngExpression>([51.1657, 10.4515]); // Standardmäßige Kartenmitte
+  const [mapZoom, setMapZoom] = useState<number>(6); // Standardmäßiger Zoom-Level
+
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -32,11 +35,11 @@ const MapComponent: React.FC = () => {
     <div id="map">
       <div className='map-controls'>
         <Categories onCategoryChange={setCategories} />
-        <SearchBar />
+        <SearchBar setMapCenter={setMapCenter} setMapZoom={setMapZoom} />
       </div>
       <MapContainer
-        center={center}
-        zoom={6}
+        center={mapCenter}
+        zoom={mapZoom}
         minZoom={3}
         maxBounds={bounds}
         className="map-container"
