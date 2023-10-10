@@ -15,8 +15,8 @@ function SearchBar() {
   }, [searchQuery]);
 
   // Funktion zum Verarbeiten von Klicks auf Vorschläge
-  const handleSuggestionClick = (suggestion: string) => {
-    console.log(`Vorschlag geklickt: ${suggestion}`);
+  const handleSuggestionClick = (suggestion: any) => {
+    console.log(suggestion);
   };
 
   return (
@@ -32,7 +32,7 @@ function SearchBar() {
        {searchQuery.length > 0 && searchResults && searchResults.length > 0 && (
         <IonList>
           {searchResults !== null && searchResults.map((suggestion, index) => (
-            <IonItem key={index} onClick={() => handleSuggestionClick(suggestion.title)}>
+            <IonItem key={index} onClick={() => handleSuggestionClick(suggestion)}>
               {suggestion.title}
             </IonItem>
           ))}
