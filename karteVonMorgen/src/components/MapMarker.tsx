@@ -9,7 +9,7 @@ interface MapMarkerProps {
   data: any;
   onClick: (data: any) => void;
   iconUrl: string; // Add this line
-  
+
 }
 
 const MapMarker: React.FC<MapMarkerProps> = ({ position, data, onClick, iconUrl }) => {
@@ -52,13 +52,17 @@ const MapMarker: React.FC<MapMarkerProps> = ({ position, data, onClick, iconUrl 
                 {Object.entries(data).map(([key, value]) => (
                   <IonItem key={key}>
                     <IonLabel>
-                      <h2>{value.title}</h2>
-                      {Object.entries(value).map(([propKey, propValue]) => (
-                        <p key={propKey}>{`${propKey}: ${typeof propValue === 'object' ? JSON.stringify(propValue) : String(propValue)}`}</p>
-                      ))}
+                      {typeof value === 'object' && value !== null && 'title' in value
+                        && typeof value.title === 'string' && <h2>{value.title}</h2>}
+                      {typeof value === 'object' && value !== null
+                        && Object.entries(value).map(([propKey, propValue]) => (
+                          <p key={propKey}>{`${propKey}: ${typeof propValue === 'object'
+                            ? JSON.stringify(propValue) : String(propValue)}`}</p>
+                        ))}
                     </IonLabel>
                   </IonItem>
                 ))}
+
               </IonList>
             </div>
           </IonModal>
