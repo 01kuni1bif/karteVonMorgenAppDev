@@ -18,8 +18,22 @@ const MapMarker: React.FC<MapMarkerProps> = ({ position, data, onClick, iconUrl 
     iconSize: [32, 32],
     iconAnchor: [16, 32],
   });
-  
+
   const openModalWithContent = () => {
+    console.log(data);
+    
+    /* const isEvent = !data.hasOwnProperty('categories');
+
+    if (isEvent) {
+      console.log("es ist ein event");
+      setIsEvent(true)
+
+
+    } else {
+      console.log("es ist kein event");
+      setIsEvent(false)
+
+    } */
     onClick(data);
     setIsModalOpen(true); // Open the modal
   };

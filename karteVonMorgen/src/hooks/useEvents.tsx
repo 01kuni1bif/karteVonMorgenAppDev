@@ -9,24 +9,29 @@ async function fetchData(bbox: string | null, tag: string | null, text: string |
     let url1 = `${API_BASE_URL}${ENDPOINTS.EVENTS.path}/${id}`
     const response1 = await axios.get(url1);
 
-    if (response1.data && Array.isArray(response1.data)) {
+    console.log(response1);
+
+    if (response1) {
       // Create a new array to store the extracted data
-      const extractedData = response1.data.map(item => ({
-        lat: item.lat || 0,
-        lng: item.lng || 0,
-        title: item.title || '',
-        id: item.id || '',
-        description: item.description || '',
-        street: item.street || '',
-        zip: item.zip || '',
-        city: item.city || '',
-        country: item.country || '',
-        email: item.email || '',
-        telephone: item.telephone || '',
-        homepage: item.homepage || '',
-        tags: item.tags || [],
-        organizer: item.organizer || '',
-      }));
+      const responseData = response1.data;
+      const extractedData = [{
+        lat: responseData.lat || 0,
+        lng: responseData.lng || 0,
+        title: responseData.title || '',
+        id: responseData.id || '',
+        description: responseData.description || '',
+        street: responseData.street || '',
+        zip: responseData.zip || '',
+        city: responseData.city || '',
+        country: responseData.country || '',
+        email: responseData.email || '',
+        telephone: responseData.telephone || '',
+        homepage: responseData.homepage || '',
+        tags: responseData.tags || [],
+        organizer: responseData.organizer || '',
+      }];
+
+      console.log(extractedData);
       return extractedData;
     } else {
       throw new Error('Invalid data in API response');
@@ -97,6 +102,8 @@ export function useEvents(
         .catch(error => console.error('Error fetching data:', error));
     }
   }, [bbox, tag, text, created_by, id]);
+
+  console.log(data);
 
   return data;
 }

@@ -21,11 +21,31 @@ const MyMap: React.FC<{
     window.dispatchEvent(new Event('resize'));
   });
 
+
+
   const map = useMap();
   const { southWest, northEast } = useMapBounds();
-  const [selectedEventId, setSelectedEventId] = useState("");
-  const [selectedEntryId, setSelectedEntryId] = useState(""); 
-  const [selectedEntryData, setSelectedEntryData] = useState<any>(null); 
+  const [selectedId, setSelectedId] = useState("");
+  const [isEvent, setIsEvent] = useState(false);
+
+
+
+  const handleMarkerClick = (item: any) => {
+    setSelectedId(item.id);
+    console.log(selectedId);
+
+
+  };
+  /* const handleIsEvent = (isEvent: boolean) => {
+    setIsEvent(isEvent);
+  } */
+
+  const selectedEntryData = useEntries(selectedId);
+  
+  const selectedEventData = useEvents(null,null,null,null,selectedId);
+
+  console.log(selectedEventData);
+  
   /* const selectedEntryData = useEntries(selectedEntryId); */
 
   /* useEffect(() => {
@@ -47,27 +67,14 @@ const MyMap: React.FC<{
       // Beispiel: fetchData(selectedEntryId);
     }
   }, [selectedEntryId]); */
-  
-  
+
+
   /* if(Array.isArray(selectedEntryData) && selectedEntryData.length === 0 || selectedEntryData === null ){
     console.log("im in");
     selectedEntryData = useEvents(null,null,null,null,selectedEntryId);
     console.log(selectedEntryData);
   } */
 
-  const handleMarkerClick = (item: any) => {
-
-    const isEvent = !item.hasOwnProperty('categories');
-    if(isEvent){
-      console.log("geht er rein?")
-      setSelectedEventId(item.id)
-    }else{setSelectedEntryId(item.id);}
-   
-
-
-    console.log("preitem");
-    console.log(item);
-  };
 
   useEffect(() => {
     map.setView(mapCenter, mapZoom);
@@ -107,13 +114,13 @@ const MyMap: React.FC<{
           iconUrl = '/assets/images/icons8-marker-48-blue.png';
         }
         return (
-          <MapMarker key={index} position={[item.lat, item.lng]} onClick={() => handleMarkerClick(item)} data={selectedEntryData} iconUrl={iconUrl} />
+          <MapMarker key={index} position={[item.lat, item.lng]} onClick={() => handleMarkerClick(item)}/*  setIsEvent={() => handleIsEvent(isEvent)} */ data={selectedEntryData}  iconUrl={iconUrl} />
         );
       })}
       {(selectedCategories.length === 0 || selectedCategories.includes('events')) && eventData && eventData.map((item: { lat: number; lng: number; id: string }, index: React.Key | null | undefined) => {
         let iconUrl = '/assets/images/icons8-marker-48.png'; // Yellow marker for events
         return (
-          <MapMarker key={index} position={[item.lat, item.lng]} onClick={() => handleMarkerClick(item)} data={selectedEntryData} iconUrl={iconUrl} />
+          <MapMarker key={index} position={[item.lat, item.lng]} onClick={() => handleMarkerClick(item)} /* setIsEvent={() => handleIsEvent(isEvent)} */ data={selectedEventData}  iconUrl={iconUrl} />
         );
       })}
     </React.Fragment>
