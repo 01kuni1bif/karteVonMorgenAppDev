@@ -1,40 +1,35 @@
 // ModalComponent.tsx
 import React from 'react';
-import {
-  IonModal,
-  IonContent,
-  IonList,
-  IonItem,
-  IonLabel,
-} from '@ionic/react';
+import { IonItem, IonLabel, IonList, IonModal } from '@ionic/react';
 
-interface ModalProps {
-  showModal: boolean;
-  setShowModal: (show: boolean) => void;
-  content: any;
+interface ModalComponentProps {
+  data: any;
+  isOpen: boolean;
+  onDidDismiss: () => void;
 }
 
-const ModalComponent: React.FC<ModalProps> = ({ showModal, setShowModal, content }) => {
-
+const ModalComponent: React.FC<ModalComponentProps> = ({ data, isOpen, onDidDismiss }) => {
   return (
-    <IonContent className="ion-padding">
-      <IonModal isOpen={showModal} onDidDismiss={() => setShowModal(false)} initialBreakpoint={0.75} breakpoints={[0, 0.75]}>
-        <IonContent className="ion-padding">
-          <IonList>
-            {content && Object.entries(content).map(([key, value]) => (
-              <IonItem key={key}>
-                <IonLabel>
-                  <h2>{key}</h2>
-                  <p>{typeof value === 'object' ? JSON.stringify(value) : String(value)}</p>
-                </IonLabel>
-              </IonItem>
-            ))}
-          </IonList>
-        </IonContent>
-      </IonModal>
-    </IonContent>
-
+    <IonModal isOpen={isOpen} onDidDismiss={onDidDismiss}>
+      <div className="ion-padding">
+        <IonList>
+          {data && Object.entries(data).map(([key, value]) => (
+            <IonItem key={key}>
+              <IonLabel>
+                {typeof value === 'object' && value !== null && 'title' in value
+                  && typeof value.title === 'string' && <h2>{value.title}</h2>}
+                {typeof value === 'object' && value !== null
+                  && Object.entries(value).map(([propKey, propValue]) => (
+                    <p key={propKey}>{`${propKey}: ${typeof propValue === 'object'
+                      ? JSON.stringify(propValue) : String(propValue)}`}</p>
+                  ))}
+              </IonLabel>
+            </IonItem>
+          ))}
+        </IonList>
+      </div>
+    </IonModal>
   );
-};
+}
 
 export default ModalComponent;

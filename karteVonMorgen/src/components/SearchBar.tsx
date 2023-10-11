@@ -1,5 +1,5 @@
 // SearchBar.tsx
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { IonItem, IonList, IonSearchbar } from '@ionic/react';
 import { useSearch } from '../hooks/useSearch';
 import { LatLngExpression } from 'leaflet';

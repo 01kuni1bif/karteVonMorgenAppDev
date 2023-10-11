@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Marker } from 'react-leaflet';
 import L from 'leaflet';
-import { IonItem, IonLabel, IonList, IonModal } from '@ionic/react';
+import ModalComponent from './ModalComponent'; // Import the ModalComponent
 
 interface MapMarkerProps {
   position: [number, number];
@@ -13,43 +13,24 @@ interface MapMarkerProps {
 
 const MapMarker: React.FC<MapMarkerProps> = ({ position, data, onClick, iconUrl }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModalWithContent = () => {
-    onClick(data);
-    setIsModalOpen(true); // Modal öffnen
-  };
-  const closeModal = () => {
-    setIsModalOpen(false); // Modal schließen
-  };
   const customIcon = new L.Icon({
     iconUrl: iconUrl,
     iconSize: [32, 32],
     iconAnchor: [16, 32],
   });
+  
+  const openModalWithContent = () => {
+    onClick(data);
+    setIsModalOpen(true); // Open the modal
+  };
+  const closeModal = () => {
+    setIsModalOpen(false); // Close the modal
+  };
 
   return (
     <React.Fragment>
       <Marker position={position} icon={customIcon} eventHandlers={{ click: openModalWithContent }}>
-        {data !== null && (
-          <IonModal isOpen={isModalOpen} onDidDismiss={closeModal}>
-            <div className="ion-padding">
-              <IonList>
-                {Object.entries(data).map(([key, value]) => (
-                  <IonItem key={key}>
-                    <IonLabel>
-                      {typeof value === 'object' && value !== null && 'title' in value
-                        && typeof value.title === 'string' && <h2>{value.title}</h2>}
-                      {typeof value === 'object' && value !== null
-                        && Object.entries(value).map(([propKey, propValue]) => (
-                          <p key={propKey}>{`${propKey}: ${typeof propValue === 'object'
-                            ? JSON.stringify(propValue) : String(propValue)}`}</p>
-                        ))}
-                    </IonLabel>
-                  </IonItem>
-                ))}
-              </IonList>
-            </div>
-          </IonModal>
-        )}
+        <ModalComponent data={data} isOpen={isModalOpen} onDidDismiss={closeModal} /> {/* Use the ModalComponent */}
       </Marker>
     </React.Fragment>
   );
