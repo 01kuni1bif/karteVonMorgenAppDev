@@ -3,13 +3,16 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig';
 
-async function fetchData(bbox: string | null, tag: string | null, text: string | null, created_by: string | null, id: string | null) {
+async function fetchData(
+  bbox: string | null,
+  tag: string | null,
+  text: string | null,
+  created_by: string | null,
+  id: string | null) {
 
   if (id) {
     let url1 = `${API_BASE_URL}${ENDPOINTS.EVENTS.path}/${id}`
     const response1 = await axios.get(url1);
-
-    console.log(response1);
 
     if (response1) {
       // Create a new array to store the extracted data
@@ -31,7 +34,6 @@ async function fetchData(bbox: string | null, tag: string | null, text: string |
         organizer: responseData.organizer || '',
       }];
 
-      console.log(extractedData);
       return extractedData;
     } else {
       throw new Error('Invalid data in API response');
@@ -75,6 +77,7 @@ async function fetchData(bbox: string | null, tag: string | null, text: string |
         tags: item.tags || [],
         organizer: item.organizer || '',
       }));
+
       return extractedData;
     } else {
       throw new Error('Invalid data in API response');
@@ -102,8 +105,6 @@ export function useEvents(
         .catch(error => console.error('Error fetching data:', error));
     }
   }, [bbox, tag, text, created_by, id]);
-
-  console.log(data);
 
   return data;
 }

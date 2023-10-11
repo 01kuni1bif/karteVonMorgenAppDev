@@ -23,7 +23,6 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ data, isOpen, onDidDism
                     <p key={propKey}>{`${propKey}: ${typeof propValue === 'object'
                       ? JSON.stringify(propValue) : String(propValue)}`}</p>
                   ))}
-                  
               </IonLabel>
             </IonItem>
           ))}

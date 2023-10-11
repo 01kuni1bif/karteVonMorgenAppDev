@@ -13,68 +13,23 @@ const MyMap: React.FC<{
   data: any,
   eventData: any,
   selectedCategories: string[],
-  mapCenter: LatLngExpression, // Add this line
-  mapZoom: number, // Add this line
+  mapCenter: LatLngExpression,
+  mapZoom: number,
 }> = ({ setBbox, data, eventData, selectedCategories, mapCenter, mapZoom }) => {
+
+  const map = useMap();
+  const { southWest, northEast } = useMapBounds();
+  const [selectedId, setSelectedId] = useState("");
+  const selectedEntryData = useEntries(selectedId);
+  const selectedEventData = useEvents(null, null, null, null, selectedId);
 
   useIonViewDidEnter(() => {
     window.dispatchEvent(new Event('resize'));
   });
 
-
-
-  const map = useMap();
-  const { southWest, northEast } = useMapBounds();
-  const [selectedId, setSelectedId] = useState("");
-  const [isEvent, setIsEvent] = useState(false);
-
-
-
   const handleMarkerClick = (item: any) => {
     setSelectedId(item.id);
-    console.log(selectedId);
-
-
   };
-  /* const handleIsEvent = (isEvent: boolean) => {
-    setIsEvent(isEvent);
-  } */
-
-  const selectedEntryData = useEntries(selectedId);
-  
-  const selectedEventData = useEvents(null,null,null,null,selectedId);
-
-  console.log(selectedEventData);
-  
-  /* const selectedEntryData = useEntries(selectedEntryId); */
-
-  /* useEffect(() => {
-    if (selectedEventId) {
-      setSelectedEntryData(useEvents(null,null,null,null,selectedEventId));
-      // Hier können Sie den Code ausführen, der ausgeführt werden soll,
-      // wenn sich selectedEventId ändert.
-      // Dieser Effekt wird nur ausgeführt, wenn selectedEventId vorhanden ist.
-      // Beispiel: fetchData(selectedEventId);
-    }
-  }, [selectedEventId]);
-  
-  useEffect(() => {
-    if (selectedEntryId) {
-      setSelectedEntryData(useEntries(selectedEntryData));
-      // Hier können Sie den Code ausführen, der ausgeführt werden soll,
-      // wenn sich selectedEntryId ändert.
-      // Dieser Effekt wird nur ausgeführt, wenn selectedEntryId vorhanden ist.
-      // Beispiel: fetchData(selectedEntryId);
-    }
-  }, [selectedEntryId]); */
-
-
-  /* if(Array.isArray(selectedEntryData) && selectedEntryData.length === 0 || selectedEntryData === null ){
-    console.log("im in");
-    selectedEntryData = useEvents(null,null,null,null,selectedEntryId);
-    console.log(selectedEntryData);
-  } */
-
 
   useEffect(() => {
     map.setView(mapCenter, mapZoom);
@@ -107,20 +62,20 @@ const MyMap: React.FC<{
         if (selectedCategories.length > 0 && !selectedCategories.some(category => item.categories.includes(category))) {
           return null; // Skip this item if its category is not selected
         }
-        let iconUrl = '/assets/images/icons8-marker-48-yellow.png'; // Default marker
+        let iconUrl = '/assets/images/icons8-marker-48-yellow.png';
         if (item.categories.includes('2cd00bebec0c48ba9db761da48678134')) { // Check if the categories array includes the category ID for initiatives
           iconUrl = '/assets/images/icons8-marker-48-lightgreen.png';
         } else if (item.categories.includes('77b3c33a92554bcf8e8c2c86cedd6f6f')) { // Check if the categories array includes the category ID for companies
           iconUrl = '/assets/images/icons8-marker-48-blue.png';
         }
         return (
-          <MapMarker key={index} position={[item.lat, item.lng]} onClick={() => handleMarkerClick(item)}/*  setIsEvent={() => handleIsEvent(isEvent)} */ data={selectedEntryData}  iconUrl={iconUrl} />
+          <MapMarker key={index} position={[item.lat, item.lng]} onClick={() => handleMarkerClick(item)} data={selectedEntryData} iconUrl={iconUrl} />
         );
       })}
       {(selectedCategories.length === 0 || selectedCategories.includes('events')) && eventData && eventData.map((item: { lat: number; lng: number; id: string }, index: React.Key | null | undefined) => {
-        let iconUrl = '/assets/images/icons8-marker-48.png'; // Yellow marker for events
+        let iconUrl = '/assets/images/icons8-marker-48.png';
         return (
-          <MapMarker key={index} position={[item.lat, item.lng]} onClick={() => handleMarkerClick(item)} /* setIsEvent={() => handleIsEvent(isEvent)} */ data={selectedEventData}  iconUrl={iconUrl} />
+          <MapMarker key={index} position={[item.lat, item.lng]} onClick={() => handleMarkerClick(item)} data={selectedEventData} iconUrl={iconUrl} />
         );
       })}
     </React.Fragment>

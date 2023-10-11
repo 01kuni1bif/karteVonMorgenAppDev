@@ -15,10 +15,10 @@ const bounds: LatLngBoundsLiteral = [[-90, -180], [90, 180]];
 const MapComponent: React.FC = () => {
   const [categories, setCategories] = useState<string[]>([]);
   const [bbox, setBbox] = useState<string | null>(null);
-  const data = useSearch(bbox, null, categories);
+  const searchData = useSearch(bbox, null, categories);
   const eventData = useEvents(bbox);
-  const [mapCenter, setMapCenter] = useState<LatLngExpression>([51.1657, 10.4515]); // Standardmäßige Kartenmitte
-  const [mapZoom, setMapZoom] = useState<number>(6); // Standardmäßiger Zoom-Level
+  const [mapCenter, setMapCenter] = useState<LatLngExpression>([51.1657, 10.4515]);
+  const [mapZoom, setMapZoom] = useState<number>(6);
 
   return (
     <div id="map">
@@ -38,11 +38,11 @@ const MapComponent: React.FC = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <MyMap
           setBbox={setBbox}
-          data={data}
+          data={searchData}
           eventData={eventData}
           selectedCategories={categories}
-          mapCenter={mapCenter} // Add this line
-          mapZoom={mapZoom} // Add this line
+          mapCenter={mapCenter}
+          mapZoom={mapZoom}
         />
       </MapContainer>
     </div>

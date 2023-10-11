@@ -23,6 +23,7 @@ async function fetchClusterEventData(bbox: any[], limit: number) {
       lng: item.lng,
       title: item.title,
     }));
+    
     return data;
   } else {
     throw new Error('Invalid data in API response');

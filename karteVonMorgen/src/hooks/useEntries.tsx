@@ -10,8 +10,8 @@ async function fetchData(id: string) {
   }
   const formattedEntryIds = id.replace(/,/g, '%2C');
   const url = `${API_BASE_URL}${ENDPOINTS.ENTRIES.path}/${formattedEntryIds}`;
-
   const response = await axios.get(url);
+  
   return response.data;
 }
 

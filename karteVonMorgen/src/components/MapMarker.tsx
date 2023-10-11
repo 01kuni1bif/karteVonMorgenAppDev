@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Marker } from 'react-leaflet';
 import L from 'leaflet';
-import ModalComponent from './ModalComponent'; // Import the ModalComponent
+import ModalComponent from './ModalComponent';
 
 interface MapMarkerProps {
   position: [number, number];
@@ -20,31 +20,18 @@ const MapMarker: React.FC<MapMarkerProps> = ({ position, data, onClick, iconUrl 
   });
 
   const openModalWithContent = () => {
-    console.log(data);
-    
-    /* const isEvent = !data.hasOwnProperty('categories');
-
-    if (isEvent) {
-      console.log("es ist ein event");
-      setIsEvent(true)
-
-
-    } else {
-      console.log("es ist kein event");
-      setIsEvent(false)
-
-    } */
     onClick(data);
-    setIsModalOpen(true); // Open the modal
+    setIsModalOpen(true);
   };
+
   const closeModal = () => {
-    setIsModalOpen(false); // Close the modal
+    setIsModalOpen(false);
   };
 
   return (
     <React.Fragment>
       <Marker position={position} icon={customIcon} eventHandlers={{ click: openModalWithContent }}>
-        <ModalComponent data={data} isOpen={isModalOpen} onDidDismiss={closeModal} /> {/* Use the ModalComponent */}
+        <ModalComponent data={data} isOpen={isModalOpen} onDidDismiss={closeModal} />
       </Marker>
     </React.Fragment>
   );

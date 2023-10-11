@@ -21,7 +21,6 @@ async function fetchData(bbox: string, org_tag: string | null, categories: strin
     .join('&');
 
   const url = `${API_BASE_URL}${ENDPOINTS.SEARCH.path}?${query}`;
-
   const response = await axios.get(url);
 
   if (response.data && response.data.visible && Array.isArray(response.data.visible)) {

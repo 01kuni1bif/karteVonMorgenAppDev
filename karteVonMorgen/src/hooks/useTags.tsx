@@ -5,7 +5,6 @@ import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig';
 
 async function fetchData() {
   const url = `${API_BASE_URL}${ENDPOINTS.TAGS.path}`;
-
   const response = await axios.get(url);
 
   if (response.data) {
