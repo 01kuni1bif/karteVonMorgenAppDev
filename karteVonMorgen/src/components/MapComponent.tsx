@@ -1,6 +1,5 @@
 // MapComponent.tsx
 import React, { useState } from 'react';
-import { IonContent, IonModal } from '@ionic/react'; // Import IonPage
 import { MapContainer, TileLayer } from 'react-leaflet';
 import { LatLngBoundsLiteral, LatLngExpression } from "leaflet";
 import { useSearch } from '../hooks/useSearch';
@@ -14,22 +13,12 @@ import "./MapComponent.css"
 const bounds: LatLngBoundsLiteral = [[-90, -180], [90, 180]];
 
 const MapComponent: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState('');
   const [categories, setCategories] = useState<string[]>([]);
   const [bbox, setBbox] = useState<string | null>(null);
   const data = useSearch(bbox, null, categories);
   const eventData = useEvents(bbox);
   const [mapCenter, setMapCenter] = useState<LatLngExpression>([51.1657, 10.4515]); // Standardmäßige Kartenmitte
   const [mapZoom, setMapZoom] = useState<number>(6); // Standardmäßiger Zoom-Level
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-  const center: LatLngExpression = [51.1657, 10.4515]; // Center of Germany
 
   return (
     <div id="map">
@@ -51,13 +40,11 @@ const MapComponent: React.FC = () => {
           setBbox={setBbox}
           data={data}
           eventData={eventData}
-          selectedCategories={categories} />
+          selectedCategories={categories}
+          mapCenter={mapCenter} // Add this line
+          mapZoom={mapZoom} // Add this line
+        />
       </MapContainer>
-      <IonModal isOpen={isModalOpen} onDidDismiss={closeModal}>
-        <IonContent>
-          <div>{modalContent}</div>
-        </IonContent>
-      </IonModal>
     </div>
   );
 };

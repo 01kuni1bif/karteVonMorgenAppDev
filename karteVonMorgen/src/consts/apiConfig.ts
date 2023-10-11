@@ -35,7 +35,7 @@ export const ENDPOINTS = {
       end_min: null,
       end_max: null,
       created_by: '',
-      id:'',
+      id: '',
     },
   },
   ENTRIES: {

@@ -1,8 +1,8 @@
 // useEntries.tsx
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { API_BASE_URL } from '../consts/apiConfig/apiConfig';
-import { ENDPOINTS } from '../consts/apiConfig/apiConfig';
+import { API_BASE_URL } from '../consts/apiConfig';
+import { ENDPOINTS } from '../consts/apiConfig';
 
 async function fetchData(id: string) {
   if (!id) {

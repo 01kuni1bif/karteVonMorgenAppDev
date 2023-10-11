@@ -1,7 +1,7 @@
 // useSearch.tsx
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig/apiConfig';
+import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig';
 
 async function fetchData(bbox: string, org_tag: string | null, categories: string[] | null, text: string | null, ids: string | null, tags: string | null, status: string | null, limit: number | null) {
   const queryParams = {
