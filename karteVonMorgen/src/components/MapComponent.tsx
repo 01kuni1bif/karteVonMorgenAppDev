@@ -1,5 +1,5 @@
 // MapComponent.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import { LatLngBoundsLiteral, LatLngExpression } from "leaflet";
 import { useSearch } from '../hooks/useSearch';
@@ -26,8 +26,11 @@ const MapComponent: React.FC = () => {
 
   const handleMarkerClick = (item: any) => {
     setSelectedId(item.id);
-    console.log("Id:", selectedId)
   };
+
+  useEffect(() => {
+    console.log(selectedId);
+  }, [selectedId])
 
   return (
     <div id="map">
