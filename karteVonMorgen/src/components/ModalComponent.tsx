@@ -3,17 +3,17 @@ import React from 'react';
 import { IonItem, IonLabel, IonList, IonModal } from '@ionic/react';
 
 interface ModalComponentProps {
-  data: any;
-  isOpen: boolean;
+  modalEntry: any;
+  isModalOpen: boolean;
   onDidDismiss: () => void;
 }
 
-const ModalComponent: React.FC<ModalComponentProps> = ({ data, isOpen, onDidDismiss }) => {
+const ModalComponent: React.FC<ModalComponentProps> = ({ modalEntry, isModalOpen, onDidDismiss }) => {
   return (
-    <IonModal isOpen={isOpen} onDidDismiss={onDidDismiss}>
+    <IonModal isOpen={isModalOpen} onDidDismiss={onDidDismiss}>
       <div className="ion-padding">
         <IonList>
-          {data && Object.entries(data).map(([key, value]) => (
+          {modalEntry && Object.entries(modalEntry).map(([key, value]) => (
             <IonItem key={key}>
               <IonLabel>
                 {typeof value === 'object' && value !== null && 'title' in value

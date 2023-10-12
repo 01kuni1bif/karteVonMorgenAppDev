@@ -6,12 +6,12 @@ import ModalComponent from './ModalComponent';
 
 interface MapMarkerProps {
   position: [number, number];
-  data: any;
+  modalEntry: any;
   onClick: (data: any) => void;
   iconUrl: string;
 }
 
-const MapMarker: React.FC<MapMarkerProps> = ({ position, data, onClick, iconUrl }) => {
+const MapMarker: React.FC<MapMarkerProps> = ({ position, modalEntry, onClick, iconUrl }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const customIcon = new L.Icon({
     iconUrl: iconUrl,
@@ -20,7 +20,7 @@ const MapMarker: React.FC<MapMarkerProps> = ({ position, data, onClick, iconUrl 
   });
 
   const openModalWithContent = () => {
-    onClick(data);
+    onClick(modalEntry);
     setIsModalOpen(true);
   };
 
@@ -31,7 +31,7 @@ const MapMarker: React.FC<MapMarkerProps> = ({ position, data, onClick, iconUrl 
   return (
     <React.Fragment>
       <Marker position={position} icon={customIcon} eventHandlers={{ click: openModalWithContent }}>
-        <ModalComponent data={data} isOpen={isModalOpen} onDidDismiss={closeModal} />
+        <ModalComponent modalEntry={modalEntry} isModalOpen={isModalOpen} onDidDismiss={closeModal} />
       </Marker>
     </React.Fragment>
   );

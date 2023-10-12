@@ -10,28 +10,33 @@ import MapMarker from './MapMarker';
 
 interface MyMapProps {
   setBbox: (bbox: string | null) => void,
-  data: any,
+  searchData: any,
   eventData: any,
   selectedCategories: string[],
   mapCenter: LatLngExpression,
   mapZoom: number,
+  selectedEntryData: any,
+  selectedEventData: any,
+  handleMarkerClick: (item: any) => void
 }
 
 const MyMap: React.FC<MyMapProps> = ({
-  setBbox, data, eventData, selectedCategories, mapCenter, mapZoom }) => {
+  setBbox,
+  searchData,
+  eventData,
+  selectedCategories,
+  mapCenter,
+  mapZoom,
+  selectedEntryData,
+  selectedEventData,
+  handleMarkerClick
+}) => {
   const map = useMap();
   const { southWest, northEast } = useMapBounds();
-  const [selectedId, setSelectedId] = useState("");
-  const selectedEntryData = useEntries(selectedId);
-  const selectedEventData = useEvents(null, null, null, null, selectedId);
 
   useIonViewDidEnter(() => {
     window.dispatchEvent(new Event('resize'));
   });
-
-  const handleMarkerClick = (item: any) => {
-    setSelectedId(item.id);
-  };
 
   useEffect(() => {
     map.setView(mapCenter, mapZoom);
@@ -61,7 +66,7 @@ const MyMap: React.FC<MyMapProps> = ({
 
   return (
     <React.Fragment>
-      {data && data.map((item: { lat: number; lng: number; id: string; categories: string[] },
+      {searchData && searchData.map((item: { lat: number; lng: number; id: string; categories: string[] },
         index: React.Key | null | undefined) => {
         if (selectedCategories.length > 0 && !selectedCategories.some(category =>
           item.categories.includes(category))) {
@@ -75,7 +80,7 @@ const MyMap: React.FC<MyMapProps> = ({
         }
         return (
           <MapMarker key={index} position={[item.lat, item.lng]} onClick={() =>
-            handleMarkerClick(item)} data={selectedEntryData} iconUrl={iconUrl} />
+            handleMarkerClick(item)} modalEntry={selectedEntryData} iconUrl={iconUrl} />
         );
       })}
       {(selectedCategories.length === 0 || selectedCategories.includes('events')) && eventData &&
@@ -84,7 +89,7 @@ const MyMap: React.FC<MyMapProps> = ({
           let iconUrl = '/assets/images/icons8-marker-48.png';
           return (
             <MapMarker key={index} position={[item.lat, item.lng]} onClick={() =>
-              handleMarkerClick(item)} data={selectedEventData} iconUrl={iconUrl} />
+              handleMarkerClick(item)} modalEntry={selectedEventData} iconUrl={iconUrl} />
           );
         })}
     </React.Fragment>

@@ -9,17 +9,20 @@ import './SearchBar.css';
 interface SearchBarProps {
   setMapCenter: (center: LatLngExpression) => void;
   setMapZoom: (zoom: number) => void;
+  handleMarkerClick: (item: any) => void;
 }
 
 interface Suggestion {
   title: string;
+  id: string;
   lat: number;
   lng: number;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ setMapCenter, setMapZoom }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ setMapCenter, setMapZoom, handleMarkerClick }) => {
   const bbox = "42.27,-7.97,52.58,38.25";
   const [searchQuery, setSearchQuery] = useState('');
+  const [showSuggestions, setShowSuggestions] = useState(true);
   const searchResults: Suggestion[] = useSearch(bbox, null, null, searchQuery);
 
   // Sort the searchResults by letter-based relevance (case-insensitive)
@@ -52,12 +55,18 @@ const SearchBar: React.FC<SearchBarProps> = ({ setMapCenter, setMapZoom }) => {
   const handleSuggestionClick = (suggestion: Suggestion) => {
     // Calculate new map center and zoom based on the suggestion's coordinates
     const newMapCenter: LatLngExpression = [suggestion.lat, suggestion.lng];
-    const newMapZoom = 16; // You can adjust the desired zoom level
+    const newMapZoom = 16;
 
     // Update the map center and zoom
     setMapCenter(newMapCenter);
     setMapZoom(newMapZoom);
+
+    setShowSuggestions(false);
+
+    // Trigger a handleMarkerClick event
+    handleMarkerClick(suggestion.id);
   };
+
 
   return (
     <div>
@@ -66,9 +75,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ setMapCenter, setMapZoom }) => {
         onIonInput={(e) => {
           const query = e.target.value || '';
           setSearchQuery(query);
+          setShowSuggestions(true);
         }}
       />
-      {searchQuery.length > 0 && sortedSearchResults.length > 0 && (
+      {showSuggestions && searchQuery.length > 0 && sortedSearchResults.length > 0 && (
         <IonList>
           {sortedSearchResults.map((suggestion: Suggestion, index) => (
             <IonItem key={index} onClick={() => handleSuggestionClick(suggestion)}>
