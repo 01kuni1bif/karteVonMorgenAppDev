@@ -64,7 +64,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ setMapCenter, setMapZoom, handleM
     setShowSuggestions(false);
 
     // Trigger a handleMarkerClick event
-    handleMarkerClick(suggestion.id);
+    handleMarkerClick(suggestion);
   };
 
 
