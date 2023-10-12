@@ -1,5 +1,5 @@
 // ModalComponent.tsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IonItem, IonLabel, IonList, IonModal } from '@ionic/react';
 
 interface ModalComponentProps {
@@ -8,7 +8,62 @@ interface ModalComponentProps {
   onDidDismiss: () => void;
 }
 
+const transformData = (data1: any) => {
+  if (!data1) {
+    return [];
+  }
+  const data2 = [data1]
+
+
+
+  const data3 = data2.map((item: {
+    organizer: any;
+    registration: any;
+    homepage: any;
+    tags: any;
+    telephone: any;
+    email: any;
+    state: any;
+    counry: any;
+    city: any;
+    zip: any;
+    street: any; lat: any; lng: any; title: any; description: any;
+  }) => ({
+    lat: item.lat,
+    lng: item.lng,
+    title: item.title,
+    description: item.description,
+    street: item.street,
+    zip: item.zip,
+    city: item.city,
+    country: item.counry,
+    state: item.state,
+    email: item.email,
+    telephone: item.telephone,
+    tags: item.tags,
+    homepage: item.homepage,
+    registration: item.registration,
+    organizer: item.organizer,
+  }));
+  return data3;
+
+
+
+};
+
+
+
 const ModalComponent: React.FC<ModalComponentProps> = ({ data, isOpen, onDidDismiss }) => {
+
+  // Hilfsfunktion zum Umwandeln des Objekts in ein Array
+
+  /* let transformedData;
+
+  useEffect(() => { transformedData = transformData(data); }, [data]) */
+
+
+
+
   return (
     <IonModal isOpen={isOpen} onDidDismiss={onDidDismiss}>
       <div className="ion-padding">
@@ -23,7 +78,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ data, isOpen, onDidDism
                     <p key={propKey}>{`${propKey}: ${typeof propValue === 'object'
                       ? JSON.stringify(propValue) : String(propValue)}`}</p>
                   ))}
-                  
+
               </IonLabel>
             </IonItem>
           ))}
