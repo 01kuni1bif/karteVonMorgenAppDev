@@ -1,9 +1,9 @@
 // SearchBar.tsx
 import { useState } from 'react';
 import { IonItem, IonList, IonSearchbar } from '@ionic/react';
-import { useSearch } from '../hooks/useSearch';
 import { LatLngExpression } from 'leaflet';
 import * as stringSimilarity from 'string-similarity';
+import { useSearch } from '../hooks/useSearch';
 import './SearchBar.css';
 
 interface SearchBarProps {

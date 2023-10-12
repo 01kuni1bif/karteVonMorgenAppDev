@@ -1,9 +1,11 @@
 // Categories.tsx
-import { IonButton, IonCol, IonGrid, IonRow, IonSearchbar } from '@ionic/react';
+import { IonButton, IonCol, IonGrid, IonRow } from '@ionic/react';
 import React, { useState } from 'react';
 import "./Categories.css"
 
-const Categories: React.FC<{ onCategoryChange: (categories: string[]) => void }> = ({ onCategoryChange }) => {
+interface CategoriesProps { onCategoryChange: (categories: string[]) => void }
+
+const Categories: React.FC<CategoriesProps> = ({ onCategoryChange }) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const handleButtonClick = (category: string) => {
@@ -21,17 +23,32 @@ const Categories: React.FC<{ onCategoryChange: (categories: string[]) => void }>
       <IonGrid>
         <IonRow>
           <IonCol size="4" >
-            <IonButton expand="block" className="custom-button" onClick={() => handleButtonClick('2cd00bebec0c48ba9db761da48678134')} color={selectedCategories.includes('2cd00bebec0c48ba9db761da48678134') ? 'primary' : 'light'}>
+            <IonButton
+              expand="block"
+              className="custom-button"
+              onClick={() => handleButtonClick('2cd00bebec0c48ba9db761da48678134')}
+              color={selectedCategories.includes('2cd00bebec0c48ba9db761da48678134') ? 'primary' : 'light'}
+            >
               initiatives
             </IonButton>
           </IonCol>
           <IonCol size="4" >
-            <IonButton expand="block" className="custom-button" onClick={() => handleButtonClick('77b3c33a92554bcf8e8c2c86cedd6f6f')} color={selectedCategories.includes('77b3c33a92554bcf8e8c2c86cedd6f6f') ? 'primary' : 'light'}>
+            <IonButton
+              expand="block"
+              className="custom-button"
+              onClick={() => handleButtonClick('77b3c33a92554bcf8e8c2c86cedd6f6f')}
+              color={selectedCategories.includes('77b3c33a92554bcf8e8c2c86cedd6f6f') ? 'primary' : 'light'}
+            >
               companies
             </IonButton>
           </IonCol>
           <IonCol size="4" >
-            <IonButton expand="block" className="custom-button" onClick={() => handleButtonClick('events')} color={selectedCategories.includes('events') ? 'primary' : 'light'}>
+            <IonButton
+              expand="block"
+              className="custom-button"
+              onClick={() => handleButtonClick('events')}
+              color={selectedCategories.includes('events') ? 'primary' : 'light'}
+            >
               events
             </IonButton>
           </IonCol>
