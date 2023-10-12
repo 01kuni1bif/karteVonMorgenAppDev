@@ -61,11 +61,11 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ data, isOpen, onDidDism
 
   useEffect(() => { transformedData = transformData(data); }, [data]) */
 
-
+{/* backdropBreakpoint={1} backdropDismiss={false} showBackdrop={false} initialBreakpoint={0.5} breakpoints={[0, 0.25, 0.5, 0.75, 1] */}
 
 
   return (
-    <IonModal isOpen={isOpen} onDidDismiss={onDidDismiss}>
+    <IonModal isOpen={isOpen} backdropDismiss={false} onDidDismiss={onDidDismiss} backdropBreakpoint={1} showBackdrop={false} initialBreakpoint={0.5} breakpoints={[0, 0.25, 0.5, 0.75, 1]}   >
       <div className="ion-padding">
         <IonList>
           {data && Object.entries(data).map(([key, value]) => (
