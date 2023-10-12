@@ -67,7 +67,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ setMapCenter, setMapZoom, handleM
     handleMarkerClick(suggestion);
   };
 
-
   return (
     <div>
       <IonSearchbar
