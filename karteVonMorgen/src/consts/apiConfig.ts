@@ -18,9 +18,11 @@ export const ENDPOINTS = {
       status: '',
     },
   },
+
   TAGS: {
     path: '/tags',
   },
+
   EVENTS: {
     path: '/events',
     defaultQueryParams: {
@@ -38,6 +40,7 @@ export const ENDPOINTS = {
       id: '',
     },
   },
+
   ENTRIES: {
     path: '/entries',
     defaultQueryParams: {
