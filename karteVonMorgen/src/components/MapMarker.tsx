@@ -11,7 +11,7 @@ interface MapMarkerProps {
   iconUrl: string;
 }
 
-const MapMarker: React.FC<MapMarkerProps> = ({ position, modalEntry, onClick, iconUrl }) => {
+const MapMarker: React.FC<MapMarkerProps> = ({ position, modalEntry, onClick, iconUrl}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const customIcon = new L.Icon({
     iconUrl: iconUrl,

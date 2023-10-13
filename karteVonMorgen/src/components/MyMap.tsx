@@ -80,7 +80,7 @@ const MyMap: React.FC<MyMapProps> = ({
         }
         return (
           <MapMarker key={index} position={[item.lat, item.lng]} onClick={() =>
-            handleMarkerClick(item)} modalEntry={selectedEntryData} iconUrl={iconUrl} />
+            handleMarkerClick(item)} modalEntry={selectedEntryData}  iconUrl={iconUrl} />
         );
       })}
       {(selectedCategories.length === 0 || selectedCategories.includes('events')) && eventData &&
