@@ -25,6 +25,7 @@ const Categories: React.FC<CategoriesProps> = ({ onCategoryChange }) => {
           <IonCol size="4" >
             <IonButton
               expand="block"
+              shape="round"
               className="custom-button"
               onClick={() => handleButtonClick('2cd00bebec0c48ba9db761da48678134')}
               color={selectedCategories.includes('2cd00bebec0c48ba9db761da48678134') ? 'primary' : 'light'}
@@ -34,6 +35,7 @@ const Categories: React.FC<CategoriesProps> = ({ onCategoryChange }) => {
           </IonCol>
           <IonCol size="4" >
             <IonButton
+              shape="round"
               expand="block"
               className="custom-button"
               onClick={() => handleButtonClick('77b3c33a92554bcf8e8c2c86cedd6f6f')}
@@ -44,6 +46,7 @@ const Categories: React.FC<CategoriesProps> = ({ onCategoryChange }) => {
           </IonCol>
           <IonCol size="4" >
             <IonButton
+              shape="round"
               expand="block"
               className="custom-button"
               onClick={() => handleButtonClick('events')}

@@ -10,7 +10,7 @@ interface ModalComponentProps {
 
 const ModalComponent: React.FC<ModalComponentProps> = ({ modalEntry, isModalOpen, onDidDismiss }) => {
   return (
-    <IonModal isOpen={isModalOpen} onDidDismiss={onDidDismiss}>
+    <IonModal isOpen={isModalOpen} onDidDismiss={onDidDismiss} backdropBreakpoint={1} showBackdrop={true} initialBreakpoint={0.5} breakpoints={[0, 0.25, 0.5, 0.75, 1]}>
       <div className="ion-padding">
         <IonList>
           {modalEntry && Object.entries(modalEntry).map(([key, value]) => (

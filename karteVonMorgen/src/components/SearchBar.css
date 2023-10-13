@@ -1,1 +1,6 @@
 /* SearchBar.css */
+.ion-searchbar {
+    
+        --border-radius: 20px;
+      
+}
