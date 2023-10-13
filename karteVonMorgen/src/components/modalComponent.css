@@ -1,0 +1,5 @@
+.IonLabel {
+    text-overflow: clip; /* Dies stellt sicher, dass der Text einfach abgeschnitten wird, ohne '...' hinzuzufügen */
+    white-space: normal; /* Dies ermöglicht es dem Text, auf die nächste Zeile umzubrechen */
+  }
+  
