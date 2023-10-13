@@ -29,10 +29,19 @@ const MapComponent: React.FC = () => {
 
   const forwardSearchId = (item: any) => {
     setSearchId(item.id);
+    setIsModalOpen(true);
+    if(isModalOpen){
+      setIsModalOpen(false);
+    }
   };
 
   const forwardEventId = (item: any) => {
     setEventId(item.id);
+    setIsModalOpen(true);
+    if(isModalOpen){
+      setIsModalOpen(false);
+    }
+    
   };
 
   const openModal = () => {
@@ -83,7 +92,7 @@ const MapComponent: React.FC = () => {
           forwardSearchId={forwardSearchId}
           forwardEventId={forwardEventId}
         />
-        <ModalComponent modalEntry={selectedEntryData} isModalOpen={isModalOpen} onDidDismiss={closeModal} />
+        <ModalComponent modalEntry={selectedEntryData} isModalOpen={isModalOpen}  />
       </MapContainer>
     </div>
   );
