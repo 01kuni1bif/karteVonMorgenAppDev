@@ -4,8 +4,6 @@ import { useIonViewDidEnter } from '@ionic/react';
 import { useMap } from 'react-leaflet';
 import { LatLngExpression } from 'leaflet';
 import { useMapBounds } from '../hooks/useMapBounds';
-import { useEntries } from '../hooks/useEntries';
-import { useEvents } from '../hooks/useEvents';
 import MapMarker from './MapMarker';
 
 interface MyMapProps {
@@ -17,7 +15,7 @@ interface MyMapProps {
   mapZoom: number,
   selectedEntryData: any,
   selectedEventData: any,
-  handleMarkerClick: (item: any) => void
+  forwardId: (item: any) => void
 }
 
 const MyMap: React.FC<MyMapProps> = ({
@@ -29,7 +27,7 @@ const MyMap: React.FC<MyMapProps> = ({
   mapZoom,
   selectedEntryData,
   selectedEventData,
-  handleMarkerClick
+  forwardId
 }) => {
   const map = useMap();
   const { southWest, northEast } = useMapBounds();
@@ -80,7 +78,7 @@ const MyMap: React.FC<MyMapProps> = ({
         }
         return (
           <MapMarker key={index} position={[item.lat, item.lng]} onClick={() =>
-            handleMarkerClick(item)} modalEntry={selectedEntryData}  iconUrl={iconUrl} />
+            forwardId(item)} modalEntry={selectedEntryData} iconUrl={iconUrl} />
         );
       })}
       {(selectedCategories.length === 0 || selectedCategories.includes('events')) && eventData &&
@@ -89,7 +87,7 @@ const MyMap: React.FC<MyMapProps> = ({
           let iconUrl = '/assets/images/icons8-marker-48.png';
           return (
             <MapMarker key={index} position={[item.lat, item.lng]} onClick={() =>
-              handleMarkerClick(item)} modalEntry={selectedEventData} iconUrl={iconUrl} />
+              forwardId(item)} modalEntry={selectedEventData} iconUrl={iconUrl} />
           );
         })}
     </React.Fragment>

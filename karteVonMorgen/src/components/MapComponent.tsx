@@ -26,7 +26,7 @@ const MapComponent: React.FC = () => {
   const selectedEventData = useEvents(null, null, null, null, selectedId);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleMarkerClick = (item: any) => {
+  const forwardId = (item: any) => {
     setSelectedId(item.id);
   };
 
@@ -50,7 +50,7 @@ const MapComponent: React.FC = () => {
         <SearchBar
           setMapCenter={setMapCenter}
           setMapZoom={setMapZoom}
-          handleMarkerClick={handleMarkerClick}
+          forwardId={forwardId}
           openModal={openModal}
         />
       </div>
@@ -75,7 +75,7 @@ const MapComponent: React.FC = () => {
           mapZoom={mapZoom}
           selectedEntryData={selectedEntryData}
           selectedEventData={selectedEventData}
-          handleMarkerClick={handleMarkerClick}
+          forwardId={forwardId}
         />
         <ModalComponent modalEntry={selectedEntryData} isModalOpen={isModalOpen} onDidDismiss={closeModal} />
       </MapContainer>
