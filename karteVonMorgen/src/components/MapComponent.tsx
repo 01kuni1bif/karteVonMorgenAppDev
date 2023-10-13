@@ -10,6 +10,7 @@ import MyMap from './MyMap';
 import 'leaflet/dist/leaflet.css';
 import "./MapComponent.css"
 import { useEntries } from '../hooks/useEntries';
+import ModalComponent from './ModalComponent';
 
 const bounds: LatLngBoundsLiteral = [[-90, -180], [90, 180]];
 
@@ -23,14 +24,24 @@ const MapComponent: React.FC = () => {
   const [selectedId, setSelectedId] = useState("");
   const selectedEntryData = useEntries(selectedId);
   const selectedEventData = useEvents(null, null, null, null, selectedId);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleMarkerClick = (item: any) => {
     setSelectedId(item.id);
   };
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   useEffect(() => {
     console.log(selectedId);
-  }, [selectedId])
+    console.log(isModalOpen);
+  }, [selectedId, isModalOpen])
 
   return (
     <div id="map">
@@ -40,6 +51,7 @@ const MapComponent: React.FC = () => {
           setMapCenter={setMapCenter}
           setMapZoom={setMapZoom}
           handleMarkerClick={handleMarkerClick}
+          openModal={openModal}
         />
       </div>
       <MapContainer
@@ -65,6 +77,7 @@ const MapComponent: React.FC = () => {
           selectedEventData={selectedEventData}
           handleMarkerClick={handleMarkerClick}
         />
+        <ModalComponent modalEntry={selectedEntryData} isModalOpen={isModalOpen} onDidDismiss={closeModal} />
       </MapContainer>
     </div>
   );
