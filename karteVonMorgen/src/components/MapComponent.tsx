@@ -28,6 +28,11 @@ const MapComponent: React.FC = () => {
 
   const handleMarkerClick = (item: any) => {
     setSelectedId(item.id);
+    setIsModalOpen(true);
+    if(isModalOpen){
+      setIsModalOpen(false);
+    }
+    
   };
 
   const openModal = () => {
@@ -76,8 +81,9 @@ const MapComponent: React.FC = () => {
           selectedEntryData={selectedEntryData}
           selectedEventData={selectedEventData}
           handleMarkerClick={handleMarkerClick}
+          isModalOpen={isModalOpen}
         />
-        <ModalComponent modalEntry={selectedEntryData} isModalOpen={isModalOpen} onDidDismiss={closeModal} />
+        <ModalComponent modalEntry={selectedEntryData} isModalOpen={isModalOpen}  />
       </MapContainer>
     </div>
   );

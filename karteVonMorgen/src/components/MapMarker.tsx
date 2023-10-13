@@ -9,10 +9,11 @@ interface MapMarkerProps {
   modalEntry: any;
   onClick: (data: any) => void;
   iconUrl: string;
+  isModalOpen: boolean;
 }
 
-const MapMarker: React.FC<MapMarkerProps> = ({ position, modalEntry, onClick, iconUrl}) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const MapMarker: React.FC<MapMarkerProps> = ({ position, modalEntry, onClick, iconUrl, isModalOpen}) => {
+ /*  const [isModalOpen, setIsModalOpen] = useState(false); */
   const customIcon = new L.Icon({
     iconUrl: iconUrl,
     iconSize: [32, 32],
@@ -21,17 +22,17 @@ const MapMarker: React.FC<MapMarkerProps> = ({ position, modalEntry, onClick, ic
 
   const openModalWithContent = () => {
     onClick(modalEntry);
-    setIsModalOpen(true);
+    
   };
 
-  const closeModal = () => {
+ /*  const closeModal = () => {
     setIsModalOpen(false);
-  };
+  }; */
 
   return (
     <React.Fragment>
       <Marker position={position} icon={customIcon} eventHandlers={{ click: openModalWithContent }}>
-        <ModalComponent modalEntry={modalEntry} isModalOpen={isModalOpen} onDidDismiss={closeModal} />
+        {/* <ModalComponent modalEntry={modalEntry} isModalOpen={isModalOpen}  /> */}
       </Marker>
     </React.Fragment>
   );
