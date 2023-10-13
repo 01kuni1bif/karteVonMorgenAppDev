@@ -95,12 +95,12 @@ export function useEvents(
   const [data, setData] = useState<{ lat: any; lng: any; title: any; id: any; description: any; street: any; zip: any; city: any; country: any; email: any; telephone: any; homepage: any; tags: any; organizer: any; }[]>([]);
 
   useEffect(() => {
-    if (bbox && bbox !== "") {
-      fetchData(bbox, tag, text, created_by, null)
+    if (id) {
+      fetchData(null, null, null, null, id)
         .then(setData)
         .catch(error => console.error('Error fetching data:', error));
-    } else if (id) {
-      fetchData(null, null, null, null, id)
+    } else {
+      fetchData(bbox, tag, text, created_by, null)
         .then(setData)
         .catch(error => console.error('Error fetching data:', error));
     }

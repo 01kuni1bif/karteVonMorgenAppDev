@@ -4,13 +4,13 @@ import { MapContainer, TileLayer } from 'react-leaflet';
 import { LatLngBoundsLiteral, LatLngExpression } from "leaflet";
 import { useSearch } from '../hooks/useSearch';
 import { useEvents } from '../hooks/useEvents';
+import { useEntries } from '../hooks/useEntries';
 import SearchBar from './SearchBar';
 import Categories from './Categories';
+import ModalComponent from './ModalComponent';
 import MyMap from './MyMap';
 import 'leaflet/dist/leaflet.css';
 import "./MapComponent.css"
-import { useEntries } from '../hooks/useEntries';
-import ModalComponent from './ModalComponent';
 
 const bounds: LatLngBoundsLiteral = [[-90, -180], [90, 180]];
 
@@ -21,13 +21,18 @@ const MapComponent: React.FC = () => {
   const eventData = useEvents(bbox);
   const [mapCenter, setMapCenter] = useState<LatLngExpression>([51.1657, 10.4515]);
   const [mapZoom, setMapZoom] = useState<number>(6);
-  const [selectedId, setSelectedId] = useState("");
-  const selectedEntryData = useEntries(selectedId);
-  const selectedEventData = useEvents(null, null, null, null, selectedId);
+  const [searchId, setSearchId] = useState("");
+  const [eventId, setEventId] = useState("")
+  const selectedEntryData = useEntries(searchId);
+  const selectedEventData = useEvents(null, null, null, null, eventId);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const forwardId = (item: any) => {
-    setSelectedId(item.id);
+  const forwardSearchId = (item: any) => {
+    setSearchId(item.id);
+  };
+
+  const forwardEventId = (item: any) => {
+    setEventId(item.id);
   };
 
   const openModal = () => {
@@ -39,9 +44,9 @@ const MapComponent: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log(selectedId);
+    console.log(searchId);
     console.log(isModalOpen);
-  }, [selectedId, isModalOpen])
+  }, [searchId, isModalOpen])
 
   return (
     <div id="map">
@@ -50,7 +55,7 @@ const MapComponent: React.FC = () => {
         <SearchBar
           setMapCenter={setMapCenter}
           setMapZoom={setMapZoom}
-          forwardId={forwardId}
+          forwardId={forwardSearchId}
           openModal={openModal}
         />
       </div>
@@ -75,7 +80,8 @@ const MapComponent: React.FC = () => {
           mapZoom={mapZoom}
           selectedEntryData={selectedEntryData}
           selectedEventData={selectedEventData}
-          forwardId={forwardId}
+          forwardSearchId={forwardSearchId}
+          forwardEventId={forwardEventId}
         />
         <ModalComponent modalEntry={selectedEntryData} isModalOpen={isModalOpen} onDidDismiss={closeModal} />
       </MapContainer>

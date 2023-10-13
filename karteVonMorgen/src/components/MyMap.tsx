@@ -15,7 +15,8 @@ interface MyMapProps {
   mapZoom: number,
   selectedEntryData: any,
   selectedEventData: any,
-  forwardId: (item: any) => void
+  forwardSearchId: (item: any) => void
+  forwardEventId: (item: any) => void
 }
 
 const MyMap: React.FC<MyMapProps> = ({
@@ -27,7 +28,8 @@ const MyMap: React.FC<MyMapProps> = ({
   mapZoom,
   selectedEntryData,
   selectedEventData,
-  forwardId
+  forwardSearchId,
+  forwardEventId
 }) => {
   const map = useMap();
   const { southWest, northEast } = useMapBounds();
@@ -78,7 +80,7 @@ const MyMap: React.FC<MyMapProps> = ({
         }
         return (
           <MapMarker key={index} position={[item.lat, item.lng]} onClick={() =>
-            forwardId(item)} modalEntry={selectedEntryData} iconUrl={iconUrl} />
+            forwardSearchId(item)} modalEntry={selectedEntryData} iconUrl={iconUrl} />
         );
       })}
       {(selectedCategories.length === 0 || selectedCategories.includes('events')) && eventData &&
@@ -87,7 +89,7 @@ const MyMap: React.FC<MyMapProps> = ({
           let iconUrl = '/assets/images/icons8-marker-48.png';
           return (
             <MapMarker key={index} position={[item.lat, item.lng]} onClick={() =>
-              forwardId(item)} modalEntry={selectedEventData} iconUrl={iconUrl} />
+              forwardEventId(item)} modalEntry={selectedEventData} iconUrl={iconUrl} />
           );
         })}
     </React.Fragment>
