@@ -7,6 +7,7 @@ import { useSearch } from '../hooks/useSearch';
 import { SearchData } from '../consts/types';
 import './SearchBar.css';
 
+
 interface SearchBarProps {
   setMapCenter: (center: LatLngExpression) => void;
   setMapZoom: (zoom: number) => void;
@@ -67,7 +68,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ setMapCenter, setMapZoom, forward
     <div>
       <IonSearchbar
         className='ion-searchbar'
-        placeholder='Wonach suchst du? (# für Tags)'
+        placeholder='Wonach suchst du?'
         onIonInput={(e) => {
           const query = e.target.value || '';
           setSearchQuery(query);
