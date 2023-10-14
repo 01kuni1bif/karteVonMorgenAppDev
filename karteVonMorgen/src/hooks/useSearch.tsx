@@ -1,35 +1,37 @@
 // useSearch.tsx
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig';
+import { API_BASE_URL, ENDPOINTS } from '../consts/apiEndpoints';
+import { SearchData } from '../consts/types';
 
 async function fetchData(
   bbox: string,
   org_tag: string | null,
   categories: string[] | null,
   text: string | null,
-  ids: string | null,
-  tags: string | null,
+  ids: string[] | null,
+  tags: string[] | null,
   status: string | null,
   limit: number | null
-) {
+): Promise<SearchData> {
   const queryParams = {
-    bbox: bbox,
+    bbox: bbox || '42.27,-7.97,52.58,38.25',
     org_tag: org_tag,
-    categories: categories ? categories.join(',') : null, // Join the categories array into a comma-separated string
+    categories: categories ? categories.join('%2C') : null,
     text: text,
-    ids: ids,
-    tags: tags,
+    ids: ids ? ids.join('%2C') : null,
+    tags: tags ? tags.join('%2C') : null,
     status: status,
     limit: limit,
   };
 
   const query = Object.entries(queryParams)
-    .filter(([key, value]) => value !== null)
-    .map(([key, value]) => `${key}=${encodeURIComponent(value as string | number)}`)
+    .filter(([_, value]) => value !== null)
+    .map(([_, value]) => `${_}=${encodeURIComponent(value as string | number)}`)
     .join('&');
 
   const url = `${API_BASE_URL}${ENDPOINTS.SEARCH.path}?${query}`;
+
   const response = await axios.get(url);
 
   if (response.data && response.data.visible && Array.isArray(response.data.visible)) {
@@ -39,16 +41,26 @@ async function fetchData(
   }
 }
 
-export function useSearch(
-  bbox: string | null = null,
-  org_tag: string | null = null,
-  categories: string[] | null = null,
-  text: string | null = null,
-  ids: string | null = null,
-  tags: string | null = null,
-  status: string | null = null,
-  limit: number | null = null
-) {
+export function useSearch({
+  bbox = null,
+  org_tag = null,
+  categories = null,
+  text = null,
+  ids = null,
+  tags = null,
+  status = null,
+  limit = null
+}: {
+  bbox?: string | null,
+  org_tag?: string | null,
+  categories?: string[] | null,
+  text?: string | null,
+  ids?: string[] | null,
+  tags?: string[] | null,
+  status?: string | null,
+  limit?: number | null
+} = {}): SearchData {
+  
   const [data, setData] = useState<any>(null);
 
   useEffect(() => {
@@ -63,7 +75,5 @@ export function useSearch(
     }
   }, [bbox, org_tag, categories, text, ids, tags, status, limit]);
 
-  return data; // Return isLoading along with data
+  return data;
 }
-
-

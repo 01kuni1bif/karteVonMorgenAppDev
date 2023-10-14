@@ -1,105 +1,43 @@
-// ModalComponent.tsx
-import React, { useEffect } from 'react';
+import React from 'react';
 import { IonItem, IonLabel, IonList, IonModal } from '@ionic/react';
+import { EntryData, EventData } from '../consts/types';
 import './modalComponent.css'
 
 interface ModalComponentProps {
-  modalEntry: any;
+  modalData: EntryData | EventData | null;
   isModalOpen: boolean;
- 
 }
 
+const ModalComponent: React.FC<ModalComponentProps> = ({ modalData, isModalOpen }) => {
 
-/* [
-  {
-    "title": "string",
-    "description": "string",
-    "lat": 37.2,
-    "lng": 120.7,
-    "street": "string",
-    "zip": "string",
-    "city": "string",
-    "country": "string",
-    "state": "string",
-    "contact_name": "John Smith",
-    "email": "john.smith@example.com",
-    "telephone": "001 123456789",
-    "homepage": "https://www.slowtec.de/",
-    "opening_hours": "24/7",
-    "founded_on": "1945-10-24",
-    "categories": [
-      "string"
-    ],
-    "tags": [
-      "organic",
-      "non-profit"
-    ],
-    "image_url": "https://www.slowtec.de/",
-    "image_link_url": "https://www.slowtec.de/",
-    "links": [
-      {
-        "url": "https://www.slowtec.de/",
-        "title": "string",
-        "description": "string"
-      }
-    ],
-    "license": "ODbL-1.0",
-    "id": "7cee99c287094a94acbdcf29ffff2e85",
-    "version": 0,
-    "created": 0,
-    "ratings": [
-      "string"
-    ]
-  }
-] */
+  // Define the keys that are present in both EntryData and EventData
+  const commonKeys = [
+    'title',
+    'description',
+    'street',
+    'zip',
+    'city',
+    'state',
+    'country',
+    'homepage',
+    'telephone',
+    'email',
+    'lat',
+    'lng',
+    'tags',
+    'id',
+  ];
 
-
-
-
-const ModalComponent: React.FC<ModalComponentProps> = ({ modalEntry, isModalOpen }) => {
-  useEffect(() => {console.log(isModalOpen);
-  },[isModalOpen])
   return (
-    <IonModal isOpen={isModalOpen}  backdropBreakpoint={1} showBackdrop={true} initialBreakpoint={0.5} breakpoints={[0, 0.25, 0.5, 0.75, 1]}>
+    <IonModal isOpen={isModalOpen} backdropBreakpoint={1} showBackdrop={true} initialBreakpoint={0.5} breakpoints={[0, 0.25, 0.5, 0.75, 1]}>
       <div className="ion-padding">
         <IonList>
-          {modalEntry && Object.entries(modalEntry).map(([key, value]) => (
+          {modalData && commonKeys.map(key => (
             <IonItem key={key}>
               <IonLabel>
-                {modalEntry &&
-                  <IonItem>
-                    <IonLabel >
-                      {value.title && <h2>{value.title}</h2>}
-
-                      {modalEntry &&
-                        <IonItem>
-                          <IonLabel >
-
-                            {value.description && <p className='IonLabel'>{`Beschreibung: ${value.description}`}</p>}
-
-
-                          </IonLabel>
-                        </IonItem>
-                      }
-
-                      {value.email && <p>{`Email: ${value.email}`}</p>}
-                      {value.street && <p>{`Straße: ${value.street}`}</p>}
-                      {value.zip && <p>{`PLZ: ${value.zip}`}</p>}
-                      {value.city && <p>{`Stadt: ${value.city}`}</p>}
-                      {value.state && <p>{`Land: ${value.state}`}</p>}
-                      {value.tags && <p className='IonLabel'>{`Tags: ${value.tags}`}</p>}
-                      
-                      {value.contact_name && <p>{`Kontakt: ${value.contact_name}`}</p>}
-                      {value.email && <p>{`Email-Adresse: ${value.email}`}</p>}
-                      {value.telephone && <p>{`Telefon: ${value.telephone}`}</p>}
-                      {value.homepage && <p>{`Homepage: ${value.homepage}`}</p>}
-                      {value.opening_hours && <p>{`Öffnungszeiten: ${value.opening_hours}`}</p>}
-
-                    </IonLabel>
-                  </IonItem>
+                {(modalData as any)[key] &&
+                  <p>{`${key.charAt(0).toUpperCase() + key.slice(1)}: ${(modalData as any)[key]}`}</p>
                 }
-
-
               </IonLabel>
             </IonItem>
           ))}

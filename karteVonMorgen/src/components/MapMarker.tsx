@@ -1,19 +1,16 @@
 // MapMarker.tsx
-import React, { useState } from 'react';
+import React from 'react';
 import { Marker } from 'react-leaflet';
 import L from 'leaflet';
-import ModalComponent from './ModalComponent';
 
 interface MapMarkerProps {
   position: [number, number];
   modalEntry: any;
   onClick: (data: any) => void;
   iconUrl: string;
-  isModalOpen: boolean;
 }
 
-const MapMarker: React.FC<MapMarkerProps> = ({ position, modalEntry, onClick, iconUrl, isModalOpen}) => {
- /*  const [isModalOpen, setIsModalOpen] = useState(false); */
+const MapMarker: React.FC<MapMarkerProps> = ({ position, modalEntry, onClick, iconUrl }) => {
   const customIcon = new L.Icon({
     iconUrl: iconUrl,
     iconSize: [32, 32],
@@ -22,18 +19,11 @@ const MapMarker: React.FC<MapMarkerProps> = ({ position, modalEntry, onClick, ic
 
   const openModalWithContent = () => {
     onClick(modalEntry);
-    
   };
-
- /*  const closeModal = () => {
-    setIsModalOpen(false);
-  }; */
 
   return (
     <React.Fragment>
-      <Marker position={position} icon={customIcon} eventHandlers={{ click: openModalWithContent }}>
-        {/* <ModalComponent modalEntry={modalEntry} isModalOpen={isModalOpen}  /> */}
-      </Marker>
+      <Marker position={position} icon={customIcon} eventHandlers={{ click: openModalWithContent }} />
     </React.Fragment>
   );
 }

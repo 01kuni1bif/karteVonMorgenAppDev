@@ -1,5 +1,5 @@
 // MyMap.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useIonViewDidEnter } from '@ionic/react';
 import { useMap } from 'react-leaflet';
 import { LatLngExpression } from 'leaflet';

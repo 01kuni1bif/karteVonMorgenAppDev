@@ -1,5 +1,5 @@
 // MapComponent.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import { LatLngBoundsLiteral, LatLngExpression } from "leaflet";
 import { useSearch } from '../hooks/useSearch';
@@ -9,6 +9,7 @@ import SearchBar from './SearchBar';
 import Categories from './Categories';
 import ModalComponent from './ModalComponent';
 import MyMap from './MyMap';
+import { EntryData, EventData } from '../consts/types'
 import 'leaflet/dist/leaflet.css';
 import "./MapComponent.css"
 
@@ -17,20 +18,20 @@ const bounds: LatLngBoundsLiteral = [[-90, -180], [90, 180]];
 const MapComponent: React.FC = () => {
   const [categories, setCategories] = useState<string[]>([]);
   const [bbox, setBbox] = useState<string | null>(null);
-  const searchData = useSearch(bbox, null, categories);
-  const eventData = useEvents(bbox);
+  const searchData = useSearch({ bbox: bbox, categories: categories });
+  const eventData = useEvents({ bbox: bbox });
   const [mapCenter, setMapCenter] = useState<LatLngExpression>([51.1657, 10.4515]);
   const [mapZoom, setMapZoom] = useState<number>(6);
-  const [searchId, setSearchId] = useState("");
+  const [searchId, setSearchId] = useState<string>("");
   const [eventId, setEventId] = useState("")
-  const selectedEntryData = useEntries(searchId);
-  const selectedEventData = useEvents(null, null, null, null, eventId);
+  const selectedEntryData: EntryData[] | null = useEntries({ ids: [searchId] });
+  const selectedEventData: EventData[] | null = useEvents({ id: eventId });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const forwardSearchId = (item: any) => {
     setSearchId(item.id);
     setIsModalOpen(true);
-    if(isModalOpen){
+    if (isModalOpen) {
       setIsModalOpen(false);
     }
   };
@@ -38,10 +39,9 @@ const MapComponent: React.FC = () => {
   const forwardEventId = (item: any) => {
     setEventId(item.id);
     setIsModalOpen(true);
-    if(isModalOpen){
+    if (isModalOpen) {
       setIsModalOpen(false);
     }
-    
   };
 
   const openModal = () => {
@@ -52,10 +52,13 @@ const MapComponent: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  useEffect(() => {
-    console.log(searchId);
-    console.log(isModalOpen);
-  }, [searchId, isModalOpen])
+  let modalData: EntryData | EventData | null = null;
+
+  if (searchId && selectedEntryData && selectedEntryData.length > 0) {
+    modalData = selectedEntryData[0];
+  } else if (eventId && selectedEventData) {
+    modalData = selectedEventData[0];
+  }
 
   return (
     <div id="map">
@@ -92,7 +95,7 @@ const MapComponent: React.FC = () => {
           forwardSearchId={forwardSearchId}
           forwardEventId={forwardEventId}
         />
-        <ModalComponent modalEntry={selectedEntryData} isModalOpen={isModalOpen}  />
+        <ModalComponent modalData={modalData} isModalOpen={isModalOpen} />
       </MapContainer>
     </div>
   );

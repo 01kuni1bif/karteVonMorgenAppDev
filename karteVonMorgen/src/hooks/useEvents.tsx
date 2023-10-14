@@ -1,110 +1,97 @@
 // useEvents.tsx
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { API_BASE_URL, ENDPOINTS } from '../consts/apiConfig';
+import { API_BASE_URL, ENDPOINTS } from '../consts/apiEndpoints';
+import { EventData } from '../consts/types';
 
-async function fetchData(
-  bbox: string | null,
-  tag: string | null,
-  text: string | null,
-  created_by: string | null,
-  id: string | null) {
+async function fetchDataById(id: string): Promise<EventData[]> {
+  const url = `${API_BASE_URL}${ENDPOINTS.EVENTS_BY_ID.path}${id}`;
+  const response = await axios.get(url);
 
-  if (id) {
-    let url1 = `${API_BASE_URL}${ENDPOINTS.EVENTS.path}/${id}`
-    const response1 = await axios.get(url1);
-
-    if (response1) {
-      // Create a new array to store the extracted data
-      const responseData = response1.data;
-      const extractedData = [{
-        lat: responseData.lat || 0,
-        lng: responseData.lng || 0,
-        title: responseData.title || '',
-        id: responseData.id || '',
-        description: responseData.description || '',
-        street: responseData.street || '',
-        zip: responseData.zip || '',
-        city: responseData.city || '',
-        country: responseData.country || '',
-        email: responseData.email || '',
-        telephone: responseData.telephone || '',
-        homepage: responseData.homepage || '',
-        tags: responseData.tags || [],
-        organizer: responseData.organizer || '',
-      }];
-
-      return extractedData;
-    } else {
-      throw new Error('Invalid data in API response');
-    }
-
+  if (response.data) {
+    return [response.data];
   } else {
-    if (!bbox) {
-      bbox = '42.27,-7.97,52.58,38.25';
-    }
-
-    let url = `${API_BASE_URL}${ENDPOINTS.EVENTS.path}`;
-    const queryParams = {
-      bbox: bbox,
-      tag: tag,
-      text: text,
-      created_by: created_by,
-    };
-
-    if (bbox) url += `?bbox=${encodeURIComponent(queryParams.bbox)}`;
-    if (tag) url += `&org_tag=${encodeURIComponent(queryParams.tag as string)}`;
-    if (text) url += `&categories=${encodeURIComponent(queryParams.text as string)}`;
-    if (created_by) url += `&text=${encodeURIComponent(queryParams.created_by as string)}`;
-
-    const response = await axios.get(url);
-
-    if (response.data && Array.isArray(response.data)) {
-      // Create a new array to store the extracted data
-      const extractedData = response.data.map(item => ({
-        lat: item.lat || 0,
-        lng: item.lng || 0,
-        title: item.title || '',
-        id: item.id || '',
-        description: item.description || '',
-        street: item.street || '',
-        zip: item.zip || '',
-        city: item.city || '',
-        country: item.country || '',
-        email: item.email || '',
-        telephone: item.telephone || '',
-        homepage: item.homepage || '',
-        tags: item.tags || [],
-        organizer: item.organizer || '',
-      }));
-
-      return extractedData;
-    } else {
-      throw new Error('Invalid data in API response');
-    }
+    throw new Error('Invalid data in API response');
   }
 }
 
-export function useEvents(
-  bbox: string | null = null,
-  tag: string | null = null,
-  text: string | null = null,
-  created_by: string | null = null,
-  id: string | null = null
-) {
-  const [data, setData] = useState<{ lat: any; lng: any; title: any; id: any; description: any; street: any; zip: any; city: any; country: any; email: any; telephone: any; homepage: any; tags: any; organizer: any; }[]>([]);
+async function fetchDataByParams(
+  bbox: string,
+  limit: number | null,
+  tag: string | null,
+  start_min: number | null,
+  start_max: number | null,
+  end_min: number | null,
+  end_max: number | null,
+  text: string | null,
+  created_by: string | null
+): Promise<EventData[]> {
+
+  const queryParams = {
+    bbox: bbox || '42.27,-7.97,52.58,38.25',
+    limit: limit,
+    org_tag: tag,
+    start_min: start_min,
+    start_max: start_max,
+    end_min: end_min,
+    end_max: end_max,
+    text: text,
+    created_by: created_by
+  };
+
+  const query = Object.entries(queryParams)
+    .filter(([_, value]) => value !== null)
+    .map(([_, value]) => `${_}=${encodeURIComponent(value as string | number)}`)
+    .join('&');
+
+  const url = `${API_BASE_URL}${ENDPOINTS.EVENTS_BY_PARAMS.path}?${query}`;
+
+  const response = await axios.get(url);
+
+  if (response.data && Array.isArray(response.data)) {
+    return response.data;
+  } else {
+    throw new Error('Invalid data in API response');
+  }
+}
+
+export function useEvents({
+  bbox = null,
+  limit = null,
+  tag = null,
+  start_min = null,
+  start_max = null,
+  end_min = null,
+  end_max = null,
+  text = null,
+  created_by = null,
+  id = null
+}: {
+  bbox?: string | null,
+  limit?: number | null,
+  tag?: string | null,
+  start_min?: number | null,
+  start_max?: number | null,
+  end_min?: number | null,
+  end_max?: number | null,
+  text?: string | null,
+  created_by?: string | null,
+  id?: string | null
+} = {}): EventData[] {
+
+  const [data, setData] = useState<EventData[]>([]); // Use EventData[] for type safety
 
   useEffect(() => {
     if (id) {
-      fetchData(null, null, null, null, id)
+      fetchDataById(id)
         .then(setData)
         .catch(error => console.error('Error fetching data:', error));
-    } else {
-      fetchData(bbox, tag, text, created_by, null)
+    } else if (bbox) {
+      fetchDataByParams(bbox, limit, tag, start_min, start_max, end_min, end_max, text, created_by)
         .then(setData)
         .catch(error => console.error('Error fetching data:', error));
     }
-  }, [bbox, tag, text, created_by, id]);
+  }, [bbox, limit, tag, start_min, start_max, end_min, end_max, text, created_by, id]);
 
   return data;
 }
