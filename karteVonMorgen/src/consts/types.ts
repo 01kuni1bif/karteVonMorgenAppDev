@@ -9,7 +9,8 @@ interface AvgRatings {
   transparency: number;
 }
 
-interface SearchEntry {
+// Array
+export interface SearchData {
   id: string;
   status: 'created' | 'confirmed' | 'rejected' | 'archived';
   lat: number;
@@ -21,17 +22,13 @@ interface SearchEntry {
   ratings: AvgRatings;
 }
 
-export interface SearchData {
-  visible: SearchEntry[];
-  invisible: SearchEntry[];
-}
-
 interface CustomLink {
   url: string;
   title?: string;
   description?: string;
 }
 
+// Array
 export interface EntryData {
   title: string;
   description: string;
@@ -60,6 +57,7 @@ export interface EntryData {
   ratings?: string[];
 }
 
+// Array or Object with /events/id
 export interface EventData {
   id: string;
   title: string;

@@ -90,8 +90,6 @@ const MapComponent: React.FC = () => {
           selectedCategories={categories}
           mapCenter={mapCenter}
           mapZoom={mapZoom}
-          selectedEntryData={selectedEntryData}
-          selectedEventData={selectedEventData}
           forwardSearchId={forwardSearchId}
           forwardEventId={forwardEventId}
         />

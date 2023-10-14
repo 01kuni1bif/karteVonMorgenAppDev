@@ -1,9 +1,10 @@
 // SearchBar.tsx
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IonItem, IonList, IonSearchbar } from '@ionic/react';
 import { LatLngExpression } from 'leaflet';
 import * as stringSimilarity from 'string-similarity';
 import { useSearch } from '../hooks/useSearch';
+import { SearchData } from '../consts/types';
 import './SearchBar.css';
 
 interface SearchBarProps {
@@ -13,18 +14,11 @@ interface SearchBarProps {
   openModal: () => void;
 }
 
-interface Suggestion {
-  title: string;
-  id: string;
-  lat: number;
-  lng: number;
-}
-
 const SearchBar: React.FC<SearchBarProps> = ({ setMapCenter, setMapZoom, forwardId, openModal }) => {
   const bbox = "42.27,-7.97,52.58,38.25";
   const [searchQuery, setSearchQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(true);
-  const searchResults: Suggestion[] = useSearch(bbox, null, null, searchQuery);
+  const searchResults: SearchData = useSearch({ bbox: bbox, text: searchQuery });
 
   // Sort the searchResults by letter-based relevance (case-insensitive)
   const sortedSearchResults = searchResults && Array.isArray(searchResults)
@@ -53,7 +47,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ setMapCenter, setMapZoom, forward
     }).slice(0, 15) // Limit to the top 15 suggestions
     : [];
 
-  const handleSuggestionClick = (suggestion: Suggestion) => {
+  const handleSuggestionClick = (suggestion: SearchData) => {
     // Calculate new map center and zoom based on the suggestion's coordinates
     const newMapCenter: LatLngExpression = [suggestion.lat, suggestion.lng];
     const newMapZoom = 16;
@@ -82,7 +76,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ setMapCenter, setMapZoom, forward
       />
       {showSuggestions && searchQuery.length > 0 && sortedSearchResults.length > 0 && (
         <IonList>
-          {sortedSearchResults.map((suggestion: Suggestion, index) => (
+          {sortedSearchResults.map((suggestion: SearchData, index) => (
             <IonItem key={index} onClick={() => handleSuggestionClick(suggestion)}>
               {suggestion.title}
             </IonItem>
