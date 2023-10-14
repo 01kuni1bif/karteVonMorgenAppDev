@@ -36,7 +36,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ modalData, isModalOpen 
             <IonItem key={key}>
               <IonLabel>
                 {(modalData as any)[key] &&
-                  <p>{`${key.charAt(0).toUpperCase() + key.slice(1)}: ${(modalData as any)[key]}`}</p>
+                  <p className='IonLabel'>{`${key.charAt(0).toUpperCase() + key.slice(1)}: ${(modalData as any)[key]}`}</p>
                 }
               </IonLabel>
             </IonItem>
