@@ -5,20 +5,27 @@ import L from 'leaflet';
 
 interface MapMarkerProps {
   position: [number, number];
-  onClick: () => void;
   iconUrl: string;
+  forwardId: (item: any) => void;
+  item: any;
+  openModal: () => void;
 }
 
-const MapMarker: React.FC<MapMarkerProps> = ({ position, onClick, iconUrl }) => {
+const MapMarker: React.FC<MapMarkerProps> = ({ position, iconUrl, forwardId, item, openModal }) => {
   const customIcon = new L.Icon({
     iconUrl: iconUrl,
     iconSize: [32, 32],
     iconAnchor: [16, 32],
   });
 
+  const handleMarkerClick = () => {
+    forwardId(item);
+    openModal();
+  }
+
   return (
     <React.Fragment>
-      <Marker position={position} icon={customIcon} eventHandlers={{ click: onClick }} />
+      <Marker position={position} icon={customIcon} eventHandlers={{ click: handleMarkerClick }} />
     </React.Fragment>
   );
 }
