@@ -4,7 +4,7 @@ import { EntryData, EventData } from '../consts/types';
 import './modalComponent.css'
 
 interface ModalComponentProps {
-  modalData: EntryData | EventData | null;
+  modalData: EntryData | EventData | EventData[] | null;
   isModalOpen: boolean;
 }
 

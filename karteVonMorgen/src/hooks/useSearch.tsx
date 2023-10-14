@@ -13,7 +13,7 @@ async function fetchData(
   tags: string[] | null,
   status: string | null,
   limit: number | null
-): Promise<SearchData> {
+): Promise<SearchData[]> {
   const queryParams = {
     bbox: bbox || '42.27,-7.97,52.58,38.25',
     org_tag: org_tag,
@@ -59,9 +59,9 @@ export function useSearch({
   tags?: string[] | null,
   status?: string | null,
   limit?: number | null
-} = {}): SearchData {
+} = {}): SearchData[] {
   
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<SearchData[]>([]);
 
   useEffect(() => {
     if (bbox) {

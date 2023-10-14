@@ -9,24 +9,26 @@ import SearchBar from './SearchBar';
 import Categories from './Categories';
 import ModalComponent from './ModalComponent';
 import MyMap from './MyMap';
-import { EntryData, EventData } from '../consts/types'
+import { EntryData, EventData, SearchData } from '../consts/types'
 import 'leaflet/dist/leaflet.css';
 import "./MapComponent.css"
+import { useMapBounds } from '../hooks/useMapBounds';
 
 const bounds: LatLngBoundsLiteral = [[-90, -180], [90, 180]];
 
 const MapComponent: React.FC = () => {
   const [categories, setCategories] = useState<string[]>([]);
-  const [bbox, setBbox] = useState<string | null>(null);
-  const searchData = useSearch({ bbox: bbox, categories: categories });
+  const [bbox, setBbox] = useState<string>('');
+  const searchData: SearchData[] = useSearch({ bbox: bbox, categories: categories });
   const eventData = useEvents({ bbox: bbox });
   const [mapCenter, setMapCenter] = useState<LatLngExpression>([51.1657, 10.4515]);
   const [mapZoom, setMapZoom] = useState<number>(6);
-  const [searchId, setSearchId] = useState<string>("");
-  const [eventId, setEventId] = useState("")
-  const selectedEntryData: EntryData[] | null = useEntries({ ids: [searchId] });
-  const selectedEventData: EventData[] | null = useEvents({ id: eventId });
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchId, setSearchId] = useState<string>('');
+  const [eventId, setEventId] = useState<string>('')
+  const selectedEntryData: EntryData[] = useEntries({ ids: [searchId] });
+  const selectedEventData: EventData | EventData[] = useEvents({ id: eventId });
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const { southWest, northEast } = useMapBounds();
 
   const forwardSearchId = (item: any) => {
     setSearchId(item.id);
@@ -52,12 +54,12 @@ const MapComponent: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  let modalData: EntryData | EventData | null = null;
+  let modalData: EntryData | EventData | EventData[] | null = null;
 
   if (searchId && selectedEntryData && selectedEntryData.length > 0) {
     modalData = selectedEntryData[0];
   } else if (eventId && selectedEventData) {
-    modalData = selectedEventData[0];
+    modalData = selectedEventData;
   }
 
   return (

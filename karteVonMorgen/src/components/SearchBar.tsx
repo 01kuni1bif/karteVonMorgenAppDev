@@ -19,7 +19,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ setMapCenter, setMapZoom, forward
   const bbox = "42.27,-7.97,52.58,38.25";
   const [searchQuery, setSearchQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(true);
-  const searchResults: SearchData = useSearch({ bbox: bbox, text: searchQuery });
+  const searchResults: SearchData[] = useSearch({ bbox: bbox, text: searchQuery });
 
   // Sort the searchResults by letter-based relevance (case-insensitive)
   const sortedSearchResults = searchResults && Array.isArray(searchResults)

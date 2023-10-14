@@ -30,7 +30,7 @@ export function useEntries({
   org_tag?: string
 } = { ids: [] }): EntryData[] {
 
-  const [data, setData] = useState<EntryData[]>([]); // Use EntryData[] for type safety
+  const [data, setData] = useState<EntryData[]>([]);
 
   useEffect(() => {
     if (ids.length) {

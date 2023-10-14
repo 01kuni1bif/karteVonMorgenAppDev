@@ -7,7 +7,7 @@ import { useMapBounds } from '../hooks/useMapBounds';
 import MapMarker from './MapMarker';
 
 interface MyMapProps {
-  setBbox: (bbox: string | null) => void,
+  setBbox: (bbox: string) => void,
   searchData: any,
   eventData: any,
   selectedCategories: string[],

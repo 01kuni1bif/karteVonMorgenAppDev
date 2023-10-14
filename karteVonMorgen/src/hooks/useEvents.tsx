@@ -4,12 +4,12 @@ import { useEffect, useState } from 'react';
 import { API_BASE_URL, ENDPOINTS } from '../consts/apiEndpoints';
 import { EventData } from '../consts/types';
 
-async function fetchDataById(id: string): Promise<EventData[]> {
+async function fetchDataById(id: string): Promise<EventData> {
   const url = `${API_BASE_URL}${ENDPOINTS.EVENTS_BY_ID.path}${id}`;
   const response = await axios.get(url);
 
   if (response.data) {
-    return [response.data];
+    return response.data;
   } else {
     throw new Error('Invalid data in API response');
   }
@@ -77,9 +77,9 @@ export function useEvents({
   text?: string | null,
   created_by?: string | null,
   id?: string | null
-} = {}): EventData[] {
+} = {}): EventData | EventData[] {
 
-  const [data, setData] = useState<EventData[]>([]); // Use EventData[] for type safety
+  const [data, setData] = useState<EventData | EventData[]>(null || []);
 
   useEffect(() => {
     if (id) {
