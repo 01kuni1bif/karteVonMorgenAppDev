@@ -56,7 +56,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ modalOpen, closeModal, 
       initialBreakpoint={0.5}
       breakpoints={[0, 0.25, 0.5, 0.75, 1]}
     >
-      <div className="ion-padding">
+      <div className="ion-padding IonContent">
         <IonList>
           {modalData && commonKeys.map(key => (
             <IonItem key={key}>

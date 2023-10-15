@@ -16,6 +16,7 @@ interface MyMapProps {
   forwardSearchId: (item: any) => void;
   forwardEventId: (item: any) => void;
   openModal: () => void;
+  selectedMarkerId: string;
 }
 
 const MyMap: React.FC<MyMapProps> = ({
@@ -27,7 +28,8 @@ const MyMap: React.FC<MyMapProps> = ({
   categories,
   forwardSearchId,
   forwardEventId,
-  openModal
+  openModal,
+  selectedMarkerId // Empfangen Sie den Zustand in den Props
 }) => {
   const map = useMap();
   const { southWest, northEast } = useMapBounds();
@@ -66,7 +68,7 @@ const MyMap: React.FC<MyMapProps> = ({
     <React.Fragment>
       {searchData && searchData.map(
         (
-          item: { categories: string | string[]; lat: number; lng: number; },
+          item: { categories: string | string[]; lat: number; lng: number; id: string },
           index: React.Key | null | undefined
         ) => {
           if (categories.length > 0 && !categories.some(category =>
@@ -74,8 +76,11 @@ const MyMap: React.FC<MyMapProps> = ({
             return null; // Skip this item if its category is not selected
           }
           let iconUrl = '/assets/images/icons8-marker-48-yellow.png';
+          if (item.id === selectedMarkerId) { // Wenn dieser Marker ausgewählt ist, ändern Sie das Icon in Gelb
+            iconUrl = '/assets/images/icons8-marker-48-yellow.png';
+          }
           // Check if the categories array includes the category ID for initiatives
-          if (item.categories.includes('2cd00bebec0c48ba9db761da48678134')) {
+          else if (item.categories.includes('2cd00bebec0c48ba9db761da48678134')) {
             iconUrl = '/assets/images/icons8-marker-48-lightgreen.png';
             // Check if the categories array includes the category ID for companies
           } else if (item.categories.includes('77b3c33a92554bcf8e8c2c86cedd6f6f')) {

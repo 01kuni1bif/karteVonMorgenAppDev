@@ -17,6 +17,7 @@ const MapMarker: React.FC<MapMarkerProps> = ({ position, iconUrl, forwardId, ite
     iconSize: [32, 32],
     iconAnchor: [16, 32],
   });
+  
 
   const handleMarkerClick = () => {
     forwardId(item);

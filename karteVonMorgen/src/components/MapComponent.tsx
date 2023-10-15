@@ -27,9 +27,11 @@ const MapComponent: React.FC = () => {
   const [mapCenter, setMapCenter] = useState<LatLngExpression>([51.1657, 10.4515]);
   const [mapZoom, setMapZoom] = useState<number>(6);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [selectedMarkerId, setSelectedMarkerId] = useState<string>('');
 
   const forwardSearchId = (item: any) => {
     setSearchId(item.id);
+    setSelectedMarkerId(item.id); // Setzen Sie die ID des ausgewählten Markers
   };
 
   const forwardEventId = (item: any) => {
@@ -85,6 +87,7 @@ const MapComponent: React.FC = () => {
           forwardSearchId={forwardSearchId}
           forwardEventId={forwardEventId}
           openModal={openModal}
+          selectedMarkerId={selectedMarkerId} // Übergeben Sie den Zustand an die MyMap 
         />
         <ModalComponent modalOpen={modalOpen} closeModal={closeModal} modalData={modalData} />
       </MapContainer>
