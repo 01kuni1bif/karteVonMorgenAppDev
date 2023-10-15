@@ -17,7 +17,7 @@ interface MyMapProps {
   forwardEventId: (item: any) => void;
   setSelectedMarkerId: (item: string) => void;
   openModal: () => void;
-  selectedMarkerId: string;
+  selectedMarkerId: string | null;
 }
 
 const MyMap: React.FC<MyMapProps> = ({
