@@ -13,10 +13,9 @@ interface MyMapProps {
   searchData: any;
   eventData: any;
   categories: string[];
+  setSelectedMarker: React.Dispatch<React.SetStateAction<{ id: string | null, type: string | null }>>;
   clickedMarkerId: string | null;
   setClickedMarkerId: (id: string) => void;
-  forwardSearchId: (item: any) => void;
-  forwardEventId: (item: any) => void;
   openModal: () => void;
 }
 
@@ -27,10 +26,9 @@ const MyMap: React.FC<MyMapProps> = ({
   searchData,
   eventData,
   categories,
+  setSelectedMarker,
   clickedMarkerId,
   setClickedMarkerId,
-  forwardSearchId,
-  forwardEventId,
   openModal,
 }) => {
   const map = useMap();
@@ -101,7 +99,8 @@ const MyMap: React.FC<MyMapProps> = ({
               iconUrl={iconUrl}
               iconSize={iconSize}
               iconAnchor={iconAnchor}
-              forwardId={forwardSearchId}
+              setSelectedMarker={setSelectedMarker}
+              type={'search'}
               setClickedMarkerId={setClickedMarkerId}
               item={item}
               openModal={openModal}
@@ -130,7 +129,8 @@ const MyMap: React.FC<MyMapProps> = ({
                 iconUrl={iconUrl}
                 iconSize={iconSize}
                 iconAnchor={iconAnchor}
-                forwardId={forwardEventId}
+                setSelectedMarker={setSelectedMarker}
+                type={'event'}
                 setClickedMarkerId={setClickedMarkerId}
                 item={item}
                 openModal={openModal}

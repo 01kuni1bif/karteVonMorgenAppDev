@@ -10,13 +10,13 @@ import './SearchBar.css';
 interface SearchBarProps {
   setMapCenter: (center: LatLngExpression) => void;
   setMapZoom: (zoom: number) => void;
+  setSelectedMarker: React.Dispatch<React.SetStateAction<{ id: string | null, type: string | null }>>;
   setClickedMarkerId: (item: any) => void;
-  forwardSearchId: (item: any) => void;
   openModal: () => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = (
-  { setMapCenter, setMapZoom, setClickedMarkerId, forwardSearchId, openModal }
+  { setMapCenter, setMapZoom, setSelectedMarker, setClickedMarkerId, openModal }
 ) => {
   const bbox = "42.27,-7.97,52.58,38.25";
   const [searchQuery, setSearchQuery] = useState('');
@@ -61,8 +61,8 @@ const SearchBar: React.FC<SearchBarProps> = (
 
     setShowSuggestions(false);
 
+    setSelectedMarker({ id: suggestion.id, type: 'search' });
     setClickedMarkerId(suggestion.id)
-    forwardSearchId(suggestion);
     openModal();
   };
 

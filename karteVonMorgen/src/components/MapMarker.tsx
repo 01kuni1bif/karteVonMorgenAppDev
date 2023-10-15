@@ -9,13 +9,14 @@ interface MapMarkerProps {
   iconSize: [number, number];
   iconAnchor: [number, number];
   item: any;
+  setSelectedMarker: React.Dispatch<React.SetStateAction<{ id: string | null, type: string | null }>>;
+  type: string;
   setClickedMarkerId: (id: string) => void;
-  forwardId: (item: any) => void;
   openModal: () => void;
 }
 
 const MapMarker: React.FC<MapMarkerProps> = (
-  { position, iconUrl, iconSize, iconAnchor, item, setClickedMarkerId, forwardId, openModal }
+  { position, iconUrl, iconSize, iconAnchor, item, setSelectedMarker, type, setClickedMarkerId, openModal }
 ) => {
   const customIcon = new L.Icon({
     iconUrl: iconUrl,
@@ -24,8 +25,8 @@ const MapMarker: React.FC<MapMarkerProps> = (
   });
 
   const handleMarkerClick = () => {
+    setSelectedMarker({ id: item.id, type: type });
     setClickedMarkerId(item.id)
-    forwardId(item);
     openModal();
   }
 
