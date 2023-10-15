@@ -25,8 +25,8 @@ const MapMarker: React.FC<MapMarkerProps> = (
 
   const handleMarkerClick = () => {
     forwardId(item);
-    openModal();
     setSelectedMarkerId(item.id)
+    openModal();
   }
 
   return (
