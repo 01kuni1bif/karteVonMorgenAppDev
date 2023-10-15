@@ -13,11 +13,11 @@ interface MyMapProps {
   searchData: any;
   eventData: any;
   categories: string[];
+  clickedMarkerId: string | null;
+  setClickedMarkerId: (id: string) => void;
   forwardSearchId: (item: any) => void;
   forwardEventId: (item: any) => void;
-  setSelectedMarkerId: (item: string) => void;
   openModal: () => void;
-  selectedMarkerId: string | null;
 }
 
 const MyMap: React.FC<MyMapProps> = ({
@@ -27,11 +27,11 @@ const MyMap: React.FC<MyMapProps> = ({
   searchData,
   eventData,
   categories,
+  clickedMarkerId,
+  setClickedMarkerId,
   forwardSearchId,
   forwardEventId,
-  setSelectedMarkerId,
   openModal,
-  selectedMarkerId // Empfangen Sie den Zustand in den Props
 }) => {
   const map = useMap();
   const { southWest, northEast } = useMapBounds();
@@ -82,7 +82,7 @@ const MyMap: React.FC<MyMapProps> = ({
           let iconSize: [number, number] = [32, 32]
           let iconAnchor: [number, number] = [iconSize[0] / 2, iconSize[1]]
           // Wenn dieser Marker ausgewählt ist, ändern Sie das Icon in Gelb
-          if (item.id === selectedMarkerId) {
+          if (item.id === clickedMarkerId) {
             iconUrl = '/assets/images/icons8-marker-48-red.png';
             iconSize = [42, 42]
             iconAnchor = [iconSize[0] / 2, iconSize[1]]
@@ -102,7 +102,7 @@ const MyMap: React.FC<MyMapProps> = ({
               iconSize={iconSize}
               iconAnchor={iconAnchor}
               forwardId={forwardSearchId}
-              setSelectedMarkerId={setSelectedMarkerId}
+              setClickedMarkerId={setClickedMarkerId}
               item={item}
               openModal={openModal}
             />
@@ -118,7 +118,7 @@ const MyMap: React.FC<MyMapProps> = ({
             let iconSize: [number, number] = [32, 32]
             let iconAnchor: [number, number] = [iconSize[0] / 2, iconSize[1]]
             // Wenn dieser Marker ausgewählt ist, ändern Sie das Icon in Gelb
-            if (item.id === selectedMarkerId) {
+            if (item.id === clickedMarkerId) {
               iconUrl = '/assets/images/icons8-marker-48-red.png';
               iconSize = [42, 42]
               iconAnchor = [iconSize[0] / 2, iconSize[1]]
@@ -131,7 +131,7 @@ const MyMap: React.FC<MyMapProps> = ({
                 iconSize={iconSize}
                 iconAnchor={iconAnchor}
                 forwardId={forwardEventId}
-                setSelectedMarkerId={setSelectedMarkerId}
+                setClickedMarkerId={setClickedMarkerId}
                 item={item}
                 openModal={openModal}
               />

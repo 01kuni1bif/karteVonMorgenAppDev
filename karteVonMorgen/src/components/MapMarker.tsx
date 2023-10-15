@@ -8,14 +8,14 @@ interface MapMarkerProps {
   iconUrl: string;
   iconSize: [number, number];
   iconAnchor: [number, number];
-  forwardId: (item: any) => void;
-  setSelectedMarkerId: (item: string) => void;
   item: any;
+  setClickedMarkerId: (id: string) => void;
+  forwardId: (item: any) => void;
   openModal: () => void;
 }
 
 const MapMarker: React.FC<MapMarkerProps> = (
-  { position, iconUrl, iconSize, iconAnchor, forwardId, setSelectedMarkerId, item, openModal }
+  { position, iconUrl, iconSize, iconAnchor, item, setClickedMarkerId, forwardId, openModal }
 ) => {
   const customIcon = new L.Icon({
     iconUrl: iconUrl,
@@ -24,8 +24,8 @@ const MapMarker: React.FC<MapMarkerProps> = (
   });
 
   const handleMarkerClick = () => {
+    setClickedMarkerId(item.id)
     forwardId(item);
-    setSelectedMarkerId(item.id)
     openModal();
   }
 

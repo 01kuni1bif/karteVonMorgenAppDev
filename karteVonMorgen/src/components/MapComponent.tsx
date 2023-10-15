@@ -26,8 +26,8 @@ const MapComponent: React.FC = () => {
   const eventDataById: EventData | EventData[] = useEvents({ id: eventId });
   const [mapCenter, setMapCenter] = useState<LatLngExpression>([51.1657, 10.4515]);
   const [mapZoom, setMapZoom] = useState<number>(6);
+  const [clickedMarkerId, setClickedMarkerId] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [selectedMarkerId, setSelectedMarkerId] = useState<string | null>(null);
   const [modalData, setModalData] = useState<EntryData | EventData | EventData[] | null>(null);
 
   const forwardSearchId = (item: any) => {
@@ -59,6 +59,7 @@ const MapComponent: React.FC = () => {
         <SearchBar
           setMapCenter={setMapCenter}
           setMapZoom={setMapZoom}
+          setClickedMarkerId={setClickedMarkerId}
           forwardSearchId={forwardSearchId}
           openModal={openModal}
         />
@@ -82,11 +83,11 @@ const MapComponent: React.FC = () => {
           searchData={searchData}
           eventData={eventData}
           categories={categories}
+          clickedMarkerId={clickedMarkerId}
+          setClickedMarkerId={setClickedMarkerId}
           forwardSearchId={forwardSearchId}
           forwardEventId={forwardEventId}
-          setSelectedMarkerId={setSelectedMarkerId}
           openModal={openModal}
-          selectedMarkerId={selectedMarkerId} // Übergeben Sie den Zustand an die MyMap 
         />
         <ModalComponent modalOpen={modalOpen} closeModal={closeModal} modalData={modalData} />
       </MapContainer>
