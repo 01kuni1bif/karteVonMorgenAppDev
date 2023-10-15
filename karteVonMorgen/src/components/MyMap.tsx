@@ -15,6 +15,7 @@ interface MyMapProps {
   categories: string[];
   forwardSearchId: (item: any) => void;
   forwardEventId: (item: any) => void;
+  setSelectedMarkerId: (item: string) => void;
   openModal: () => void;
   selectedMarkerId: string;
 }
@@ -28,6 +29,7 @@ const MyMap: React.FC<MyMapProps> = ({
   categories,
   forwardSearchId,
   forwardEventId,
+  setSelectedMarkerId,
   openModal,
   selectedMarkerId // Empfangen Sie den Zustand in den Props
 }) => {
@@ -71,13 +73,19 @@ const MyMap: React.FC<MyMapProps> = ({
           item: { categories: string | string[]; lat: number; lng: number; id: string },
           index: React.Key | null | undefined
         ) => {
+          // Skip this item if its category is not selected
           if (categories.length > 0 && !categories.some(category =>
             item.categories.includes(category))) {
-            return null; // Skip this item if its category is not selected
+            return null;
           }
           let iconUrl = '/assets/images/icons8-marker-48-yellow.png';
-          if (item.id === selectedMarkerId) { // Wenn dieser Marker ausgewählt ist, ändern Sie das Icon in Gelb
-            iconUrl = '/assets/images/icons8-marker-48-yellow.png';
+          let iconSize: [number, number] = [32, 32]
+          let iconAnchor: [number, number] = [iconSize[0] / 2, iconSize[1]]
+          // Wenn dieser Marker ausgewählt ist, ändern Sie das Icon in Gelb
+          if (item.id === selectedMarkerId) {
+            iconUrl = '/assets/images/icons8-marker-48-red.png';
+            iconSize = [42, 42]
+            iconAnchor = [iconSize[0] / 2, iconSize[1]]
           }
           // Check if the categories array includes the category ID for initiatives
           else if (item.categories.includes('2cd00bebec0c48ba9db761da48678134')) {
@@ -91,7 +99,10 @@ const MyMap: React.FC<MyMapProps> = ({
               key={index}
               position={[item.lat, item.lng]}
               iconUrl={iconUrl}
+              iconSize={iconSize}
+              iconAnchor={iconAnchor}
               forwardId={forwardSearchId}
+              setSelectedMarkerId={setSelectedMarkerId}
               item={item}
               openModal={openModal}
             />
@@ -104,12 +115,23 @@ const MyMap: React.FC<MyMapProps> = ({
             index: React.Key | null | undefined
           ) => {
             let iconUrl = '/assets/images/icons8-marker-48-purple-origin.png';
+            let iconSize: [number, number] = [32, 32]
+            let iconAnchor: [number, number] = [iconSize[0] / 2, iconSize[1]]
+            // Wenn dieser Marker ausgewählt ist, ändern Sie das Icon in Gelb
+            if (item.id === selectedMarkerId) {
+              iconUrl = '/assets/images/icons8-marker-48-red.png';
+              iconSize = [42, 42]
+              iconAnchor = [iconSize[0] / 2, iconSize[1]]
+            }
             return (
               <MapMarker
                 key={index}
                 position={[item.lat, item.lng]}
                 iconUrl={iconUrl}
+                iconSize={iconSize}
+                iconAnchor={iconAnchor}
                 forwardId={forwardEventId}
+                setSelectedMarkerId={setSelectedMarkerId}
                 item={item}
                 openModal={openModal}
               />

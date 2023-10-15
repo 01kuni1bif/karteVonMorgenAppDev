@@ -31,7 +31,6 @@ const MapComponent: React.FC = () => {
 
   const forwardSearchId = (item: any) => {
     setSearchId(item.id);
-    setSelectedMarkerId(item.id); // Setzen Sie die ID des ausgewählten Markers
   };
 
   const forwardEventId = (item: any) => {
@@ -86,6 +85,7 @@ const MapComponent: React.FC = () => {
           categories={categories}
           forwardSearchId={forwardSearchId}
           forwardEventId={forwardEventId}
+          setSelectedMarkerId={setSelectedMarkerId}
           openModal={openModal}
           selectedMarkerId={selectedMarkerId} // Übergeben Sie den Zustand an die MyMap 
         />

@@ -6,21 +6,26 @@ import L from 'leaflet';
 interface MapMarkerProps {
   position: [number, number];
   iconUrl: string;
+  iconSize: [number, number];
+  iconAnchor: [number, number];
   forwardId: (item: any) => void;
+  setSelectedMarkerId: (item: string) => void;
   item: any;
   openModal: () => void;
 }
 
-const MapMarker: React.FC<MapMarkerProps> = ({ position, iconUrl, forwardId, item, openModal }) => {
+const MapMarker: React.FC<MapMarkerProps> = (
+  { position, iconUrl, iconSize, iconAnchor, forwardId, setSelectedMarkerId, item, openModal }
+) => {
   const customIcon = new L.Icon({
     iconUrl: iconUrl,
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
+    iconSize: iconSize,
+    iconAnchor: iconAnchor,
   });
-  
 
   const handleMarkerClick = () => {
     forwardId(item);
+    setSelectedMarkerId(item.id)
     openModal();
   }
 
