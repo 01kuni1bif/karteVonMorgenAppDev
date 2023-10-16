@@ -1,0 +1,35 @@
+.IonLabel {
+    text-overflow: clip; /* Dies stellt sicher, dass der Text einfach abgeschnitten wird, ohne '...' hinzuzufügen */
+    white-space: normal; /* Dies ermöglicht es dem Text, auf die nächste Zeile umzubrechen */
+  }
+.IonContent {
+  --offset-bottom: auto !important;
+  --overflow: auto;
+  background: var(--ion-toolbar-background, var(--ion-background-color, #000000)) !important;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgb(0, 0, 0);
+  }
+
+  &::-webkit-scrollbar-track:hover {
+    background: #35d703;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgb(75, 75, 75);
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #94173a
+  }
+
+  .inner-scroll {
+    scrollbar-width: thin;
+  }
+}

@@ -1,0 +1,6 @@
+/* Home.css */
+.home-content {
+    height: 100vh;
+    position: relative;
+    overflow: auto; /* Change this line */
+}

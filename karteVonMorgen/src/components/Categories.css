@@ -1,0 +1,12 @@
+/* Categories.css */
+@media (max-width: 600px) {
+    .custom-button {
+        font-size: medium;
+    }
+}
+
+@media (max-width: 400px) {
+    .custom-button {
+        font-size: smaller;
+    }
+}
