@@ -4,7 +4,10 @@ import { useEffect, useState } from 'react';
 import { API_BASE_URL, ENDPOINTS } from '../consts/apiEndpoints';
 import { EntryData } from '../consts/types';
 
-async function fetchData(ids: string, org_tag: string | null): Promise<EntryData> {
+async function fetchData(
+  ids: string,
+  org_tag: string | null
+): Promise<EntryData> {
   if (!ids.length) {
     throw new Error('IDs not provided');
   }
