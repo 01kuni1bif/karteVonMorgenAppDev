@@ -46,18 +46,6 @@ const MapComponent: React.FC = () => {
     }
   }, [selectedMarker, entryDataById, eventDataById]);
 
-  useEffect(() => {
-    console.log('Marker changed: ', selectedMarker);
-  }, [selectedMarker]);
-
-  useEffect(() => {
-    console.log('Entry Data changed: ', entryDataById);
-  }, [entryDataById])
-
-  useEffect(() => {
-    console.log('Event Data changed :', eventDataById);
-  }, [eventDataById])
-
   return (
     <div id="map">
       <div className='map-controls'>

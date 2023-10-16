@@ -45,7 +45,9 @@ const MyMap: React.FC<MyMapProps> = ({
   });
 
   useEffect(() => {
-    map.setView(mapCenter, mapZoom);
+    map.on('load', () => {
+      map.setView(mapCenter, mapZoom);
+    })
   }, [map, mapCenter, mapZoom]);
 
   useEffect(() => {
