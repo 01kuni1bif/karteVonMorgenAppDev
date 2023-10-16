@@ -42,7 +42,6 @@ const LocateControl: React.FC = () => {
   );
 };
 
-
 const MapComponent: React.FC = () => {
   const [bbox, setBbox] = useState<string | null>(null);
   const [categories, setCategories] = useState<string[]>([]);
@@ -56,16 +55,6 @@ const MapComponent: React.FC = () => {
   const [clickedMarkerId, setClickedMarkerId] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [modalData, setModalData] = useState<EntryData | EventData | EventData[] | null>(null);
-  
-
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      const newMapCenter: LatLngExpression = [position.coords.latitude, position.coords.longitude];
-      setMapCenter(newMapCenter);
-      setMapZoom(12);
-    });
-  }, []);
-
 
   const openModal = () => {
     setModalOpen(true);
@@ -83,15 +72,6 @@ const MapComponent: React.FC = () => {
       setModalData(eventDataById);
     }
   }, [selectedMarker, entryDataById, eventDataById]);
-
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setMapCenter([position.coords.latitude, position.coords.longitude]);
-        setMapZoom(14);
-      });
-    }
-  }, []);
 
   return (
     <div id="map">
