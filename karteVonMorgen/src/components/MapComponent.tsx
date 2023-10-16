@@ -21,7 +21,7 @@ const MapComponent: React.FC = () => {
   const searchData: SearchData[] = useSearch({ bbox: bbox, categories: categories });
   const eventData = useEvents({ bbox: bbox });
   const [selectedMarker, setSelectedMarker] = useState<{ id: string | null, type: string | null }>({ id: null, type: null });
-  const entryDataById: EntryData[] = useEntries({ ids: selectedMarker.type === 'search' && selectedMarker.id ? [selectedMarker.id] : [] });
+  const entryDataById: EntryData | null = useEntries({ ids: selectedMarker.type === 'search' ? selectedMarker.id : null, org_tag: null });
   const eventDataById: EventData | EventData[] = useEvents({ id: selectedMarker.type === 'event' ? selectedMarker.id : null });
   const [mapCenter, setMapCenter] = useState<LatLngExpression>([51.1657, 10.4515]);
   const [mapZoom, setMapZoom] = useState<number>(6);
@@ -38,16 +38,25 @@ const MapComponent: React.FC = () => {
   };
 
   useEffect(() => {
-    if (selectedMarker.type === 'search' && entryDataById.length > 0) {
-      setModalData(entryDataById[0]);
+    if (selectedMarker.type === 'search' && entryDataById) {
+      setModalData(entryDataById);
     }
-  }, [selectedMarker, entryDataById]);
-
-  useEffect(() => {
-    if (selectedMarker.type === 'event' && eventDataById) {
+    else if (selectedMarker.type === 'event' && eventDataById) {
       setModalData(eventDataById);
     }
-  }, [selectedMarker, eventDataById]);
+  }, [selectedMarker, entryDataById, eventDataById]);
+
+  useEffect(() => {
+    console.log('Marker changed: ', selectedMarker);
+  }, [selectedMarker]);
+
+  useEffect(() => {
+    console.log('Entry Data changed: ', entryDataById);
+  }, [entryDataById])
+
+  useEffect(() => {
+    console.log('Event Data changed :', eventDataById);
+  }, [eventDataById])
 
   return (
     <div id="map">
