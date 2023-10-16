@@ -60,7 +60,6 @@ const MapComponent: React.FC = () => {
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function(position) {
-      console.log(position);
       const newMapCenter: LatLngExpression = [position.coords.latitude, position.coords.longitude];
       setMapCenter(newMapCenter);
       setMapZoom(12);
