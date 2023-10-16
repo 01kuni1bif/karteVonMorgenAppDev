@@ -12,4 +12,13 @@
 .map-container {
     height: 100vh;
     position: relative;
+    color: #eb445a;
+}
+
+.geo-location {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+    padding: 10px;
+    z-index: 1000;
 }

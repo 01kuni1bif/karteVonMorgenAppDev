@@ -1,7 +1,7 @@
 // MapComponent.tsx
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer } from 'react-leaflet';
-import { LatLngBoundsLiteral, LatLngExpression } from "leaflet";
+import { MapContainer, TileLayer, useMap } from 'react-leaflet';
+import L, { LatLngBoundsLiteral, LatLngExpression } from "leaflet";
 import { useSearch } from '../hooks/useSearch';
 import { useEvents } from '../hooks/useEvents';
 import { useEntries } from '../hooks/useEntries';
@@ -10,10 +10,38 @@ import Categories from './Categories';
 import ModalComponent from './ModalComponent';
 import SearchBar from './SearchBar';
 import { EntryData, EventData, SearchData } from '../consts/types'
+import { IonButton, IonIcon } from '@ionic/react';
+import { locate } from 'ionicons/icons'
 import 'leaflet/dist/leaflet.css';
 import "./MapComponent.css"
 
 const bounds: LatLngBoundsLiteral = [[-90, -180], [90, 180]];
+
+const LocateControl: React.FC = () => {
+  const map = useMap();
+
+  const goToUserLocation = () => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const userLocation: LatLngExpression = [position.coords.latitude, position.coords.longitude];
+      map.flyTo(userLocation, 14);
+
+      L.marker(userLocation, {
+        icon: L.icon({
+          iconUrl: '/assets/images/geo-location.png',
+          iconSize: [60, 60],
+          iconAnchor: [30, 60],
+        }),
+      }).addTo(map);
+    });
+  };
+
+  return (
+    <IonButton className='geo-location' onClick={goToUserLocation} color='danger'>
+      <IonIcon slot="icon-only" icon={locate}></IonIcon>
+    </IonButton>
+  );
+};
+
 
 const MapComponent: React.FC = () => {
   const [bbox, setBbox] = useState<string | null>(null);
@@ -46,6 +74,15 @@ const MapComponent: React.FC = () => {
     }
   }, [selectedMarker, entryDataById, eventDataById]);
 
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        setMapCenter([position.coords.latitude, position.coords.longitude]);
+        setMapZoom(14);
+      });
+    }
+  }, []);
+
   return (
     <div id="map">
       <div className='map-controls'>
@@ -62,6 +99,7 @@ const MapComponent: React.FC = () => {
         center={mapCenter}
         zoom={mapZoom}
         minZoom={3}
+        maxZoom={16}
         maxBounds={bounds}
         className="map-container"
         zoomControl={false}
@@ -83,6 +121,7 @@ const MapComponent: React.FC = () => {
           openModal={openModal}
         />
         <ModalComponent modalOpen={modalOpen} closeModal={closeModal} modalData={modalData} />
+        <LocateControl />
       </MapContainer>
     </div>
   );
