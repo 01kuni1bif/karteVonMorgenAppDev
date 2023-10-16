@@ -28,6 +28,17 @@ const MapComponent: React.FC = () => {
   const [clickedMarkerId, setClickedMarkerId] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [modalData, setModalData] = useState<EntryData | EventData | EventData[] | null>(null);
+  
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      console.log(position);
+      const newMapCenter: LatLngExpression = [position.coords.latitude, position.coords.longitude];
+      setMapCenter(newMapCenter);
+      setMapZoom(12);
+    });
+  }, []);
+
 
   const openModal = () => {
     setModalOpen(true);
